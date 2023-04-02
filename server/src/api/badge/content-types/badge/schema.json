@@ -1,0 +1,22 @@
+{
+  "kind": "collectionType",
+  "collectionName": "badges",
+  "info": {
+    "singularName": "badge",
+    "pluralName": "badges",
+    "displayName": "badge"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "enumeration",
+      "enum": [
+        "Новинка",
+        "Хит"
+      ]
+    }
+  }
+}

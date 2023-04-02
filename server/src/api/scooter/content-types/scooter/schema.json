@@ -1,0 +1,128 @@
+{
+  "kind": "collectionType",
+  "collectionName": "scooters",
+  "info": {
+    "singularName": "scooter",
+    "pluralName": "scooters",
+    "displayName": "scooter",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Title": {
+      "type": "string",
+      "required": true
+    },
+    "weight": {
+      "type": "decimal",
+      "required": true
+    },
+    "max_speed": {
+      "type": "decimal",
+      "required": true
+    },
+    "power": {
+      "type": "decimal",
+      "required": true
+    },
+    "max_ramge": {
+      "type": "decimal",
+      "required": true
+    },
+    "Price": {
+      "type": "float",
+      "required": true
+    },
+    "discount_percent": {
+      "type": "decimal",
+      "required": true
+    },
+    "battery_capacity": {
+      "type": "decimal",
+      "required": true
+    },
+    "charge_time": {
+      "type": "decimal",
+      "required": true
+    },
+    "wheel_size": {
+      "type": "float",
+      "required": true
+    },
+    "gabarits": {
+      "type": "decimal",
+      "required": true
+    },
+    "maximum_load": {
+      "type": "decimal",
+      "required": true
+    },
+    "lighting": {
+      "type": "string",
+      "required": true
+    },
+    "guarantee": {
+      "type": "string",
+      "required": true
+    },
+    "type_wheels": {
+      "type": "enumeration",
+      "enum": [
+        "Полиуретан",
+        "Надувные"
+      ],
+      "required": true
+    },
+    "equipment": {
+      "type": "string",
+      "required": true
+    },
+    "privod": {
+      "type": "enumeration",
+      "enum": [
+        "Передний",
+        "Задний"
+      ],
+      "required": true
+    },
+    "stop_system": {
+      "type": "string",
+      "required": true
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "Городской",
+        "Зимний",
+        "Внедорожный"
+      ],
+      "required": true
+    },
+    "user_type": {
+      "type": "enumeration",
+      "enum": [
+        "Для ребенка",
+        "Для взрослого",
+        "Для пенсионера"
+      ],
+      "required": true
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "videos"
+      ]
+    },
+    "badges": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::badge.badge"
+    }
+  }
+}
