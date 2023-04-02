@@ -9,3 +9,41 @@ html {
 body {
   font-family: "Jost", sans-serif;
 }
+
+.container{
+  padding: 0 2em;
+  @media @lg{
+    padding: 0 1.5em;
+  }
+  @media @md{
+    padding: 0 1em;
+  }
+  @media @sm{
+    padding: 0 0.5em;
+  }
+}
+
+.input,.connect-input{
+  .br(5px);
+  outline: none;
+  display: block;
+  width: 100%;
+  padding: 15px 25px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+  letter-spacing: 0.1em;
+}
+.input{
+  color: @gray;
+  border: 1px solid @gray;
+  .trs(0.3s)
+}
+.input:focus{
+  color: @black;
+  border:1px solid @purple;
+  .trs(0.3s)
+}
+.connect-input{
+  color: #fff;background: rgba(255, 255, 255, 0.2);
+}

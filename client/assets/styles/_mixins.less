@@ -1,1 +1,19 @@
-
+.trs(@var) {
+  transition: @var ease-in-out;
+}
+.br(@var) {
+  border-radius: @var;
+}
+.postAbsolute {
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+.text-eclipse(@var) {
+  display: -webkit-box !important;
+  -webkit-line-clamp: @var;
+  -webkit-box-orient: vertical !important;
+  text-overflow: ellipsis !important;
+}

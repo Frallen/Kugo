@@ -17,6 +17,7 @@ export default defineNuxtConfig({
     ["nuxt-icon"],
     ["@vueuse/nuxt"],
     ["@nuxt/image-edge"],
+    ['@vueuse/motion/nuxt'],
     [
       "@pinia/nuxt",
       {
