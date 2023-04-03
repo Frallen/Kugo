@@ -28,16 +28,17 @@ const searchAction = (): void => {
   align-items: center;
   width: 100%;
   min-width: 600px;
-  @media @xl{
+  @media @xl {
     min-width: 400px;
   }
-  @media (max-width: 860px){
+  @media (max-width: 860px) {
     min-width: 300px;
   }
   @media @md {
     border: none;
     background: #f4f7fb;
     padding: 10px;
+    min-width: auto;
   }
   &-input {
     margin: 10px;
@@ -47,6 +48,7 @@ const searchAction = (): void => {
     font-size: 14px;
     line-height: 20px;
     border: none;
+    width: 98%;
     @media @md {
       margin: 0;
       border: none;
@@ -57,12 +59,17 @@ const searchAction = (): void => {
     border: 1.5px solid @purple;
     border-radius: 0px 5px 5px 0px;
     cursor: pointer;
-    margin: 0 0 0 auto;
+
+    @media @md {
+      background: none;
+      border: none;
+    }
     .icon {
       margin: 12px;
       color: #fff;
       font-size: 1.2em;
       @media @md {
+        margin: 0;
         color: @gray;
       }
     }

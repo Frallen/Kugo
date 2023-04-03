@@ -1,19 +1,20 @@
 <template>
   <div class="nav">
-    <div class="nav-mobile" v-if="isMobile">
+    <div class="nav-mobile">
       <div class="container">
         <div class="nav-wrapper">
           <NuxtLink class="nav-logo" to="/">Kugoo</NuxtLink>
-          <div class="nav-actions">
+          <div class="nav-wrapper-actions">
             <NuxtLink to="tel:+78005055461"
               ><Icon name="material-symbols:call" class="icon"
             /></NuxtLink>
-            <Icon name="cil:hamburger-menu" class="icon nav-modal" />
+            <Icon name="cil:hamburger-menu" class="icon nav-wrapper-modal" />
           </div>
         </div>
+        <Search></Search>
       </div>
     </div>
-    <div class="nav-default" v-else>
+    <div class="nav-default">
       <div class="container">
         <div class="nav-header">
           <div class="nav-header-list">
@@ -151,7 +152,6 @@
 </template>
 
 <script lang="ts" setup>
-const isMobile = useMediaQuery("(max-width:767px)");
 const menuButton = useState<null>();
 const menu = useState<null>();
 const menuHovered = useElementHover(menu);
@@ -159,199 +159,211 @@ const menuButtonHovered = useElementHover(menuButton);
 </script>
 
 <style scoped lang="less">
-.nav-default,
-.nav-mobile {
-  position: sticky;
-  top: 0;
-}
-.nav-default {
-  .nav-mobile {
+.nav {
+  &-default,
+  &-mobile {
+    position: sticky;
+    top: 0;
+  }
+  &-mobile {
+    display: none;
+    @media @md {
+      display: block;
+    }
     .nav-wrapper {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin: 18px 0;
       &-actions {
         a,
-        icon {
+        .icon {
           text-decoration: none;
           color: @purple;
-          font-size: 1em;
+          font-size: 1.4em;
           outline: none;
           cursor: pointer;
         }
       }
       &-modal {
+        margin: 0  0 0 15px;
       }
     }
   }
-  .nav-header {
-    padding: 11px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    a {
-      text-decoration: none;
-      font-weight: 400;
-      color: @gray;
+  &-default {
+    @media @md {
+      display: none;
     }
-    .nav-header-list {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      a {
-        margin-left: 30px;
-      }
-      a:first-child {
-        margin-left: 0;
-      }
-    }
-    .nav-header-phone {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      a {
-        color: @black;
-      }
 
-      .icon {
-        cursor: pointer;
-        margin-left: 9px;
-        font-size: 16px;
-      }
-    }
-  }
-  .hr {
-    border: 1px solid #ecf3ff;
-  }
-  .nav-body {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 27px 0 34px;
-    &-action {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    &-menu {
-      margin: 0 20px 0 0;
-      cursor: pointer;
-      background: @purple;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      .br(5px);
-      color: #fff;
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 23px;
-      padding: 8px 18px;
-      position: relative;
-      .menu {
-        position: absolute;
-        left: 0;
-        top: 100%;
-        z-index: 2;
-        display: flex;
-        .br(5px);
-        background: #ffffff;
-        padding: 10px 40px 10px 10px;
-        box-shadow: 0px 10px 30px rgba(111, 115, 238, 0.1);
-        &-item {
-          margin: 0 0 0 40px;
-          &-link {
-            color: @gray;
-            display: flex;
-            align-items: center;
-            margin: 15px 0 0 0;
-            .trs(0.3s);
-            .icon {
-              margin-right: 10px;
-              color: @gray;
-            }
-          }
-          &-link:hover {
-            color: @purple!important;
-            .trs(0.3s);
-          }
-          h4 {
-            font-weight: 500;
-            font-size: 16px;
-            line-height: 23px;
-            color: @black;
-            margin: 0;
-            padding: 0;
-          }
-        }
-        &-item:first-child {
-          padding: 20px 24px;
-          background: #f4f7fb;
-          margin: 0;
-          .br(5px);
-          a {
-            margin: 15px 0 0 0;
-            font-weight: 500;
-            font-size: 16px;
-            line-height: 23px;
-            color: @black;
-          }
-          a:first-child {
-            margin: 0;
-          }
-        }
-      }
-      .icon {
-        margin-right: 10px;
-      }
-    }
-    &-links {
+    .nav-header {
+      padding: 11px 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
       a {
-        cursor: pointer;
         text-decoration: none;
+        font-weight: 400;
+        color: @gray;
+      }
+      .nav-header-list {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-left: 25px;
+        a {
+          margin-left: 30px;
+        }
+        a:first-child {
+          margin-left: 0;
+        }
       }
-      a:last-child {
+      .nav-header-phone {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        a {
+          color: @black;
+        }
+
+        .icon {
+          cursor: pointer;
+          margin-left: 9px;
+          font-size: 16px;
+        }
+      }
+    }
+    .hr {
+      border: 1px solid #ecf3ff;
+    }
+    .nav-body {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 27px 0 34px;
+      &-action {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      &-menu {
+        margin: 0 20px 0 0;
+        cursor: pointer;
+        background: @purple;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .br(5px);
+        color: #fff;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 23px;
+        padding: 8px 18px;
+        position: relative;
+        .menu {
+          position: absolute;
+          left: 0;
+          top: 100%;
+          z-index: 2;
+          display: flex;
+          .br(5px);
+          background: #ffffff;
+          padding: 10px 40px 10px 10px;
+          box-shadow: 0px 10px 30px rgba(111, 115, 238, 0.1);
+          &-item {
+            margin: 0 0 0 40px;
+            &-link {
+              color: @gray;
+              display: flex;
+              align-items: center;
+              margin: 15px 0 0 0;
+              .trs(0.3s);
+              .icon {
+                margin-right: 10px;
+                color: @gray;
+              }
+            }
+            &-link:hover {
+              color: @purple!important;
+              .trs(0.3s);
+            }
+            h4 {
+              font-weight: 500;
+              font-size: 16px;
+              line-height: 23px;
+              color: @black;
+              margin: 0;
+              padding: 0;
+            }
+          }
+          &-item:first-child {
+            padding: 20px 24px;
+            background: #f4f7fb;
+            margin: 0;
+            .br(5px);
+            a {
+              margin: 15px 0 0 0;
+              font-weight: 500;
+              font-size: 16px;
+              line-height: 23px;
+              color: @black;
+            }
+            a:first-child {
+              margin: 0;
+            }
+          }
+        }
         .icon {
           margin-right: 10px;
         }
       }
-      a:first-child {
-        margin-left: 0;
+      &-links {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        a {
+          cursor: pointer;
+          text-decoration: none;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-left: 25px;
+        }
+        a:last-child {
+          .icon {
+            margin-right: 10px;
+          }
+        }
+        a:first-child {
+          margin-left: 0;
+        }
       }
     }
-  }
-  .nav-footer {
-    background: #f4f7fb;
-    padding: 10px 0;
-    .nav {
-      display: flex;
-      align-items: center;
-      &-link {
-        font-weight: 500;
-        font-size: 14px;
-        line-height: 20px;
-        color: @black;
-        margin: 0 0 0 40px;
-        cursor: pointer;
-        @media @lg {
-          margin: 0 0 0 20px;
+    .nav-footer {
+      background: #f4f7fb;
+      padding: 10px 0;
+      .nav {
+        display: flex;
+        align-items: center;
+        &-link {
+          font-weight: 500;
+          font-size: 14px;
+          line-height: 20px;
+          color: @black;
+          margin: 0 0 0 40px;
+          cursor: pointer;
+          @media @lg {
+            margin: 0 0 0 20px;
+          }
+          .badge {
+            padding: 5px 8px;
+            .br(300px);
+            background: @purple;
+            color: #fff;
+            margin: 0 0 0 8px;
+          }
         }
-        .badge {
-          padding: 5px 8px;
-          .br(300px);
-          background: @purple;
-          color: #fff;
-          margin: 0 0 0 8px;
+        &-link:first-child {
+          margin: 0;
         }
-      }
-      &-link:first-child {
-        margin: 0;
       }
     }
   }
