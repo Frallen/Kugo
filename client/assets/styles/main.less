@@ -10,20 +10,25 @@ body {
   font-family: "Jost", sans-serif;
 }
 
-.container{
-  padding: 0 2em;
-  @media @lg{
-    padding: 0 1.5em;
+.container {
+  padding: 0 10vw;
+  @media @xxl {
+    padding: 0 7vw;
   }
-  @media @md{
+
+  @media @lg {
+    padding: 0 1.3em;
+  }
+  @media @md {
     padding: 0 1em;
   }
-  @media @sm{
+  @media @sm {
     padding: 0 0.5em;
   }
 }
 
-.input,.connect-input{
+.input,
+.connect-input {
   .br(5px);
   outline: none;
   display: block;
@@ -34,16 +39,25 @@ body {
   line-height: 23px;
   letter-spacing: 0.1em;
 }
-.input{
+.input {
   color: @gray;
   border: 1px solid @gray;
-  .trs(0.3s)
+  .trs(0.3s);
 }
-.input:focus{
+.input:focus {
   color: @black;
-  border:1px solid @purple;
-  .trs(0.3s)
+  border: 1px solid @purple;
+  .trs(0.3s);
 }
-.connect-input{
-  color: #fff;background: rgba(255, 255, 255, 0.2);
+.connect-input {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }

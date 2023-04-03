@@ -8,10 +8,60 @@
             <NuxtLink to="tel:+78005055461"
               ><Icon name="material-symbols:call" class="icon"
             /></NuxtLink>
-            <Icon name="cil:hamburger-menu" class="icon nav-wrapper-modal" />
+            <transition name="fade" v-if="mobileModal">
+              <Icon
+                name="ic:twotone-close"
+                class="icon nav-wrapper-modal"
+                @click="mobileModal = false"
+              />
+            </transition>
+            <transition name="fade" v-else>
+              <Icon
+                name="cil:hamburger-menu"
+                class="icon nav-wrapper-modal"
+                @click="mobileModal = true"
+              />
+            </transition>
           </div>
         </div>
         <Search></Search>
+        <transition name="fade">
+          <div class="nav-modal" v-show="mobileModal">
+            <div class="container">
+              <div class="nav-modal-body">
+                <NuxtLink class="nav-link" to="">О магазине</NuxtLink>
+                <NuxtLink class="nav-link" to=""
+                  >Доставка и оплата
+                  <span class="badge">Доступна рассрочка</span></NuxtLink
+                >
+                <NuxtLink class="nav-link" to="">Тест-драйв</NuxtLink>
+                <NuxtLink class="nav-link" to="">Блог</NuxtLink>
+                <NuxtLink class="nav-link" to="">Контакты</NuxtLink>
+                <NuxtLink class="nav-link" to=""
+                  >Акции <span class="badge">%</span></NuxtLink
+                >
+              </div>
+              <div class="nav-modal-footer">
+                <div class="footer-item">
+                  <NuxtLink to="/service">Сервис</NuxtLink>
+                  <NuxtLink to="/service">Сотрудничество</NuxtLink>
+                  <NuxtLink to="/service"> Заказать звонок</NuxtLink>
+                </div>
+                <div class="footer-item">
+                  <NuxtLink to="/service">
+                    <Icon name="basil:viber-solid"
+                  /></NuxtLink>
+                  <NuxtLink to="/service">
+                    <Icon name="ri:whatsapp-fill"
+                  /></NuxtLink>
+                  <NuxtLink to="/service">
+                    <Icon name="mdi:telegram"
+                  /></NuxtLink>
+                </div>
+              </div>
+            </div>
+          </div>
+        </transition>
       </div>
     </div>
     <div class="nav-default">
@@ -152,10 +202,17 @@
 </template>
 
 <script lang="ts" setup>
+//кнопка каталога
 const menuButton = useState<null>();
+//вложенное меню навигацию по каталогу
 const menu = useState<null>();
+//наведен ли курсор на меню
 const menuHovered = useElementHover(menu);
+//наведен ли курсор на кнопку меню
 const menuButtonHovered = useElementHover(menuButton);
+
+const mobileModal = useState<boolean>();
+mobileModal.value = false;
 </script>
 
 <style scoped lang="less">
@@ -186,7 +243,56 @@ const menuButtonHovered = useElementHover(menuButton);
         }
       }
       &-modal {
-        margin: 0  0 0 15px;
+        margin: 0 0 0 15px;
+      }
+    }
+    .nav-modal {
+      position: fixed;
+      top: 8%;
+      left: 0;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      width: 100%;
+      height: 100%;
+      .nav-modal-body {
+        display: flex;
+        flex-direction: column;
+        margin: 0 0 30px;
+        .nav-link {
+          font-weight: 500;
+          font-size: 14px;
+          line-height: 20px;
+          color: @black;
+          padding: 15px 0;
+          border-bottom: 1px solid @gray;
+          .badge {
+            display: block;
+            width: fit-content;
+            margin: 10px auto auto;
+            padding: 5px 8px;
+            .br(300px);
+            background: @purple;
+            color: #fff;
+          }
+        }
+      }
+      .nav-modal-footer {
+        .footer-item:first-child {
+          margin: 0 0 20px;
+        }
+        a {
+          margin: 0 10px 0 0;
+          text-decoration: none;
+          color: @gray;
+          font-weight: 400;
+          font-size: 12px;
+          line-height: 17px;
+          .icon {
+            font-size: 2em;
+          }
+        }
       }
     }
   }
