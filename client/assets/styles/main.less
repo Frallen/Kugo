@@ -9,7 +9,27 @@ html {
 body {
   font-family: "Jost", sans-serif;
 }
-
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  padding: 0;
+  margin: 0;
+}
+h2 {
+  color: #fff;
+  font-weight: 600;
+  font-size: 2.188em;
+  line-height: 51px;
+  @media @md{
+    font-size: 1.563em;
+  }
+  @media @xs{
+    font-size: 1.2em;
+  }
+}
 .container {
   padding: 0 10vw;
   @media @xxl {
@@ -60,4 +80,37 @@ body {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+.button {
+  .trs(0.3s);
+  text-align: center;
+  display: block;
+  .br(5px);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+  text-decoration: none;
+  padding: 15px 25px;
+  width: fit-content;
+}
+.button-primary {
+  background: @purple;
+  color: #fff;
+}
+.button-primary:hover {
+  .trs(0.3s);
+  background: #8185f9;
+}
+.button-secondary {
+  background: @orange;
+  .trs(0.3s);
+  color: #fff;
+}
+.button-secondary:hover {
+  .trs(0.3s);
+  background: #fab836;
+}
+.button-white {
+  background: #fff;
+  color: @purple;
 }
