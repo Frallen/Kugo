@@ -28,7 +28,7 @@
       "type": "decimal",
       "required": true
     },
-    "max_ramge": {
+    "max_range": {
       "type": "decimal",
       "required": true
     },
@@ -38,22 +38,14 @@
     },
     "discount_percent": {
       "type": "decimal",
-      "required": true
+      "required": false
     },
     "battery_capacity": {
       "type": "decimal",
       "required": true
     },
-    "charge_time": {
-      "type": "decimal",
-      "required": true
-    },
     "wheel_size": {
       "type": "float",
-      "required": true
-    },
-    "gabarits": {
-      "type": "decimal",
       "required": true
     },
     "maximum_load": {
@@ -123,6 +115,19 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::badge.badge"
+    },
+    "category": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::category.category"
+    },
+    "gabarits": {
+      "type": "string",
+      "required": true
+    },
+    "charge_time": {
+      "type": "string",
+      "required": true
     }
   }
 }

@@ -1,5 +1,7 @@
 export const useMain = defineStore("main", {
-  state: () => ({}),
+  state: () => ({
+    isLoading:false
+  }),
   getters: {},
   actions: {},
 });

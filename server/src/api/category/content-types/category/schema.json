@@ -12,10 +12,9 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "type": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::scooter.scooter"
+    "Title": {
+      "type": "string",
+      "required": true
     }
   }
 }

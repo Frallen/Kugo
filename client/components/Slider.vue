@@ -85,7 +85,6 @@
 
 <script lang="ts" setup>
 import { Navigation } from "swiper";
-import "swiper/swiper-bundle.min.css";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/vue";
 const modules = [Navigation];
 const swiper = useSwiper();
