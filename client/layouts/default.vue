@@ -4,6 +4,7 @@
 </template>
 
 <script setup lang="ts">
+
 const { getDeals } = useCatalog();
 await getDeals();
 </script>

@@ -1,64 +1,276 @@
 <template>
-  <div class="item">
-    <div class="item-img">
-      <Swiper
-        :modules="modules"
-        :slides-per-view="1"
-        :space-between="20"
-        :autoplay="{
+    <NuxtLink :to="`catalog/${useSlug(item.attributes.category.data.attributes.Title)}/${item.id}`"
+              class="product"
+              ref="slider">
+        <div class="product-badges">
+            <div class="product-badges-item product-badges-hit">ХИТ</div>
+            <div class="product-badges-item product-badges-new">Новинка</div>
+        </div>
+        <div class="product-compare">
+            <Icon name="carbon:scales" class="icon"
+            />
+        </div>
+        <div class="product-img">
+            <Swiper
+                    :modules="modules"
+                    :slides-per-view="1"
+                    :space-between="20"
+                    :autoplay="{
           delay: 3000,
         }"
-        class="slider"
-      >
-        <Swiper-slide class="slider-item" v-for="item in images"
-          ><ClientOnly
-            ><NuxtImg
-              provider="cloudinary"
-              :src="images.attributes.Image.data.attributes.url"
-            ></NuxtImg></ClientOnly
-        ></Swiper-slide>
-      </Swiper>
-    </div>
-  </div>
+                    class="slider"
+            >
+                <Swiper-slide class="slider-item" v-for="item in item.attributes.images.data"
+                >
+                    <NuxtImg
+                            provider="cloudinary"
+                            :src="item.attributes.url"
+                    ></NuxtImg>
+                </Swiper-slide>
+                <div class="slider-nav" v-show="isHovered">
+                    <div class="slider-nav-item slider-nav-prev">
+                        <Icon name="ph:caret-left" class="icon"
+                        />
+                    </div>
+                    <div class="slider-nav-item slider-nav-next">
+                        <Icon name="ph:caret-right" class="icon"
+                        />
+                    </div>
+                </div>
+            </Swiper>
+        </div>
+        <div class="product-content">
+            <h4 class="product-title">
+                {{ item.attributes.Title }}
+            </h4>
+            <div class="product-features">
+                <div class="product-features-item">
+                    <Icon name="material-symbols:battery-charging-20-rounded" class="icon"
+                    />
+                    {{ item.attributes.power }} mAh
+                </div>
+                <div class="product-features-item">
+                    <Icon name="material-symbols:weight-outline" class="icon"
+                    />
+                    {{ item.attributes.weight }} кг
+                </div>
+                <div class="product-features-item">
+                    <Icon name="icon-park-outline:speed-one" class="icon"
+                    />
+                    {{ item.attributes.max_speed }} км/ч
+                </div>
+                <div class="product-features-item">
+                    <Icon name="radix-icons:lap-timer" class="icon"
+                    />
+                    {{ item.attributes.charge_time }} мА*ч
+                </div>
+            </div>
+            <div class="product-body">
+                <div class="product-body-price">
+                    <h5 v-if="item.attributes.discount_percent"><span>{{
+                        item.attributes.Price
+                        }} ₽</span>{{ item.attributes.Price / 100 * item.attributes.discount_percent }} ₽</h5>
+                    <h5 v-else>
+                        {{ item.attributes.Price }} ₽</h5>
+                    <div class="product-actions">
+                        <div class="product-actions-item" @click.stop>
+                            <Icon name="ph:heart-straight" class="icon"
+                            />
+                        </div>
+                        <div class="product-actions-item" @click.stop>
+                            <Icon name="ri:shopping-basket-2-fill" class="icon"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </NuxtLink>
 </template>
 
 <script setup lang="ts">
-import { ScooterItemType } from "~/types/catalogTypes";
-import { Navigation } from "swiper";
+import {type CatalogItemType} from "~/types/catalog.types";
+import {Navigation} from "swiper";
 
-import { Swiper, SwiperSlide, useSwiper } from "swiper/vue";
+import {Swiper, SwiperSlide, useSwiper} from "swiper/vue";
+
 const modules = [Navigation];
 const swiper = useSwiper();
 
-let {
-  Title,
-  weight,
-  max_speed,
-  power,
-  max_range,
-  Price,
-  discount_percent,
-  battery_capacity,
-  charge_time,
-  wheel_size,
-  gabarits,
-  maximum_load,
-  lighting,
-  guarantee,
-  type_wheels,
-  equipment,
-  privod,
-  stop_system,
-  type,
-  user_type,
-  images,
-  badges,
-} = defineProps<ScooterItemType>();
+
+interface propsType {
+    item: CatalogItemType
+}
+
+
+let {item} = defineProps<propsType>();
+
+const slider = useState<null>()
+
+const isHovered = useElementHover(slider.value)
+console.log(isHovered)
+
 </script>
 
 <style scoped lang="less">
-.item {
+.product {
   border: 1.5px solid #eaebed;
   .br(10px);
+  position: relative;
+  user-select: none;
+  text-decoration: none;
+  display: block;
+
+  &-badges, &-compare {
+    position: absolute;
+    z-index: 2;
+  }
+
+  &-title {
+    font-weight: 600;
+    font-size: 1.125em;
+    line-height: 26px;
+    color: @black;
+  }
+
+  &-img {
+    max-height: 231px;
+    width: 100%;
+    overflow: hidden;
+
+    .slider {
+      &-item {
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      &-nav {
+        padding: 0 15px;
+        position: absolute;
+        bottom: 5%;
+        left: 0;
+        width: 100%;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &-item {
+          padding: 10px;
+          background: #fff;
+          .br(300px);
+          color: @purple;
+          font-size: 1.3em;
+          cursor: pointer;
+          box-shadow: 0 0 3px 1px @black;
+        }
+      }
+    }
+  }
+
+  &-badges {
+    left: 15px;
+    top: 15px;
+    display: flex;
+    flex-direction: column;
+
+    &-item {
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 17px;
+      color: #fff;
+      .br(5px);
+      padding: 5px 9px;
+      margin: 5px 0 0 0;
+      text-align: center;
+    }
+
+    &-item:first-child {
+      margin: 0;
+    }
+
+    &-hit {
+      background: #EE685F;
+    }
+
+    &-new {
+      background: #75D14A;
+    }
+  }
+
+  &-compare {
+    right: 15px;
+    top: 15px;
+    cursor: pointer;
+    z-index: 2;
+    color: @gray;
+  }
+
+  &-content {
+    padding: 24px 20px 20px;
+
+    .product-body {
+      &-price {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        h5 {
+          span {
+            font-weight: 500;
+            font-size: 12px;
+            line-height: 17px;
+            text-decoration-line: line-through;
+            color: @gray;
+            display: block;
+          }
+
+          font-weight: 600;
+          font-size: 20px;
+          line-height: 29px;
+          color: @black;
+        }
+      }
+    }
+
+    .product-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      &-item {
+        cursor: pointer;
+        padding: 10px;
+        color: @purple;
+        font-size: 1em;
+        border: 1.3px solid #EAEBED;
+        .br(300px);
+        z-index: 2;
+      }
+
+      &-item:last-child {
+        margin: 0 0 0 10px;
+      }
+    }
+  }
+
+  &-features {
+    margin: -17px 0 0 -10px;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px 0 26px;
+
+    &-item {
+      width: calc(100% / 2 - 10px);
+      margin: 17px 0 0 10px;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 16px;
+      color: @gray;
+
+    }
+  }
 }
 </style>
