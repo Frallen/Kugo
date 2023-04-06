@@ -1,7 +1,7 @@
 <template>
     <NuxtLink :to="`catalog/${useSlug(item.attributes.category.data.attributes.Title)}/${item.id}`"
               class="product"
-              ref="slider">
+              ref="catalogItem">
         <div class="product-badges">
             <div class="product-badges-item product-badges-hit">ХИТ</div>
             <div class="product-badges-item product-badges-new">Новинка</div>
@@ -19,6 +19,7 @@
           delay: 3000,
         }"
                     class="slider"
+                    @swiper="onSwiper"
             >
                 <Swiper-slide class="slider-item" v-for="item in item.attributes.images.data"
                 >
@@ -27,16 +28,18 @@
                             :src="item.attributes.url"
                     ></NuxtImg>
                 </Swiper-slide>
-                <div class="slider-nav" v-show="isHovered">
-                    <div class="slider-nav-item slider-nav-prev">
-                        <Icon name="ph:caret-left" class="icon"
-                        />
+                <transition name="fade">
+                    <div class="slider-nav" v-show="isHovered">
+                        <div class="slider-nav-item slider-nav-prev" @click.stop.prevent="slider.slidePrev()">
+                            <Icon name="ph:caret-left" class="icon"
+                            />
+                        </div>
+                        <div class="slider-nav-item slider-nav-next" @click.stop.prevent="slider.slideNext()">
+                            <Icon name="ph:caret-right" class="icon"
+                            />
+                        </div>
                     </div>
-                    <div class="slider-nav-item slider-nav-next">
-                        <Icon name="ph:caret-right" class="icon"
-                        />
-                    </div>
-                </div>
+                </transition>
             </Swiper>
         </div>
         <div class="product-content">
@@ -73,11 +76,11 @@
                     <h5 v-else>
                         {{ item.attributes.Price }} ₽</h5>
                     <div class="product-actions">
-                        <div class="product-actions-item" @click.stop>
+                        <div class="product-actions-item" @click.stop="">
                             <Icon name="ph:heart-straight" class="icon"
                             />
                         </div>
-                        <div class="product-actions-item" @click.stop>
+                        <div class="product-actions-item" @click.stop="">
                             <Icon name="ri:shopping-basket-2-fill" class="icon"
                             />
                         </div>
@@ -92,11 +95,14 @@
 import {type CatalogItemType} from "~/types/catalog.types";
 import {Navigation} from "swiper";
 
-import {Swiper, SwiperSlide, useSwiper} from "swiper/vue";
+import {Swiper, SwiperSlide} from "swiper/vue";
 
 const modules = [Navigation];
-const swiper = useSwiper();
+const slider = useState<null>();
 
+const onSwiper = (swiper: any) => {
+    slider.value = swiper;
+};
 
 interface propsType {
     item: CatalogItemType
@@ -105,10 +111,10 @@ interface propsType {
 
 let {item} = defineProps<propsType>();
 
-const slider = useState<null>()
+const catalogItem = useState<null>()
 
-const isHovered = useElementHover(slider.value)
-console.log(isHovered)
+const isHovered = useElementHover(catalogItem)
+
 
 </script>
 
@@ -134,11 +140,13 @@ console.log(isHovered)
   }
 
   &-img {
-    max-height: 231px;
+    height: 231px;
     width: 100%;
     overflow: hidden;
 
     .slider {
+      height: 100%;
+
       &-item {
         img {
           width: 100%;
@@ -152,10 +160,10 @@ console.log(isHovered)
         bottom: 5%;
         left: 0;
         width: 100%;
-        z-index: 2;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        z-index: 3;
 
         &-item {
           padding: 10px;
