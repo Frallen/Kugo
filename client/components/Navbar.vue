@@ -219,6 +219,7 @@
 
 <script lang="ts" setup>
 //кнопка каталога
+
 const menuButton = useState<null>();
 //вложенное меню навигацию по каталогу
 const menu = useState<null>();
@@ -229,6 +230,13 @@ const menuButtonHovered = useElementHover(menuButton);
 
 const mobileModal = useState<boolean>();
 mobileModal.value = false;
+watch(mobileModal, () => {
+    if (mobileModal.value) {
+        overFlow(true)
+    } else {
+        overFlow(false)
+    }
+})
 </script>
 
 <style scoped lang="less">
@@ -248,7 +256,7 @@ mobileModal.value = false;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: 18px 0;
+      padding: 18px 0;
 
       &-actions {
         a,

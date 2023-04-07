@@ -32,6 +32,10 @@ let {
     margin: -15px 0 0 0;
   }
 
+  h3 {
+
+  }
+
   &-item {
     margin: 30px 0 0 30px;
     width: calc(100% / 4 - 30px);

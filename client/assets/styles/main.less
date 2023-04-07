@@ -7,9 +7,11 @@
 html {
   font-size: 16px;
 }
+
 body {
   font-family: "Jost", sans-serif;
 }
+
 h1,
 h2,
 h3,
@@ -31,6 +33,15 @@ h2 {
     font-size: 1.2em;
   }
 }
+
+h3 {
+  font-weight: 600;
+  font-size: 35px;
+  line-height: 51px;
+  text-transform: uppercase;
+  color: @black;
+}
+
 .container {
   padding: 0 10vw;
   @media @xxl {
@@ -60,28 +71,34 @@ h2 {
   line-height: 23px;
   letter-spacing: 0.1em;
 }
+
 .input {
   color: @gray;
   border: 1px solid @gray;
   .trs(0.3s);
 }
+
 .input:focus {
   color: @black;
   border: 1px solid @purple;
   .trs(0.3s);
 }
+
 .connect-input {
   color: #fff;
   background: rgba(255, 255, 255, 0.2);
 }
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.2s ease;
 }
+
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
 }
+
 .button {
   .trs(0.3s);
   text-align: center;
@@ -94,23 +111,28 @@ h2 {
   padding: 15px 25px;
   width: fit-content;
 }
+
 .button-primary {
   background: @purple;
   color: #fff;
 }
+
 .button-primary:hover {
   .trs(0.3s);
   background: #8185f9;
 }
+
 .button-secondary {
   background: @orange;
   .trs(0.3s);
   color: #fff;
 }
+
 .button-secondary:hover {
   .trs(0.3s);
   background: #fab836;
 }
+
 .button-white {
   background: #fff;
   color: @purple;
