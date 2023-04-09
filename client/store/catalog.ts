@@ -1,8 +1,8 @@
 import {useMain} from "~/store/main";
 import qs from "qs";
-import { CatalogItemType} from "~/types/catalog.types";
+import {CatalogItemType} from "~/types/catalog.types";
 
-let populate = (): string => {
+const populate = (): string => {
     return qs.stringify(
         {
             populate: "*",
@@ -12,6 +12,18 @@ let populate = (): string => {
         }
     );
 };
+
+const pagination = (page:number): string => {
+    return qs.stringify({
+        populate: "*",
+        pagination: {
+            page: page,
+            pageSize: 10,
+        },
+    }, {
+        encodeValuesOnly: true, // prettify URL
+    });
+}
 
 // интерфейс для катлога pinia
 interface stateType {
@@ -24,7 +36,7 @@ interface stateType {
 
 // пример ответа сервака
 interface responseType {
-    data: [];
+    data: CatalogItemType[]
     meta: {};
 }
 
@@ -61,7 +73,7 @@ export const useCatalog = defineStore("catalog", {
 
             const [{data: samokat} /*{ data: scooters }*/] = await Promise.all([
                 useFetch(
-                    `${useRuntimeConfig().public.strapi.url}/api/scooters/?${populate()}`,
+                    `${useRuntimeConfig().public.strapi.url}/api/scooters?${pagination(1)}`,
                     {
                         method: "GET",
                         headers: {
@@ -82,5 +94,47 @@ export const useCatalog = defineStore("catalog", {
             this.samokats = (samokat.value as responseType).data as CatalogItemType[];
             useMain().$state.isLoading = false;
         },
+        async loadMore(type: string | null | undefined) {
+            useMain().$state.isLoading = true;
+
+            switch (true) {
+                case type === "samokat": {
+                    const {data, error} = useFetch(
+                        `${useRuntimeConfig().public.strapi.url}/api/scooters?${pagination(2)}`,
+                        {
+                            method: "GET",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                        })
+console.log(data.value as responseType)
+                  this.samokats.push(...(data.value as responseType).data as CatalogItemType[]);
+                    break
+                }
+                default : {
+                    const [{data: samokat} /*{ data: scooters }*/] = await Promise.all([
+                        useFetch(
+                            `${useRuntimeConfig().public.strapi.url}/api/scooters?${pagination(2)}`,
+                            {
+                                method: "GET",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                            }
+                        ) /* useFetch(
+          `${useRuntimeConfig().public.strapi.url}/api/scooters/?${populate()}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )*/,
+                    ]);
+                }
+            }
+
+            useMain().$state.isLoading = false;
+        }
     },
 });

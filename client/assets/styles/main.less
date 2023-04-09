@@ -80,7 +80,7 @@ h3 {
 
 .input:focus {
   color: @black;
-  border: 1px solid @purple;
+  border: 1px solid @purple!important;
   .trs(0.3s);
 }
 
@@ -110,6 +110,8 @@ h3 {
   text-decoration: none;
   padding: 15px 25px;
   width: fit-content;
+  cursor: pointer;
+  border: none;
 }
 
 .button-primary {
@@ -136,4 +138,9 @@ h3 {
 .button-white {
   background: #fff;
   color: @purple;
+}
+.offers-short{
+  h3{
+    margin: 0 0 50px 0;
+  }
 }

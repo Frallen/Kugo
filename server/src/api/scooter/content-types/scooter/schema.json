@@ -54,11 +54,13 @@
     },
     "lighting": {
       "type": "string",
-      "required": true
+      "required": true,
+      "default": "Передняя фара, стоп-сигнал, боковая"
     },
     "guarantee": {
       "type": "string",
-      "required": true
+      "required": true,
+      "default": "12 месяцев"
     },
     "type_wheels": {
       "type": "enumeration",
@@ -66,17 +68,20 @@
         "Полиуретан",
         "Надувные"
       ],
-      "required": true
+      "required": true,
+      "default": "Надувные"
     },
     "equipment": {
       "type": "string",
-      "required": true
+      "required": true,
+      "default": "Товарный чек, гарантийный талон, з/у"
     },
     "privod": {
       "type": "enumeration",
       "enum": [
         "Передний",
-        "Задний"
+        "Задний",
+        "Передний и задний"
       ],
       "required": true
     },
@@ -91,7 +96,8 @@
         "Зимний",
         "Внедорожный"
       ],
-      "required": true
+      "required": true,
+      "default": "Городской"
     },
     "user_type": {
       "type": "enumeration",
@@ -100,7 +106,8 @@
         "Для взрослого",
         "Для пенсионера"
       ],
-      "required": true
+      "required": true,
+      "default": "Для взрослого"
     },
     "images": {
       "type": "media",

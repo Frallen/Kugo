@@ -14,7 +14,11 @@
         </div>
     </div>
     <div class="container">
-        <Offers :offerType="filteredOffer('samokats')"></Offers>
+        <div class="offers-short">
+            <h3>Электросамокаты</h3>
+            <Offers :offerType="filteredOffer('samokats')"></Offers>
+            <NuxtLink class="button button-primary" to="/catalog">Смотреть все</NuxtLink>
+        </div>
     </div>
     <div class="container">
         <div class="service">
@@ -39,6 +43,7 @@
             </NuxtLink>
         </div>
     </div>
+   <StockBlock></StockBlock>
     <div class="container">
         <div class="categories">
             <div class="categories-header">
@@ -352,6 +357,14 @@ const {filteredOffer} = useCatalog()
       width: 100%;
       height: 100%;
     }
+  }
+}
+
+.offers-short {
+  margin: 50px 0;
+
+  .button {
+    margin: 50px auto 0
   }
 }
 </style>

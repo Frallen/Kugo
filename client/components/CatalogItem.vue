@@ -1,94 +1,101 @@
 <template>
-    <NuxtLink :to="`catalog/${useSlug(item.attributes.category.data.attributes.Title)}/${item.id}`"
-              class="product"
-              ref="catalogItem">
-        <div class="product-badges">
-            <div class="product-badges-item product-badges-hit">ХИТ</div>
-            <div class="product-badges-item product-badges-new">Новинка</div>
-        </div>
-        <div class="product-compare">
-            <Icon name="carbon:scales" class="icon"
-            />
-        </div>
-        <div class="product-img">
-            <Swiper
-                    :modules="modules"
-                    :slides-per-view="1"
-                    :space-between="20"
-                    :autoplay="{
+    <div>
+        <NuxtLink :to="`catalog/${useSlug(item.attributes.category.data.attributes.Title)}/${item.id}`"
+                  class="product"
+                  @mouseover="mouseHovered=true"
+                  @mouseleave="mouseHovered=false"
+        >
+            <div class="product-badges">
+                <div class="product-badges-item " v-for="p in item.attributes.badges.data" :key="item.id"
+                     :class="{'product-badges-hit':p.attributes.title==='Хит', 'product-badges-new':p.attributes.title==='Новинка'}">
+                    {{ p.attributes.title }}
+                </div>
+            </div>
+            <div class="product-compare">
+                <Icon name="carbon:scales" class="icon"
+                />
+            </div>
+            <div class="product-img">
+                <Swiper
+                        :modules="modules"
+                        :slides-per-view="1"
+                        :space-between="20"
+                        :autoplay="{
           delay: 3000,
         }"
-                    class="slider"
-                    @swiper="onSwiper"
-            >
-                <Swiper-slide class="slider-item" v-for="item in item.attributes.images.data"
+                        class="slider"
+                        @swiper="onSwiper"
                 >
-                    <NuxtImg
-                            provider="cloudinary"
-                            :src="item.attributes.url"
-                    ></NuxtImg>
-                </Swiper-slide>
-                <transition name="fade">
-                    <div class="slider-nav" v-show="isHovered">
-                        <div class="slider-nav-item slider-nav-prev" @click.stop.prevent="slider.slidePrev()">
-                            <Icon name="ph:caret-left" class="icon"
-                            />
+                    <Swiper-slide class="slider-item" v-for="item in item.attributes.images.data"
+                    >
+                        <NuxtImg
+                                provider="cloudinary"
+                                :src="item.attributes.url"
+                        ></NuxtImg>
+                    </Swiper-slide>
+                    <transition name="fade">
+                        <div class="slider-nav" v-show="mouseHovered">
+                            <div class="slider-nav-item slider-nav-prev" @click.stop.prevent="slider.slidePrev()">
+                                <Icon name="ph:caret-left" class="icon"
+                                />
+                            </div>
+                            <div class="slider-nav-item slider-nav-next" @click.stop.prevent="slider.slideNext()">
+                                <Icon name="ph:caret-right" class="icon"
+                                />
+                            </div>
                         </div>
-                        <div class="slider-nav-item slider-nav-next" @click.stop.prevent="slider.slideNext()">
-                            <Icon name="ph:caret-right" class="icon"
-                            />
-                        </div>
-                    </div>
-                </transition>
-            </Swiper>
-        </div>
-        <div class="product-content">
-            <h4 class="product-title">
-                {{ item.attributes.Title }}
-            </h4>
-            <div class="product-features">
-                <div class="product-features-item">
-                    <Icon name="material-symbols:battery-charging-20-rounded" class="icon"
-                    />
-                    {{ item.attributes.power }} mAh
-                </div>
-                <div class="product-features-item">
-                    <Icon name="material-symbols:weight-outline" class="icon"
-                    />
-                    {{ item.attributes.weight }} кг
-                </div>
-                <div class="product-features-item">
-                    <Icon name="icon-park-outline:speed-one" class="icon"
-                    />
-                    {{ item.attributes.max_speed }} км/ч
-                </div>
-                <div class="product-features-item">
-                    <Icon name="radix-icons:lap-timer" class="icon"
-                    />
-                    {{ item.attributes.charge_time }} мА*ч
-                </div>
+                    </transition>
+                </Swiper>
             </div>
-            <div class="product-body">
-                <div class="product-body-price">
-                    <h5 v-if="item.attributes.discount_percent"><span>{{
-                        item.attributes.Price
-                        }} ₽</span>{{ item.attributes.Price / 100 * item.attributes.discount_percent }} ₽</h5>
-                    <h5 v-else>
-                        {{ item.attributes.Price }} ₽</h5>
-                    <div class="product-actions">
-                        <div class="product-actions-item" @click.stop="">
-                            <Icon name="ph:heart-straight" class="icon"
-                            />
-                        </div>
-                        <div class="product-actions-item" @click.stop="">
-                            <Icon name="ri:shopping-basket-2-fill" class="icon"
-                            />
-                        </div>
+            <div class="product-content">
+                <h4 class="product-title">
+                    {{ item.attributes.Title }}
+                </h4>
+                <div class="product-features">
+                    <div class="product-features-item">
+                        <Icon name="material-symbols:battery-charging-20-rounded" class="icon"
+                        />
+                        {{ item.attributes.power }} W
+                    </div>
+                    <div class="product-features-item">
+                        <Icon name="material-symbols:weight-outline" class="icon"
+                        />
+                        {{ item.attributes.weight }} кг
+                    </div>
+                    <div class="product-features-item">
+                        <Icon name="icon-park-outline:speed-one" class="icon"
+                        />
+                        {{ item.attributes.max_speed }} км/ч
+                    </div>
+                    <div class="product-features-item">
+
+                        <Icon name="ion:ios-flash" class="icon"
+                        />
+                        {{ item.attributes.battery_capacity }} mAh
                     </div>
                 </div>
+                <div class="product-body">
+                    <div class="product-body-price">
+                        <h5 v-if="item.attributes.discount_percent"><span>{{
+                            item.attributes.Price
+                            }} ₽</span>{{ item.attributes.Price / 100 * item.attributes.discount_percent }} ₽</h5>
+                        <h5 v-else>
+                            {{ item.attributes.Price }} ₽</h5>
+                        <div class="product-actions">
+                            <div class="product-actions-item" @click.stop="">
+                                <Icon name="ph:heart-straight" class="icon"
+                                />
+                            </div>
+                            <div class="product-actions-item" @click.stop="">
+                                <Icon name="ri:shopping-basket-2-fill" class="icon"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </NuxtLink>
+        </NuxtLink>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -111,10 +118,11 @@ interface propsType {
 
 let {item} = defineProps<propsType>();
 
-const catalogItem = useState<null>()
+const catalogItem = useState<HTMLLIElement>()
 
-const isHovered = useElementHover(catalogItem)
+//const isHovered = useElementHover(catalogItem)
 
+const mouseHovered = useState<boolean>()
 
 </script>
 
@@ -151,6 +159,7 @@ const isHovered = useElementHover(catalogItem)
         img {
           width: 100%;
           height: 100%;
+          object-fit: scale-down;
         }
       }
 

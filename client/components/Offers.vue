@@ -1,9 +1,6 @@
 <template>
     <div class="catalog">
-        <div class="catalog-item">
-            <CatalogItem :item="item" v-for="item in offerType" :key="item.id"></CatalogItem>
-        </div>
-
+        <CatalogItem class="catalog-item" v-for="item in offerType" :item="item" :key="item.id"></CatalogItem>
     </div>
 </template>
 

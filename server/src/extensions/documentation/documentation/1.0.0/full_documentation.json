@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2023-04-07T07:40:36.510Z"
+    "x-generation-date": "2023-04-09T09:58:43.864Z"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -5319,7 +5319,8 @@
                 "type": "string",
                 "enum": [
                   "Передний",
-                  "Задний"
+                  "Задний",
+                  "Передний и задний"
                 ]
               },
               "stop_system": {
@@ -5458,7 +5459,8 @@
                 "type": "string",
                 "enum": [
                   "Передний",
-                  "Задний"
+                  "Задний",
+                  "Передний и задний"
                 ]
               },
               "stop_system": {
@@ -7241,7 +7243,8 @@
                 "type": "string",
                 "enum": [
                   "Передний",
-                  "Задний"
+                  "Задний",
+                  "Передний и задний"
                 ]
               },
               "stop_system": {
@@ -9057,7 +9060,8 @@
                 "type": "string",
                 "enum": [
                   "Передний",
-                  "Задний"
+                  "Задний",
+                  "Передний и задний"
                 ]
               },
               "stop_system": {
@@ -10840,7 +10844,8 @@
                 "type": "string",
                 "enum": [
                   "Передний",
-                  "Задний"
+                  "Задний",
+                  "Передний и задний"
                 ]
               },
               "stop_system": {

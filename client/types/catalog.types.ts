@@ -26,8 +26,8 @@ export interface ScooterItemType {
     stop_system: string;
     type: string
     user_type: string;
-    images: ImageType;
-    badges: [];
+    images: imageType;
+    badges: badgesType;
     category: categoryType;
 }
 
@@ -44,7 +44,19 @@ interface categoryType {
 
 }
 
-interface ImageType {
+interface badgesType {
+    data: {
+        id: number,
+        attributes: {
+            createdAt: string
+            publishedAt: string
+            title: string
+            updatedAt: string
+        }
+    }
+}
+
+interface imageType {
     data: {
         attributes: {
             alternativeText: null
