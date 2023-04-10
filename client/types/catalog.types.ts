@@ -28,21 +28,22 @@ export interface ScooterItemType {
     user_type: string;
     images: imageType;
     badges: badgesType;
-    category: categoryType;
+    category: {
+        data: categoryType
+    };
 }
 
-interface categoryType {
-    data: {
-        attributes: {
-            Title: string
-            createdAt: string
-            publishedAt: string
-            updatedAt: string
-            id: number
-        }
-    }
-
+export interface categoryType {
+    attributes: {
+        Title: string
+        createdAt: string
+        publishedAt: string
+        updatedAt: string
+        DefaultCategory?: boolean
+    },
+    id: number
 }
+
 
 interface badgesType {
     data: {

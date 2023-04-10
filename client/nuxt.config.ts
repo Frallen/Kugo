@@ -12,7 +12,7 @@ export default defineNuxtConfig({
             baseURL: "https://res.cloudinary.com/devqrrkig/image/fetch/",
         },
     },
-    css: ["@/assets/styles/main.less"],
+    css: ["@/assets/styles/main.less", "sweetalert2/dist/sweetalert2.min.css"],
     modules: [
         ["nuxt-icon"],
         ["@vueuse/nuxt"],

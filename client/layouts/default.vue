@@ -9,4 +9,6 @@ const { getDeals } = useCatalog();
 await getDeals();
 </script>
 
-<style lang="less"></style>
+<style lang="less">
+
+</style>

@@ -1,6 +1,7 @@
 import {useMain} from "~/store/main";
 import qs from "qs";
-import {CatalogItemType} from "~/types/catalog.types";
+import {CatalogItemType, categoryType} from "~/types/catalog.types";
+import {errorMessage} from "~/composables/useAlert";
 
 const populate = (): string => {
     return qs.stringify(
@@ -13,7 +14,7 @@ const populate = (): string => {
     );
 };
 
-const pagination = (page:number): string => {
+const pagination = (page: number): string => {
     return qs.stringify({
         populate: "*",
         pagination: {
@@ -32,6 +33,7 @@ interface stateType {
     bicycles: [],
     RobotVacuum: [],
     Scales: [],
+    categories: categoryType[],
 }
 
 // пример ответа сервака
@@ -42,10 +44,12 @@ interface responseType {
 
 export const useCatalog = defineStore("catalog", {
     state: (): stateType => ({
-        samokats: [], scooters: [],
+        samokats: [],
+        scooters: [],
         bicycles: [],
         RobotVacuum: [],
         Scales: [],
+        categories: []
     }),
     getters: {
         filteredOffer: (state) => {
@@ -68,6 +72,31 @@ export const useCatalog = defineStore("catalog", {
         }
     },
     actions: {
+        async getCategories() {
+            interface responseType {
+                data: categoryType[],
+                meta: []
+            }
+
+            useMain().$state.isLoading = true;
+            const {data, error} = await useFetch(`${useRuntimeConfig().public.strapi.url}/api/categories`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+            if (error.value) {
+                switch (error.value.data.error.message) {
+                    default:
+                        errorMessage("Повторите попытку позже");
+                }
+            } else {
+
+              this.categories = (data.value as responseType).data
+            }
+            useMain().$state.isLoading = false;
+        },
         async getDeals() {
             useMain().$state.isLoading = true;
 
@@ -107,8 +136,8 @@ export const useCatalog = defineStore("catalog", {
                                 "Content-Type": "application/json",
                             },
                         })
-console.log(data.value as responseType)
-                  this.samokats.push(...(data.value as responseType).data as CatalogItemType[]);
+                    console.log(data.value as responseType)
+                    this.samokats.push(...(data.value as responseType).data as CatalogItemType[]);
                     break
                 }
                 default : {

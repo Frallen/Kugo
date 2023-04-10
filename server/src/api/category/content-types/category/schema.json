@@ -16,13 +16,9 @@
       "type": "string",
       "required": true
     },
-    "Image": {
-      "type": "media",
-      "multiple": false,
-      "required": true,
-      "allowedTypes": [
-        "images"
-      ]
+    "DefaultCategory": {
+      "type": "boolean",
+      "default": true
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
     <div class="range-wrapper">
-    <Slider v-model="minMax"
-            :options="{
+        <Slider v-model="minMax"
+                :options="{
            start: [min, max],
             range: {
                 min: [min],
@@ -10,7 +10,7 @@
                 connect: true,
                  margin: 40
     }" @change="submitEvent"
-    />
+        />
     </div>
 </template>
 
@@ -63,7 +63,7 @@ onMounted(()=>{
 :root {
 
   --slider-connect-bg: #6F73EE !important;
-  --slider-tooltip-bg: #6F73EE;
+  --slider-tooltip-bg: #6F73EE !important;
 
   .slider-touch-area {
     background: #FFFFFF;
@@ -74,8 +74,8 @@ onMounted(()=>{
 
 </style>
 <style scoped lang="less">
-.range-wrapper{
-    margin: 40px 0 0 0;
+.range-wrapper {
+  margin: 40px 0 0 0;
 }
 
 .range {
