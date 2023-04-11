@@ -1,6 +1,6 @@
 import {useMain} from "~/store/main";
 import qs from "qs";
-import {CatalogItemType, categoryType} from "~/types/catalog.types";
+import {CatalogItemType, categoryType, productType, userType} from "~/types/catalog.types";
 import {errorMessage} from "~/composables/useAlert";
 
 const populate = (): string => {
@@ -34,6 +34,8 @@ interface stateType {
     RobotVacuum: [],
     Scales: [],
     categories: categoryType[],
+    type_product: productType[],
+    user_types: userType[]
 }
 
 // пример ответа сервака
@@ -49,7 +51,9 @@ export const useCatalog = defineStore("catalog", {
         bicycles: [],
         RobotVacuum: [],
         Scales: [],
-        categories: []
+        categories: [],
+        type_product: [],
+        user_types: []
     }),
     getters: {
         filteredOffer: (state) => {
@@ -72,28 +76,54 @@ export const useCatalog = defineStore("catalog", {
         }
     },
     actions: {
-        async getCategories() {
+        async getFilters() {
             interface responseType {
-                data: categoryType[],
+                data: categoryType[] | productType[] | userType[],
                 meta: []
             }
 
             useMain().$state.isLoading = true;
-            const {data, error} = await useFetch(`${useRuntimeConfig().public.strapi.url}/api/categories`,
-                {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                })
+
+            const [{data: categories, error}, {data: typeProduct}, {data: user}] = await Promise.all([
+                useFetch(
+                    `${useRuntimeConfig().public.strapi.url}/api/categories?${populate()}`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                ), useFetch(
+                    `${useRuntimeConfig().public.strapi.url}/api/type-products?${populate()}`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                ),
+                useFetch(
+                    `${useRuntimeConfig().public.strapi.url}/api/user-types?${populate()}`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                ),
+
+            ]);
+
             if (error.value) {
                 switch (error.value.data.error.message) {
                     default:
                         errorMessage("Повторите попытку позже");
                 }
             } else {
-
-              this.categories = (data.value as responseType).data
+console.log(categories.value)
+                this.categories = (categories.value as responseType).data
+                this.type_product= (typeProduct.value as responseType).data
+                this.user_types = (user.value as responseType).data
             }
             useMain().$state.isLoading = false;
         },

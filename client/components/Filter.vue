@@ -4,11 +4,12 @@
             <h6>Цена</h6>
             <RangeSlider :min="0" :max="30000" @submitEvent="e=>minMax=e"></RangeSlider>
         </div>
+        <ClientOnly>
         <div class="filter-item">
             <h6>Тип продукта</h6>
             <ul class="filter-item-list">
                 <li v-for="item in categories" :key="item.id" >
-                    <label class="radio" @click.stop="typeProduct=item.attributes.Title">
+                    <label class="radio" @click.stop="typeProduct=item.attributes.Title" >
                         <input type="radio" name="typeProduct" :checked="item.attributes.DefaultCategory">
                         <span class="icon"></span>
                         <span class="text">{{ item.attributes.Title }}</span>
@@ -19,25 +20,11 @@
         <div class="filter-item">
             <h6>Тип</h6>
             <ul class="filter-item-list">
-                <li>
+                <li v-for="item in type_product" :key="item.id">
                     <label class="checkbox">
                         <input type="checkbox">
                         <span class="icon"></span>
-                        <span class="text">Внедорожный</span>
-                    </label>
-                </li>
-                <li>
-                    <label class="checkbox">
-                        <input type="checkbox">
-                        <span class="icon"></span>
-                        <span class="text">Городской</span>
-                    </label>
-                </li>
-                <li>
-                    <label class="checkbox">
-                        <input type="checkbox">
-                        <span class="icon"></span>
-                        <span class="text">Зимний</span>
+                        <span class="text">{{ item.attributes.Title }}</span>
                     </label>
                 </li>
             </ul>
@@ -45,66 +32,42 @@
         <div class="filter-item">
             <h6>Для кого</h6>
             <ul class="filter-item-list">
-                <li>
+                <li v-for="item in user_types" :key="item.id">
                     <label class="checkbox">
                         <input type="checkbox">
                         <span class="icon"></span>
-                        <span class="text">Для взрослого</span>
-                    </label>
-                </li>
-                <li>
-                    <label class="checkbox">
-                        <input type="checkbox">
-                        <span class="icon"></span>
-                        <span class="text">Для ребенка</span>
-                    </label>
-                </li>
-                <li>
-                    <label class="checkbox">
-                        <input type="checkbox">
-                        <span class="icon"></span>
-                        <span class="text">Для пенсионера</span>
+                        <span class="text">{{ item.attributes.Title }}</span>
                     </label>
                 </li>
             </ul>
         </div>
+        </ClientOnly>
         <div class="filter-item">
             <h6>Вес</h6>
             <ul class="filter-item-list">
                 <li>
                     <label class="radio">
-                        <input type="radio" name="weight" :value="`weight=${30}`">
+                        <input type="radio" name="weight" >
                         <span class="icon"></span>
                         <span class="text">Легкие (до 15 кг)</span>
                     </label>
                 </li>
                 <li>
                     <label class="radio">
-                        <input type="radio" name="weight" :value="`weight=${30}`">
+                        <input type="radio" name="weight">
                         <span class="icon"></span>
                         <span class="text">Средние (15-30 кг)</span>
                     </label>
                 </li>
                 <li>
                     <label class="radio">
-                        <input type="radio" name="weight" :value="`weight=${30}`">
+                        <input type="radio" name="weight">
                         <span class="icon"></span>
                         <span class="text">Тяжелые (свыше 30 кг)</span>
                     </label>
                 </li>
             </ul>
         </div>
-        <!--  <div class="filter-item" v-show="typeProduct==='Электросамокаты'">
-              <ul class="filter-item">
-                  <li v-for="item in categories" :key="item.id" @click.stop="typeProduct=item.attributes.Title">
-                      <label class="checkbox">
-                          <input type="checkbox" name="typeProduct">
-                          <span class="icon"></span>
-                          <span class="text">{{ item.attributes.Title }}</span>
-                      </label>
-                  </li>
-              </ul>
-          </div>-->
         <div class="filter-item"></div>
     </div>
 </template>
@@ -115,9 +78,8 @@ let minMax = useState<[min: number, max: number]>(() => [0, 3000])
 
 const typeProduct = useState<string>()
 
-const {categories, getCategories} = useCatalog()
+const {categories,type_product,user_types, getFilters} = useCatalog()
 
-await getCategories()
 
 
 </script>
@@ -171,12 +133,12 @@ await getCategories()
 
         .checkbox {
           input:checked + .icon {
-            background: url("./public/checkbox-checked.png");
+            background: url("/checkbox-checked.png");
             .trs(0.3s);
           }
 
           .icon {
-            background: url("./public/checkbox.png");
+            background: url("/checkbox.png");
             background-repeat: no-repeat;
             .trs(0.3s);
           }
@@ -184,14 +146,14 @@ await getCategories()
 
         .radio {
           input:checked + .icon {
-            background: url("./public/radio-checkbox-checked.png");
+            background: url("/radio-checkbox-checked.png");
             .trs(0.3s);
           }
 
           .icon {
             .br(10px);
             .trs(0.3s);
-            background: url("./public/radio-checkbox.png");
+            background: url("/radio-checkbox.png");
             background-repeat: no-repeat;
           }
         }

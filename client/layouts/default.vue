@@ -5,8 +5,9 @@
 
 <script setup lang="ts">
 
-const { getDeals } = useCatalog();
+const { getDeals,getFilters } = useCatalog();
 await getDeals();
+await getFilters()
 </script>
 
 <style lang="less">

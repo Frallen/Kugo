@@ -16,9 +16,17 @@
       "type": "string",
       "required": true
     },
-    "DefaultCategory": {
-      "type": "boolean",
-      "default": true
+    "Slug": {
+      "type": "customField",
+      "customField": "plugin::slug.slug"
+    },
+    "Image": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
     }
   }
 }

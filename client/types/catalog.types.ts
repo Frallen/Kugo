@@ -6,53 +6,77 @@ export interface CatalogItemType {
 
 //интерфейс скутеров
 export interface ScooterItemType {
-    Title: string;
-    weight: number;
-    max_speed: number;
-    power: number;
-    max_range: string;
-    Price: number;
-    discount_percent: number | null;
-    battery_capacity: number;
-    charge_time: string;
-    wheel_size: number;
-    gabarits: string;
-    maximum_load: number;
-    lighting: string;
-    guarantee: string;
-    type_wheels: string;
-    equipment: string;
-    privod: string;
-    stop_system: string;
-    type: string
-    user_type: string;
-    images: imageType;
-    badges: badgesType;
+    Title: string,
+    weight: number,
+    max_speed: number,
+    power: number,
+    max_range: string,
+    Price: number,
+    discount_percent: number | null,
+    battery_capacity: number,
+    charge_time: string,
+    wheel_size: number,
+    gabarits: string,
+    maximum_load: number,
+    lighting: string,
+    guarantee: string,
+    type_wheels: string,
+    equipment: string,
+    privod: string,
+    stop_system: string,
+    type_product: {
+        data: productType
+    },
+    user_type: {
+        data: userType
+    },
+    images: imageType,
+    badges: badgesType,
     category: {
         data: categoryType
-    };
+    },
 }
 
 export interface categoryType {
     attributes: {
-        Title: string
-        createdAt: string
-        publishedAt: string
-        updatedAt: string
-        DefaultCategory?: boolean
+        Title: string,
+        createdAt: string,
+        publishedAt: string,
+        updatedAt: string,
+        Slug: string,
+        Image: imageType,
     },
-    id: number
+    id: number,
 }
 
+export interface productType {
+    attributes: {
+        Title: string,
+        createdAt: string,
+        publishedAt: string,
+        updatedAt: string,
+    }
+    id: number,
+}
+
+export interface userType {
+    attributes: {
+        Title: string,
+        createdAt: string,
+        publishedAt: string,
+        updatedAt: string,
+    }
+    id: number,
+}
 
 interface badgesType {
     data: {
         id: number,
         attributes: {
-            createdAt: string
-            publishedAt: string
-            title: string
-            updatedAt: string
+            createdAt: string,
+            publishedAt: string,
+            title: string,
+            updatedAt: string,
         }
     }
 }

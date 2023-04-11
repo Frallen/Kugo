@@ -89,26 +89,6 @@
       "type": "string",
       "required": true
     },
-    "type": {
-      "type": "enumeration",
-      "enum": [
-        "Городской",
-        "Зимний",
-        "Внедорожный"
-      ],
-      "required": true,
-      "default": "Городской"
-    },
-    "user_type": {
-      "type": "enumeration",
-      "enum": [
-        "Для ребенка",
-        "Для взрослого",
-        "Для пенсионера"
-      ],
-      "required": true,
-      "default": "Для взрослого"
-    },
     "images": {
       "type": "media",
       "multiple": true,
@@ -135,6 +115,16 @@
     "charge_time": {
       "type": "string",
       "required": true
+    },
+    "type_product": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::type-product.type-product"
+    },
+    "user_type": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::user-type.user-type"
     }
   }
 }

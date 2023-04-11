@@ -33,8 +33,7 @@
             </NuxtLink>
             <NuxtLink to="" class="service-item">
                 <div class="service-item-wrapper">
-            <span class="service-item-title">Сервисное
-обслуживание</span>
+                    <span class="service-item-title">Сервисное обслуживание</span>
                     <span class="service-item-text">Крупнейший сервисный центр в России для продуктов Kugoo</span>
                     <span class="service-item-link">Обратиться к специалисту<Icon
                             name="material-symbols:arrow-forward-ios" class="icon"
@@ -43,7 +42,7 @@
             </NuxtLink>
         </div>
     </div>
-   <StockBlock></StockBlock>
+    <StockBlock></StockBlock>
     <div class="container">
         <div class="categories">
             <div class="categories-header">
@@ -51,18 +50,11 @@
                 <SupportWidget></SupportWidget>
             </div>
             <div class="categories-wrapper">
-                <NuxtLink to="/category/" class="categories-item">
-                    <NuxtImg src="electricScooter.png"></NuxtImg>
-                    <span>Электросамокаты</span></NuxtLink>
-                <NuxtLink to="/category/" class="categories-item">
-                    <NuxtImg src="bicycle.png"></NuxtImg>
-                    <span>Электровелосипеды</span></NuxtLink>
-                <NuxtLink to="/category/" class="categories-item">
-                    <NuxtImg src="vacuum-cleaner.png"></NuxtImg>
-                    <span>Робот-пылесоссы</span></NuxtLink>
-                <NuxtLink to="/category/" class="categories-item">
-                    <NuxtImg src="scales.png"></NuxtImg>
-                    <span>Весы</span></NuxtLink>
+                <NuxtLink :to="`/catalog/${item.attributes.Slug}`" v-for="item in categories" :key="item.id"
+                          class="categories-item">
+                    <NuxtImg provider="cloudinary"
+                             :src="item.attributes.Image.data.attributes.url"></NuxtImg>
+                    <span>{{ item.attributes.Title }}</span></NuxtLink>
             </div>
         </div>
     </div>
@@ -70,7 +62,7 @@
 
 <script setup lang="ts">
 
-const {filteredOffer} = useCatalog()
+const {filteredOffer, categories} = useCatalog()
 
 
 </script>
