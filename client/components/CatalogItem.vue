@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NuxtLink :to="`catalog/${useSlug(item.attributes.category.data.attributes.Title)}/${item.id}`"
+        <NuxtLink :to="`/catalog/item/${item.id}`"
                   class="product"
                   @mouseover="mouseHovered=true"
                   @mouseleave="mouseHovered=false"
@@ -99,7 +99,7 @@
 </template>
 
 <script setup lang="ts">
-import {type CatalogItemType} from "~/types/catalog.types";
+import {type DetailItemType} from "~/types/catalog.types";
 import {Navigation} from "swiper";
 
 import {Swiper, SwiperSlide} from "swiper/vue";
@@ -112,7 +112,7 @@ const onSwiper = (swiper: any) => {
 };
 
 interface propsType {
-    item: CatalogItemType
+    item: DetailItemType
 }
 
 
@@ -134,6 +134,7 @@ const mouseHovered = useState<boolean>()
   user-select: none;
   text-decoration: none;
   display: block;
+  height: 100%;
 
   &-badges, &-compare {
     position: absolute;

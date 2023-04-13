@@ -1,7 +1,19 @@
 // общий интерфейс для элементов из каталога
-export interface CatalogItemType {
+export interface DetailItemType {
     id: number,
     attributes: ScooterItemType
+}
+
+export interface CatalogItemType {
+    data: DetailItemType[]
+    meta?: {
+        pagination: {
+            page: number,
+            pageSize: number,
+            pageCount: number,
+            total: number
+        } | null
+    }
 }
 
 //интерфейс скутеров

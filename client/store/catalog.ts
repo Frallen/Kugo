@@ -2,6 +2,7 @@ import {useMain} from "~/store/main";
 import qs from "qs";
 import {CatalogItemType, categoryType, productType, userType} from "~/types/catalog.types";
 import {errorMessage} from "~/composables/useAlert";
+import {scrollTop} from "~/composables/mixins";
 
 const populate = (): string => {
     return qs.stringify(
@@ -28,8 +29,8 @@ const pagination = (page: number): string => {
 
 // интерфейс для катлога pinia
 interface stateType {
-    samokats: CatalogItemType[];
-    scooters: [],
+    samokats: CatalogItemType;
+    //scooters: [],
     bicycles: [],
     RobotVacuum: [],
     Scales: [],
@@ -46,8 +47,11 @@ interface responseType {
 
 export const useCatalog = defineStore("catalog", {
     state: (): stateType => ({
-        samokats: [],
-        scooters: [],
+        samokats: {
+            data: [],
+
+        },
+        //   scooters: [],
         bicycles: [],
         RobotVacuum: [],
         Scales: [],
@@ -56,18 +60,23 @@ export const useCatalog = defineStore("catalog", {
         user_types: []
     }),
     getters: {
+        // middleware существует ли slug путь
+        routeExist: (state) => {
+            return (query: string) =>
+                state.categories.some(p => p.attributes.Slug === query)
+        },
         filteredOffer: (state) => {
             return (query: string) => {
                 switch (query) {
-                    case "samokats":
+                    case "elektrosamokaty":
                         return state.samokats
-                    case "scooters":
-                        return state.scooters
-                    case "bicycles":
+                    /*case "scooters":
+                        return state.scooters*/
+                    case "elektrovelosipedy":
                         return state.bicycles
-                    case "RobotVacuum":
+                    case "robot-pylesosy":
                         return state.RobotVacuum
-                    case "Scales":
+                    case "vesy":
                         return state.Scales
                     default:
                         return false
@@ -121,7 +130,7 @@ export const useCatalog = defineStore("catalog", {
                 }
             } else {
                 this.categories = (categories.value as responseType).data
-                this.type_product= (typeProduct.value as responseType).data
+                this.type_product = (typeProduct.value as responseType).data
                 this.user_types = (user.value as responseType).data
             }
             useMain().$state.isLoading = false;
@@ -148,25 +157,27 @@ export const useCatalog = defineStore("catalog", {
           }
         )*/,
             ]);
-
-            this.samokats = (samokat.value as responseType).data as CatalogItemType[];
+            this.samokats = samokat.value as CatalogItemType;
             useMain().$state.isLoading = false;
         },
-        async loadMore(type: string | null | undefined) {
+        async loadMore(type: string | null | undefined, page: number) {
             useMain().$state.isLoading = true;
-
             switch (true) {
-                case type === "samokat": {
-                    const {data, error} = useFetch(
-                        `${useRuntimeConfig().public.strapi.url}/api/scooters?${pagination(2)}`,
+                case type === "scooter": {
+                    const {data, error} = await useFetch(
+                        `${useRuntimeConfig().public.strapi.url}/api/scooters?${pagination(page)}`,
                         {
                             method: "GET",
                             headers: {
                                 "Content-Type": "application/json",
                             },
                         })
-                    console.log(data.value as responseType)
-                    this.samokats.push(...(data.value as responseType).data as CatalogItemType[]);
+                    this.samokats = data.value as CatalogItemType
+                    scrollTop()
+
+                    /* this.samokats={
+                         meta:samokat.value as CatalogItemType
+                     }  //.push(...(data.value as responseType).data as CatalogItemType);*/
                     break
                 }
                 default : {

@@ -1,7 +1,7 @@
 <template>
-    <div class="nav">
-        <div class="nav-mobile">
-            <div class="container">
+    <div class="nav" :class="{'sticky':!useRoute().path.includes('catalog')}">
+        <div class="container">
+            <div class="nav-mobile" :class="{'visible':mobileModal}">
                 <div class="nav-wrapper">
                     <NuxtLink class="nav-logo" to="/">Kugoo</NuxtLink>
                     <div class="nav-wrapper-actions">
@@ -228,8 +228,7 @@ const menuHovered = useElementHover(menu);
 //наведен ли курсор на кнопку меню
 const menuButtonHovered = useElementHover(menuButton);
 
-const mobileModal = useState<boolean>();
-mobileModal.value = false;
+const mobileModal = useState<boolean>(() => false);
 watch(mobileModal, () => {
     if (mobileModal.value) {
         overFlow(true)
@@ -241,10 +240,14 @@ watch(mobileModal, () => {
 
 <style scoped lang="less">
 .nav {
-  position: sticky;
-  top: 0;
   z-index: 99;
   background: #fff;
+  box-shadow: 0 -2px 8px 0 #000;
+
+  &-mobile, &-default {
+    padding: 0 0 1em 0;
+
+  }
 
   &-mobile {
     display: none;
@@ -275,9 +278,6 @@ watch(mobileModal, () => {
     }
 
     .nav-modal {
-      position: fixed;
-      top: 8%;
-      left: 0;
       background: #fff;
       display: flex;
       flex-direction: column;
@@ -549,5 +549,21 @@ watch(mobileModal, () => {
   @media @md {
     font-size: 1.125em;
   }
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+}
+
+.visible {
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 0 1em;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  z-index: 99;
 }
 </style>

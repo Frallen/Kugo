@@ -21,6 +21,7 @@ h6 {
   padding: 0;
   margin: 0;
 }
+
 h2 {
   color: #fff;
   font-weight: 600;
@@ -80,7 +81,7 @@ h3 {
 
 .input:focus {
   color: @black;
-  border: 1px solid @purple!important;
+  border: 1px solid @purple !important;
   .trs(0.3s);
 }
 
@@ -124,6 +125,7 @@ h3 {
   background: #8185f9;
 }
 
+
 .button-secondary {
   background: @orange;
   .trs(0.3s);
@@ -135,12 +137,25 @@ h3 {
   background: #fab836;
 }
 
+.button-outlined:hover {
+  background: @purple;
+  .trs(0.3s);
+  color: #fff;
+}
+
+.button-outlined {
+  border: 1px solid @purple;
+  color: @purple;
+}
+
+
 .button-white {
   background: #fff;
   color: @purple;
 }
-.offers-short{
-  h3{
+
+.offers-short {
+  h3 {
     margin: 0 0 50px 0;
   }
 }

@@ -8,7 +8,7 @@
             <div class="filter-item">
                 <h6>Тип</h6>
                 <ul class="filter-item-list">
-                    <li v-for="item in type_product" :key="item.id">
+                    <li v-for="item in type_product" :key="item.id" @click="">
                         <label class="checkbox">
                             <input type="checkbox">
                             <span class="icon"></span>
@@ -20,7 +20,7 @@
             <div class="filter-item">
                 <h6>Для кого</h6>
                 <ul class="filter-item-list">
-                    <li v-for="item in user_types" :key="item.id">
+                    <li v-for="item in user_types" :key="item.id" @click="">
                         <label class="checkbox">
                             <input type="checkbox">
                             <span class="icon"></span>
@@ -64,6 +64,10 @@
 
 let minMax = useState<[min: number, max: number]>(() => [0, 3000])
 
+watch(minMax,()=>{
+
+})
+
 
 const {type_product, user_types, getFilters} = useCatalog()
 
@@ -76,8 +80,10 @@ const {type_product, user_types, getFilters} = useCatalog()
   background: #F4F7FB;
   .br(10px);
   padding: 20px;
-  @media @sm {
-    padding: 10px;
+  height: fit-content;
+  @media @lg {
+    position: relative;
+    padding: 2em;
   }
 
   &-item {

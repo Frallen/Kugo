@@ -23,12 +23,6 @@
 
 .stock-wrapper {
   background: radial-gradient(76.7% 707.77% at 23.3% 72.57%, #595959 0%, #3B3E46 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
-  margin: 50px 1em;
-  .br(10px);
-  @media @md {
-    margin: 0;
-    .br(0);
-  }
 }
 
 .stock {

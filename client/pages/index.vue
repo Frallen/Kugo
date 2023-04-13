@@ -16,7 +16,7 @@
     <div class="container">
         <div class="offers-short">
             <h3>Электросамокаты</h3>
-            <Offers :offerType="filteredOffer('samokats')"></Offers>
+            <Offers :offerType="filteredOffer('elektrosamokaty')"></Offers>
             <NuxtLink class="button button-primary" to="/catalog">Смотреть все</NuxtLink>
         </div>
     </div>
@@ -50,7 +50,7 @@
                 <SupportWidget></SupportWidget>
             </div>
             <div class="categories-wrapper">
-                <NuxtLink :to="`/catalog/${item.attributes.Slug}`" v-for="item in categories" :key="item.id"
+                <NuxtLink :to="`/catalog/${item.attributes.Slug}`" v-for="item in categories.data" :key="item.id"
                           class="categories-item">
                     <NuxtImg provider="cloudinary"
                              :src="item.attributes.Image.data.attributes.url"></NuxtImg>
@@ -351,7 +351,14 @@ const {filteredOffer, categories} = useCatalog()
     }
   }
 }
-
+.stock-wrapper {
+    margin: 50px 1em;
+    .br(10px);
+    @media @md {
+        margin: 0;
+        .br(0);
+    }
+}
 .offers-short {
   margin: 50px 0;
 

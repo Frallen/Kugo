@@ -11,7 +11,7 @@
   "devDependencies": {
     "@nuxt/image-edge": "^1.0.0-28004510.a0dc8e8",
     "@nuxtjs/strapi": "^1.9.0",
-    "@vueuse/core": "9.12.0",
+    "@vueuse/core": "^9.12.0",
     "@vueuse/motion": "2.0.0-beta.25",
     "@vueuse/nuxt": "9.12.0",
     "less": "^4.1.3",
