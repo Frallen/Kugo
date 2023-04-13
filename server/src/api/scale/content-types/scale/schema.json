@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "scales",
+  "info": {
+    "singularName": "scale",
+    "pluralName": "scales",
+    "displayName": "scale",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Title": {
+      "type": "string",
+      "required": true
+    },
+    "category": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::category.category"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "robots",
+  "info": {
+    "singularName": "robot",
+    "pluralName": "robots",
+    "displayName": "robot"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "category": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::category.category"
+    },
+    "Title": {
+      "type": "string",
+      "required": true
+    }
+  }
+}
