@@ -120,7 +120,6 @@ export const useCatalog = defineStore("catalog", {
                         errorMessage("Повторите попытку позже");
                 }
             } else {
-console.log(categories.value)
                 this.categories = (categories.value as responseType).data
                 this.type_product= (typeProduct.value as responseType).data
                 this.user_types = (user.value as responseType).data

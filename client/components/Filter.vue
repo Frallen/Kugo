@@ -5,49 +5,37 @@
             <RangeSlider :min="0" :max="30000" @submitEvent="e=>minMax=e"></RangeSlider>
         </div>
         <ClientOnly>
-        <div class="filter-item">
-            <h6>Тип продукта</h6>
-            <ul class="filter-item-list">
-                <li v-for="item in categories" :key="item.id" >
-                    <label class="radio" @click.stop="typeProduct=item.attributes.Title" >
-                        <input type="radio" name="typeProduct" :checked="item.attributes.DefaultCategory">
-                        <span class="icon"></span>
-                        <span class="text">{{ item.attributes.Title }}</span>
-                    </label>
-                </li>
-            </ul>
-        </div>
-        <div class="filter-item">
-            <h6>Тип</h6>
-            <ul class="filter-item-list">
-                <li v-for="item in type_product" :key="item.id">
-                    <label class="checkbox">
-                        <input type="checkbox">
-                        <span class="icon"></span>
-                        <span class="text">{{ item.attributes.Title }}</span>
-                    </label>
-                </li>
-            </ul>
-        </div>
-        <div class="filter-item">
-            <h6>Для кого</h6>
-            <ul class="filter-item-list">
-                <li v-for="item in user_types" :key="item.id">
-                    <label class="checkbox">
-                        <input type="checkbox">
-                        <span class="icon"></span>
-                        <span class="text">{{ item.attributes.Title }}</span>
-                    </label>
-                </li>
-            </ul>
-        </div>
+            <div class="filter-item">
+                <h6>Тип</h6>
+                <ul class="filter-item-list">
+                    <li v-for="item in type_product" :key="item.id">
+                        <label class="checkbox">
+                            <input type="checkbox">
+                            <span class="icon"></span>
+                            <span class="text">{{ item.attributes.Title }}</span>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+            <div class="filter-item">
+                <h6>Для кого</h6>
+                <ul class="filter-item-list">
+                    <li v-for="item in user_types" :key="item.id">
+                        <label class="checkbox">
+                            <input type="checkbox">
+                            <span class="icon"></span>
+                            <span class="text">{{ item.attributes.Title }}</span>
+                        </label>
+                    </li>
+                </ul>
+            </div>
         </ClientOnly>
         <div class="filter-item">
             <h6>Вес</h6>
             <ul class="filter-item-list">
                 <li>
                     <label class="radio">
-                        <input type="radio" name="weight" >
+                        <input type="radio" name="weight">
                         <span class="icon"></span>
                         <span class="text">Легкие (до 15 кг)</span>
                     </label>
@@ -76,11 +64,8 @@
 
 let minMax = useState<[min: number, max: number]>(() => [0, 3000])
 
-const typeProduct = useState<string>()
 
-const {categories,type_product,user_types, getFilters} = useCatalog()
-
-
+const {type_product, user_types, getFilters} = useCatalog()
 
 </script>
 

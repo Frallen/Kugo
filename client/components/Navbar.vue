@@ -112,7 +112,7 @@
 
                                 >
                                     <div class="menu-item">
-                                        <NuxtLink to="" class="menu-item-link"
+                                        <NuxtLink to="/catalog/elektrosamokaty" class="menu-item-link"
                                         >
                                             <Icon
                                                     name="material-symbols:electric-scooter-sharp"
@@ -121,25 +121,25 @@
                                             Электросамокаты
                                         </NuxtLink
                                         >
-                                        <NuxtLink to="" class="menu-item-link"
-                                        >
-                                            <nuxt-img src="scooter.svg" class="icon"></nuxt-img>
-                                            Электроскутеры
-                                        </NuxtLink
-                                        >
-                                        <NuxtLink to="" class="menu-item-link"
+                                        <!-- <NuxtLink to="" class="menu-item-link"
+                                         >
+                                             <nuxt-img src="scooter.svg" class="icon"></nuxt-img>
+                                             Электроскутеры
+                                         </NuxtLink
+                                         > -->
+                                        <NuxtLink to="/catalog/elektrovelosipedy" class="menu-item-link"
                                         >
                                             <nuxt-img src="mountain-bike.svg" class="icon"></nuxt-img>
                                             Электровелосипеды
                                         </NuxtLink
                                         >
-                                        <NuxtLink to="" class="menu-item-link"
+                                        <NuxtLink to="/catalog/robot-pylesosy" class="menu-item-link"
                                         >
                                             <nuxt-img src="vacuum-cleaner.svg" class="icon"></nuxt-img>
                                             Робот-пылесосы
                                         </NuxtLink
                                         >
-                                        <NuxtLink to="" class="menu-item-link"
+                                        <NuxtLink to="/catalog/vesy" class="menu-item-link"
                                         >
                                             <nuxt-img src="weighing-scale.svg" class="icon"></nuxt-img>
                                             Весы

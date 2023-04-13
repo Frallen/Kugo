@@ -10,11 +10,8 @@
 
 <script setup lang="ts">
 const {categories} = useCatalog()
-
 definePageMeta({
-    validate: async (route) => {
-        return categories.some(p => p.attributes.Slug === route.params.slug)
-    }
+    middleware: "catalog-setup"
 })
 </script>
 
