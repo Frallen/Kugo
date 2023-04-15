@@ -162,46 +162,18 @@ export const useCatalog = defineStore("catalog", {
         },
         async loadMore(type: string | null | undefined, page: number) {
             useMain().$state.isLoading = true;
-            switch (true) {
-                case type === "scooter": {
-                    const {data, error} = await useFetch(
-                        `${useRuntimeConfig().public.strapi.url}/api/scooters?${pagination(page)}`,
-                        {
-                            method: "GET",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                        })
-                    this.samokats = data.value as CatalogItemType
-                    scrollTop()
 
-                    /* this.samokats={
-                         meta:samokat.value as CatalogItemType
-                     }  //.push(...(data.value as responseType).data as CatalogItemType);*/
-                    break
-                }
-                default : {
-                    const [{data: samokat} /*{ data: scooters }*/] = await Promise.all([
-                        useFetch(
-                            `${useRuntimeConfig().public.strapi.url}/api/scooters?${pagination(2)}`,
-                            {
-                                method: "GET",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                },
-                            }
-                        ) /* useFetch(
-          `${useRuntimeConfig().public.strapi.url}/api/scooters/?${populate()}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        )*/,
-                    ]);
-                }
-            }
+            const {data, error} = await useFetch(
+                `${useRuntimeConfig().public.strapi.url}/api/${type}?${pagination(page)}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+            this.samokats = data.value as CatalogItemType
+            scrollTop()
+
 
             useMain().$state.isLoading = false;
         }

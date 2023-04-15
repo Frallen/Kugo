@@ -19,31 +19,33 @@
                     </button>
                     <div></div>
                 </div>
-                <Offers ref="el" :offerType="filteredOffer(params.slug as string)"></Offers>
-
-                <div class="pagination">
-                    <div class="pagination-wrapper">
-                        <div class="pagination-item pagination-item-first button button-outlined" v-show="meta.page>=2"
-                             @click="changePage(meta.page--)">
-                            <Icon
-                                    name="ic:outline-keyboard-arrow-left"
-                            />
-                        </div>
-                        <div class="pagination-item button button-outlined"
-                             :class="{'button-primary-current':item===meta.page}" v-for="item in meta.pageCount"
-                             :key="item"
-                             @click="changePage(item)">
-                            {{ item }}
-                        </div>
-                        <div class="pagination-item pagination-item-first button button-outlined"
-                             v-show="meta.page<meta.pageCount" @click="changePage(meta.page++)">
-                            <Icon
-                                    name="ic:outline-keyboard-arrow-right"
-                            />
+                <template v-if="filteredOffer(params.slug as string)">
+                    <Offers ref="el" :offerType="filteredOffer(params.slug as string)"></Offers>
+                    <div class="pagination">
+                        <div class="pagination-wrapper">
+                            <div class="pagination-item pagination-item-first button button-outlined"
+                                 v-show="currentPage>1"
+                                 @click="currentPage">
+                                <Icon
+                                        name="ic:outline-keyboard-arrow-left"
+                                />
+                            </div>
+                            <div class="pagination-item button button-outlined"
+                                 :class="{'button-primary-current':item===currentPage}" v-for="item in meta.pageCount"
+                                 :key="item"
+                                 @click="currentPage=item">
+                                {{ item }}
+                            </div>
+                            <div class="pagination-item pagination-item-first button button-outlined"
+                                 v-show="currentPage<meta.pageCount" @click="currentPage++">
+                                <Icon
+                                        name="ic:outline-keyboard-arrow-right"
+                                />
+                            </div>
                         </div>
                     </div>
-                </div>
-
+                </template>
+                <div v-else class="catalog-body-empty"><h4>Элементов не найдено</h4></div>
             </div>
         </div>
     </div>
@@ -53,7 +55,7 @@
 import {overFlow} from "~/composables/mixins";
 
 const {categories, filteredOffer, loadMore} = useCatalog()
-const {params} = useRoute()
+const {params, path, query} = useRoute()
 
 definePageMeta({
     middleware: "catalog"
@@ -63,45 +65,52 @@ const filterStatus = useState<boolean>(() => false)
 const meta = computed(() => {
     return filteredOffer(params.slug as string).meta.pagination
 })
-const typeItem = () => {
+const typeItem = (): string => {
     switch (true) {
-        case useRoute().params.slug === "elektrosamokaty": {
-            return "scooter"
+        case params.slug === "elektrosamokaty": {
+            return "scooters"
 
         }
-        case useRoute().params.slug === "elektrovelosipedy": {
-            return "bicycle"
+        case params.slug === "elektrovelosipedy": {
+            return "bicycles"
 
         }
-        case useRoute().params.slug === "robot-pylesosy": {
-            return "robot"
+        case params.slug === "robot-pylesosy": {
+            return "robots"
 
         }
-        case useRoute().params.slug === "vesy": {
+        case params.slug === "vesy": {
             return "scales"
 
         }
+        default :
+            return "scooters"
     }
 }
-const changePage = (clickedPage: number) => {
-    console.log(typeItem(), clickedPage)
-    if (typeItem() && clickedPage !== meta.value.page) {
-        loadMore(typeItem(), clickedPage)
-    }
+const currentPage = useState<number>(() => parseInt(query.page))
 
+watch(currentPage, () => {
+    prepare()
+
+})
+const prepare = async (): Promise<void> => {
+    await navigateTo({
+        path: path,
+        query: {
+            page: currentPage.value,
+
+        }
+    }, {
+        replace: true
+    })
+
+    if (typeItem() && currentPage.value) {
+        loadMore(typeItem(), currentPage.value)
+
+    }
 }
-/*
 
-const page = useState<number>(() => 1)
-const el = ref<HTMLElement>()
 
-const { x, y, isScrolling, arrivedState, directions } = useScroll(el)
-watch(isScrolling,()=>{
-    console.log("gg")
-    if(arrivedState.bottom){
-
-    }
-})*/
 </script>
 
 <style scoped lang="less">
@@ -158,6 +167,12 @@ watch(isScrolling,()=>{
           display: block;
         }
       }
+    }
+
+    &-empty {
+      display: flex;
+      justify-content: center;
+      align-self: center;
     }
   }
 }
