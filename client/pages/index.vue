@@ -16,7 +16,7 @@
     <div class="container">
         <div class="offers-short">
             <h3>Электросамокаты</h3>
-            <Offers :offerType="filteredOffer('elektrosamokaty')"></Offers>
+            <Offers :offerType="filteredOffers('scooters')"></Offers>
             <NuxtLink class="button button-primary" to="/catalog">Смотреть все</NuxtLink>
         </div>
     </div>
@@ -62,7 +62,7 @@
 
 <script setup lang="ts">
 
-const {filteredOffer, categories} = useCatalog()
+const {filteredOffers, categories} = useCatalog()
 
 
 </script>

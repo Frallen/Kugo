@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NuxtLink :to="`/catalog/item/${item.id}`"
+        <NuxtLink :to="`/catalog/${item.attributes.category.data.attributes.Slug}/${item.id}`"
                   class="product"
                   @mouseover="mouseHovered=true"
                   @mouseleave="mouseHovered=false"
@@ -76,19 +76,20 @@
                 </div>
                 <div class="product-body">
                     <div class="product-body-price">
-                        <h5 v-if="item.attributes.discount_percent"><span>{{
-                            item.attributes.Price
-                            }} ₽</span>{{ item.attributes.Price / 100 * item.attributes.discount_percent }} ₽</h5>
+                        <h5 v-if="item.attributes.discount_percent">
+                            <span>{{ item.attributes.Price }} ₽</span>
+                            {{ item.attributes.Price - item.attributes.Price / 100 * item.attributes.discount_percent }}
+                            ₽
+                        </h5>
                         <h5 v-else>
-                            {{ item.attributes.Price }} ₽</h5>
+                            {{ item.attributes.Price }} ₽
+                        </h5>
                         <div class="product-actions">
-                            <div class="product-actions-item" @click.stop="">
-                                <Icon name="ph:heart-straight" class="icon"
-                                />
+                            <div class="product-actions-item">
+                                <Favorite :isFavorite="false"></Favorite>
                             </div>
-                            <div class="product-actions-item" @click.stop="">
-                                <Icon name="ri:shopping-basket-2-fill" class="icon"
-                                />
+                            <div class="product-actions-item">
+                                <BasketButton></BasketButton>
                             </div>
                         </div>
                     </div>
@@ -117,7 +118,6 @@ interface propsType {
 
 
 let {item} = defineProps<propsType>();
-
 const catalogItem = useState<HTMLLIElement>()
 
 //const isHovered = useElementHover(catalogItem)
@@ -259,13 +259,7 @@ const mouseHovered = useState<boolean>()
       justify-content: space-between;
 
       &-item {
-        cursor: pointer;
-        padding: 10px;
-        color: @purple;
-        font-size: 1em;
-        border: 1.3px solid #EAEBED;
-        .br(300px);
-        z-index: 2;
+
       }
 
       &-item:last-child {

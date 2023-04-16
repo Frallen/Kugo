@@ -93,6 +93,7 @@ interface badgesType {
     }
 }
 
+// Тип для изображений
 interface imageType {
     data: {
         attributes: {
@@ -116,3 +117,17 @@ interface imageType {
         id: number
     }
 }
+
+export interface Settings {
+    id: number
+    attributes: {
+        Type: string
+        Length?: string
+        createdAt: string
+        updatedAt: string
+        publishedAt: string
+        Price?: number
+        Default?:boolean
+    }
+}
+

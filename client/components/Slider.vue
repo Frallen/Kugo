@@ -85,7 +85,7 @@
 
 <script lang="ts" setup>
 import {Navigation} from "swiper";
-import {Swiper, SwiperSlide, useSwiper} from "swiper/vue";
+import {Swiper, SwiperSlide} from "swiper/vue";
 
 const modules = [Navigation];
 const slider = useState<null>();

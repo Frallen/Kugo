@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "warranties",
+  "info": {
+    "singularName": "warranty",
+    "pluralName": "warranties",
+    "displayName": "Warranty",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Type": {
+      "type": "enumeration",
+      "enum": [
+        "Стандартная",
+        "Расширенная",
+        "VIP-версия"
+      ],
+      "required": true
+    },
+    "Length": {
+      "type": "string",
+      "required": true
+    },
+    "Price": {
+      "type": "decimal",
+      "required": false
+    },
+    "Default": {
+      "type": "boolean"
+    }
+  }
+}

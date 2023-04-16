@@ -1,6 +1,13 @@
 import {useMain} from "~/store/main";
 import qs from "qs";
-import {CatalogItemType, categoryType, productType, userType} from "~/types/catalog.types";
+import {
+    CatalogItemType,
+    categoryType,
+    productType,
+    userType,
+    Warranties,
+    AdditionalServices, Packages, Settings
+} from "~/types/catalog.types";
 import {errorMessage} from "~/composables/useAlert";
 import {scrollTop} from "~/composables/mixins";
 
@@ -15,7 +22,7 @@ const populate = (): string => {
     );
 };
 
-const pagination = (page: number): string => {
+const pagination = (page: string): string => {
     return qs.stringify({
         populate: "*",
         pagination: {
@@ -36,7 +43,10 @@ interface stateType {
     Scales: [],
     categories: categoryType[],
     type_product: productType[],
-    user_types: userType[]
+    user_types: userType[],
+    Warranties: Settings[],
+    AdditionalServices: Settings[],
+    Packages: Settings[]
 }
 
 // пример ответа сервака
@@ -57,7 +67,10 @@ export const useCatalog = defineStore("catalog", {
         Scales: [],
         categories: [],
         type_product: [],
-        user_types: []
+        user_types: [],
+        Warranties: [],
+        AdditionalServices: [],
+        Packages: []
     }),
     getters: {
         // middleware существует ли slug путь
@@ -65,35 +78,60 @@ export const useCatalog = defineStore("catalog", {
             return (query: string) =>
                 state.categories.some(p => p.attributes.Slug === query)
         },
-        filteredOffer: (state) => {
+        filteredOffers: (state) => {
             return (query: string) => {
                 switch (query) {
-                    case "elektrosamokaty":
+                    case "scooters":
                         return state.samokats
                     /*case "scooters":
                         return state.scooters*/
-                    case "elektrovelosipedy":
+                    case "bicycles":
                         return state.bicycles
-                    case "robot-pylesosy":
+                    case "robots":
                         return state.RobotVacuum
-                    case "vesy":
+                    case "scales":
                         return state.Scales
                     default:
                         return false
                 }
             }
+        },
+        filteredItem: (state) => {
+            return (query: string, id: number) => {
+                switch (query) {
+                    case "scooters":
+                        return state.samokats.data.find(p => p.id === id)
+                    /*case "scooters":
+                        return state.scooters*/
+                    case "bicycles":
+                        return state.bicycles.data.find(p => p.id === id)
+                    case "robots":
+                        return state.RobotVacuum.data.find(p => p.id === id)
+                    case "scales":
+                        return state.Scales.data.find(p => p.id === id)
+                    default:
+                        return false
+                }
+            }
         }
+
     },
     actions: {
         async getFilters() {
             interface responseType {
-                data: categoryType[] | productType[] | userType[],
+                data: categoryType[] | productType[] | userType[] | Settings[]
                 meta: []
             }
 
             useMain().$state.isLoading = true;
 
-            const [{data: categories, error}, {data: typeProduct}, {data: user}] = await Promise.all([
+            const [{data: categories, error},
+                {data: typeProduct},
+                {data: user},
+                {data: warranty},
+                {data: AdditionalServices},
+                {data: Packages}
+            ] = await Promise.all([
                 useFetch(
                     `${useRuntimeConfig().public.strapi.url}/api/categories?${populate()}`,
                     {
@@ -120,6 +158,33 @@ export const useCatalog = defineStore("catalog", {
                         },
                     }
                 ),
+                useFetch(
+                    `${useRuntimeConfig().public.strapi.url}/api/warranties`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                ),
+                useFetch(
+                    `${useRuntimeConfig().public.strapi.url}/api/additional-services`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                ),
+                useFetch(
+                    `${useRuntimeConfig().public.strapi.url}/api/packages`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                ),
 
             ]);
 
@@ -129,6 +194,9 @@ export const useCatalog = defineStore("catalog", {
                         errorMessage("Повторите попытку позже");
                 }
             } else {
+                this.Packages=(Packages.value as responseType).data
+                this.AdditionalServices = (AdditionalServices.value as responseType).data
+                this.Warranties = (warranty.value as responseType).data
                 this.categories = (categories.value as responseType).data
                 this.type_product = (typeProduct.value as responseType).data
                 this.user_types = (user.value as responseType).data
@@ -140,7 +208,7 @@ export const useCatalog = defineStore("catalog", {
 
             const [{data: samokat} /*{ data: scooters }*/] = await Promise.all([
                 useFetch(
-                    `${useRuntimeConfig().public.strapi.url}/api/scooters?${pagination(1)}`,
+                    `${useRuntimeConfig().public.strapi.url}/api/scooters?${pagination('1')}`,
                     {
                         method: "GET",
                         headers: {
@@ -160,7 +228,7 @@ export const useCatalog = defineStore("catalog", {
             this.samokats = samokat.value as CatalogItemType;
             useMain().$state.isLoading = false;
         },
-        async loadMore(type: string | null | undefined, page: number) {
+        async loadMore(type: string | null | undefined, page: string) {
             useMain().$state.isLoading = true;
 
             const {data, error} = await useFetch(

@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "additional_services",
+  "info": {
+    "singularName": "additional-service",
+    "pluralName": "additional-services",
+    "displayName": "AdditionalService",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Type": {
+      "type": "enumeration",
+      "enum": [
+        "Нет",
+        "Настройка",
+        "Гидроизоляция",
+        "Гидроизоляция и настройка"
+      ],
+      "required": true
+    },
+    "Price": {
+      "type": "decimal"
+    },
+    "Default": {
+      "type": "boolean"
+    }
+  }
+}

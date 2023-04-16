@@ -19,13 +19,13 @@
                     </button>
                     <div></div>
                 </div>
-                <template v-if="filteredOffer(params.slug as string)">
-                    <Offers ref="el" :offerType="filteredOffer(params.slug as string)"></Offers>
+                <template v-if="filteredOffers(typeItem())">
+                    <Offers ref="el" :offerType="filteredOffers(typeItem())"></Offers>
                     <div class="pagination">
                         <div class="pagination-wrapper">
                             <div class="pagination-item pagination-item-first button button-outlined"
                                  v-show="currentPage>1"
-                                 @click="currentPage">
+                                 @click="currentPage--">
                                 <Icon
                                         name="ic:outline-keyboard-arrow-left"
                                 />
@@ -52,9 +52,8 @@
 </template>
 
 <script setup lang="ts">
-import {overFlow} from "~/composables/mixins";
 
-const {categories, filteredOffer, loadMore} = useCatalog()
+const {categories, filteredOffers, loadMore} = useCatalog()
 const {params, path, query} = useRoute()
 
 definePageMeta({
@@ -63,31 +62,11 @@ definePageMeta({
 const filterStatus = useState<boolean>(() => false)
 /* page, pageSize, pageCount, total*/
 const meta = computed(() => {
-    return filteredOffer(params.slug as string).meta.pagination
+    return filteredOffers(typeItem()).meta.pagination
 })
-const typeItem = (): string => {
-    switch (true) {
-        case params.slug === "elektrosamokaty": {
-            return "scooters"
 
-        }
-        case params.slug === "elektrovelosipedy": {
-            return "bicycles"
 
-        }
-        case params.slug === "robot-pylesosy": {
-            return "robots"
-
-        }
-        case params.slug === "vesy": {
-            return "scales"
-
-        }
-        default :
-            return "scooters"
-    }
-}
-const currentPage = useState<number>(() => parseInt(query.page))
+const currentPage = useState<string>(() => query.page??1)
 
 watch(currentPage, () => {
     prepare()
@@ -109,7 +88,6 @@ const prepare = async (): Promise<void> => {
 
     }
 }
-
 
 </script>
 
