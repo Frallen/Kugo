@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2023-04-16T18:21:08.716Z"
+    "x-generation-date": "2023-04-17T16:45:42.786Z"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -95,7 +95,8 @@
         "properties": {
           "data": {
             "required": [
-              "Type"
+              "Type",
+              "Default"
             ],
             "type": "object",
             "properties": {
@@ -114,6 +115,9 @@
               },
               "Default": {
                 "type": "boolean"
+              },
+              "Title": {
+                "type": "string"
               }
             }
           }
@@ -143,6 +147,9 @@
               },
               "Default": {
                 "type": "boolean"
+              },
+              "Title": {
+                "type": "string"
               },
               "createdAt": {
                 "type": "string",
@@ -469,6 +476,9 @@
               },
               "Default": {
                 "type": "boolean"
+              },
+              "Title": {
+                "type": "string"
               },
               "createdAt": {
                 "type": "string",
@@ -829,6 +839,9 @@
               "Default": {
                 "type": "boolean"
               },
+              "Title": {
+                "type": "string"
+              },
               "createdAt": {
                 "type": "string",
                 "format": "date-time"
@@ -1154,6 +1167,9 @@
               },
               "Default": {
                 "type": "boolean"
+              },
+              "Title": {
+                "type": "string"
               },
               "createdAt": {
                 "type": "string",
@@ -11588,7 +11604,8 @@
         "properties": {
           "data": {
             "required": [
-              "Type"
+              "Type",
+              "Default"
             ],
             "type": "object",
             "properties": {
@@ -11607,6 +11624,9 @@
               },
               "Default": {
                 "type": "boolean"
+              },
+              "Title": {
+                "type": "string"
               }
             }
           }
@@ -11636,6 +11656,9 @@
               },
               "Default": {
                 "type": "boolean"
+              },
+              "Title": {
+                "type": "string"
               },
               "createdAt": {
                 "type": "string",
@@ -11962,6 +11985,9 @@
               },
               "Default": {
                 "type": "boolean"
+              },
+              "Title": {
+                "type": "string"
               },
               "createdAt": {
                 "type": "string",
@@ -12322,6 +12348,9 @@
               "Default": {
                 "type": "boolean"
               },
+              "Title": {
+                "type": "string"
+              },
               "createdAt": {
                 "type": "string",
                 "format": "date-time"
@@ -12647,6 +12676,9 @@
               },
               "Default": {
                 "type": "boolean"
+              },
+              "Title": {
+                "type": "string"
               },
               "createdAt": {
                 "type": "string",
@@ -31601,7 +31633,8 @@
           "data": {
             "required": [
               "Type",
-              "Length"
+              "Length",
+              "Default"
             ],
             "type": "object",
             "properties": {
@@ -31622,6 +31655,9 @@
               },
               "Default": {
                 "type": "boolean"
+              },
+              "Title": {
+                "type": "string"
               }
             }
           }
@@ -31653,6 +31689,9 @@
               },
               "Default": {
                 "type": "boolean"
+              },
+              "Title": {
+                "type": "string"
               },
               "createdAt": {
                 "type": "string",
@@ -31981,6 +32020,9 @@
               },
               "Default": {
                 "type": "boolean"
+              },
+              "Title": {
+                "type": "string"
               },
               "createdAt": {
                 "type": "string",
@@ -32343,6 +32385,9 @@
               "Default": {
                 "type": "boolean"
               },
+              "Title": {
+                "type": "string"
+              },
               "createdAt": {
                 "type": "string",
                 "format": "date-time"
@@ -32670,6 +32715,9 @@
               },
               "Default": {
                 "type": "boolean"
+              },
+              "Title": {
+                "type": "string"
               },
               "createdAt": {
                 "type": "string",

@@ -30,7 +30,12 @@
       "required": false
     },
     "Default": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "Title": {
+      "type": "string"
     }
   }
 }

@@ -121,13 +121,14 @@ interface imageType {
 export interface Settings {
     id: number
     attributes: {
+        Title: string
         Type: string
         Length?: string
         createdAt: string
         updatedAt: string
         publishedAt: string
         Price?: number
-        Default?:boolean
+        Default: boolean
     }
 }
 

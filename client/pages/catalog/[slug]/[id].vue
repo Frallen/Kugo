@@ -54,11 +54,11 @@
                     </div>
 
                     <div class="product-deals">
-                        <h6>Комплектация</h6>
+                        <h6>Гарантия</h6>
                         <Additional :settings="Warranties"></Additional>
                     </div>
                     <div class="product-deals">
-                        <h6>Гарантия</h6>
+                        <h6>Комплектация</h6>
                         <Additional :settings="AdditionalServices"></Additional>
                     </div>
                     <div class="product-deals">
@@ -242,7 +242,6 @@ const item = await filteredItem(typeItem(), parseInt(params.id))
       color: @black;
       margin: 0 0 15px 0;
     }
-
 
 
   }
