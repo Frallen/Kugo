@@ -16,41 +16,7 @@ interface propsType {
 let {
     offerType
 } = defineProps<propsType>()
-/*
-const Slug=offerType[0].attributes.category.data.attributes.Slug
-const typeItem = () => {
-    switch (true) {
-        case Slug==="elektrosamokaty": {
-            return "scooter"
 
-        }
-        case Slug==="elektrovelosipedy": {
-            return "bicycle"
-
-        }
-        case Slug==="robot-pylesosy": {
-            return "robot"
-
-        }
-        case Slug==="vesy": {
-            return "scales"
-
-        }
-        default:
-            return ""
-    }
-}
-const page = useState<number>(() => 1)
-const el = ref<HTMLElement>()
-const {categories, filteredOffer, loadMore} = useCatalog()
-const { x, y, isScrolling, arrivedState, directions } = useScroll(el)
-watch(isScrolling,()=>{
-    console.log("gg")
-    if(arrivedState.bottom){
-        loadMore(typeItem(), page.value++)
-    }
-})
-*/
 </script>
 
 <style scoped lang="less">

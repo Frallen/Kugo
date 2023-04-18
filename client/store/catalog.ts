@@ -5,8 +5,7 @@ import {
     categoryType,
     productType,
     userType,
-    Warranties,
-    AdditionalServices, Packages, Settings
+    Settings
 } from "~/types/catalog.types";
 import {errorMessage} from "~/composables/useAlert";
 import {scrollTop} from "~/composables/mixins";
@@ -36,11 +35,12 @@ const pagination = (page: string): string => {
 
 // интерфейс для катлога pinia
 interface stateType {
+    isLoading: boolean;
     samokats: CatalogItemType;
     //scooters: [],
-    bicycles: [],
-    RobotVacuum: [],
-    Scales: [],
+    bicycles: CatalogItemType,
+    RobotVacuum: CatalogItemType,
+    Scales: CatalogItemType,
     categories: categoryType[],
     type_product: productType[],
     user_types: userType[],
@@ -57,14 +57,20 @@ interface responseType {
 
 export const useCatalog = defineStore("catalog", {
     state: (): stateType => ({
+        isLoading:false,
         samokats: {
             data: [],
-
         },
         //   scooters: [],
-        bicycles: [],
-        RobotVacuum: [],
-        Scales: [],
+        bicycles: {
+            data: [],
+        },
+        RobotVacuum: {
+            data: [],
+        },
+        Scales: {
+            data: [],
+        },
         categories: [],
         type_product: [],
         user_types: [],
@@ -117,13 +123,26 @@ export const useCatalog = defineStore("catalog", {
 
     },
     actions: {
-        async getFilters() {
+        async clearDeals() {
+            this.samokats = {}
+            //   scooters: [],
+            this.bicycles = []
+            this.RobotVacuum = []
+
+            this.Scales = []
+
+            this.categories = []
+
+            this.type_product = []
+
+        },
+        async getFilters() {    this.isLoading = true;
             interface responseType {
                 data: categoryType[] | productType[] | userType[] | Settings[]
                 meta: []
             }
 
-            useMain().$state.isLoading = true;
+           // useMain().$state.isLoading = true;
 
             const [{data: categories, error},
                 {data: typeProduct},
@@ -194,21 +213,21 @@ export const useCatalog = defineStore("catalog", {
                         errorMessage("Повторите попытку позже");
                 }
             } else {
-                this.Packages=(Packages.value as responseType).data
+                this.Packages = (Packages.value as responseType).data
                 this.AdditionalServices = (AdditionalServices.value as responseType).data
                 this.Warranties = (warranty.value as responseType).data
                 this.categories = (categories.value as responseType).data
                 this.type_product = (typeProduct.value as responseType).data
                 this.user_types = (user.value as responseType).data
             }
-            useMain().$state.isLoading = false;
+            this.isLoading = false;
         },
-        async getDeals() {
-            useMain().$state.isLoading = true;
+        async getDeals(type: string) {
+            this.isLoading = true;
 
             const [{data: samokat} /*{ data: scooters }*/] = await Promise.all([
                 useFetch(
-                    `${useRuntimeConfig().public.strapi.url}/api/scooters?${pagination('1')}`,
+                    `${useRuntimeConfig().public.strapi.url}/api/${type}?${pagination('1')}`,
                     {
                         method: "GET",
                         headers: {
@@ -226,10 +245,10 @@ export const useCatalog = defineStore("catalog", {
         )*/,
             ]);
             this.samokats = samokat.value as CatalogItemType;
-            useMain().$state.isLoading = false;
+           this.isLoading = false;
         },
         async loadMore(type: string | null | undefined, page: string) {
-            useMain().$state.isLoading = true;
+             this.isLoading =  true;
 
             const {data, error} = await useFetch(
                 `${useRuntimeConfig().public.strapi.url}/api/${type}?${pagination(page)}`,
@@ -243,7 +262,7 @@ export const useCatalog = defineStore("catalog", {
             scrollTop()
 
 
-            useMain().$state.isLoading = false;
+            this.isLoading = false;
         }
     },
 });

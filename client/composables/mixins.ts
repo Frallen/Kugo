@@ -5,14 +5,16 @@ export const overFlow = (state: boolean): void => {
 };
 
 export const scrollTop = (): void => {
-    window.scrollTo({
-        top: 300,
-        behavior: "smooth",
-    });
+    if (process.client) {
+        window.scrollTo({
+            top: 300,
+            behavior: "smooth",
+        });
+    }
 }
 
 export const typeItem = (): string => {
-    const {params}=useRoute()
+    const {params} = useRoute()
     switch (true) {
         case params.slug === "elektrosamokaty": {
             return "scooters"

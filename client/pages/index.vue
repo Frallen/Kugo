@@ -62,9 +62,12 @@
 
 <script setup lang="ts">
 
-const {filteredOffers, categories} = useCatalog()
+const {filteredOffers,getDeals, clearDeals, categories} = useCatalog()
 
-
+await getDeals("scooters");
+onUnmounted(() => {
+    clearDeals()
+})
 </script>
 
 <style scoped lang="less">

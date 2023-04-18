@@ -22,7 +22,7 @@ interface checkboxType {
 
 const checkedValue = useState<checkboxType>()
 watch(checkedValue, () => {
-    console.log(checkedValue.value)
+//    console.log(checkedValue.value)
 })
 </script>
 

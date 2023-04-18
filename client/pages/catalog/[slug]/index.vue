@@ -1,6 +1,6 @@
 <template>
     <StockBlock></StockBlock>
-    <div class="container" ref="el">
+    <div class="container">
         <div class="catalog">
             <div class="catalog-filter" :class="{'visible':filterStatus}">
                 <div class="catalog-filter-close">
@@ -19,8 +19,8 @@
                     </button>
                     <div></div>
                 </div>
-                <template v-if="filteredOffers(typeItem())">
-                    <Offers ref="el" :offerType="filteredOffers(typeItem())"></Offers>
+                <template v-if="filteredOffers(typeItem()).data">
+                    <Offers :offerType="filteredOffers(typeItem())"></Offers>
                     <div class="pagination">
                         <div class="pagination-wrapper">
                             <div class="pagination-item pagination-item-first button button-outlined"
@@ -53,41 +53,45 @@
 
 <script setup lang="ts">
 
-const {categories, filteredOffers, loadMore} = useCatalog()
+const {getDeals, filteredOffers, loadMore} = useCatalog()
 const {params, path, query} = useRoute()
-
+const router = useRouter();
 definePageMeta({
     middleware: "catalog"
 })
+
+await getDeals(typeItem());
+
 const filterStatus = useState<boolean>(() => false)
 /* page, pageSize, pageCount, total*/
-const meta = computed(() => {
-    return filteredOffers(typeItem()).meta.pagination
-})
+const meta = computed(() =>
+    filteredOffers(typeItem()).meta.pagination
+)
 
+const currentPage = useState<string>(() => query.page as string ?? "1")
 
-const currentPage = useState<string>(() => query.page??1)
-
-watch(currentPage, () => {
-    prepare()
-
-})
 const prepare = async (): Promise<void> => {
-    await navigateTo({
+
+    await router.replace({
         path: path,
         query: {
             page: currentPage.value,
 
         }
-    }, {
-        replace: true
-    })
+    });
+
 
     if (typeItem() && currentPage.value) {
         loadMore(typeItem(), currentPage.value)
 
     }
 }
+
+watch(currentPage, () => {
+    prepare()
+
+}, {immediate: true})
+
 
 </script>
 
