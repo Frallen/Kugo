@@ -10,8 +10,8 @@
 
 <script setup lang="ts">
 
-const {getFilters,isLoading} = useCatalog();
-
+const {getFilters} = useCatalog();
+const {isLoading}= storeToRefs(useMain())
 await getFilters()
 </script>
 

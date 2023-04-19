@@ -8,7 +8,7 @@ import {
     Settings
 } from "~/types/catalog.types";
 import {errorMessage} from "~/composables/useAlert";
-import {scrollTop} from "~/composables/mixins";
+import {overFlow, scrollTop} from "~/composables/mixins";
 
 const populate = (): string => {
     return qs.stringify(
@@ -35,7 +35,6 @@ const pagination = (page: string): string => {
 
 // интерфейс для катлога pinia
 interface stateType {
-    isLoading: boolean;
     samokats: CatalogItemType;
     //scooters: [],
     bicycles: CatalogItemType,
@@ -55,9 +54,13 @@ interface responseType {
     meta: {};
 }
 
+const setLoading = (loading: boolean): void => {
+    useMain().isLoading = loading;
+    overFlow(loading)
+}
+
 export const useCatalog = defineStore("catalog", {
     state: (): stateType => ({
-        isLoading:false,
         samokats: {
             data: [],
         },
@@ -136,13 +139,14 @@ export const useCatalog = defineStore("catalog", {
             this.type_product = []
 
         },
-        async getFilters() {    this.isLoading = true;
+        async getFilters() {
+            setLoading(true)
+
             interface responseType {
                 data: categoryType[] | productType[] | userType[] | Settings[]
                 meta: []
             }
 
-           // useMain().$state.isLoading = true;
 
             const [{data: categories, error},
                 {data: typeProduct},
@@ -220,10 +224,10 @@ export const useCatalog = defineStore("catalog", {
                 this.type_product = (typeProduct.value as responseType).data
                 this.user_types = (user.value as responseType).data
             }
-            this.isLoading = false;
+            setLoading(false)
         },
         async getDeals(type: string) {
-            this.isLoading = true;
+            setLoading(true)
 
             const [{data: samokat} /*{ data: scooters }*/] = await Promise.all([
                 useFetch(
@@ -245,10 +249,10 @@ export const useCatalog = defineStore("catalog", {
         )*/,
             ]);
             this.samokats = samokat.value as CatalogItemType;
-           this.isLoading = false;
+            setLoading(false)
         },
         async loadMore(type: string | null | undefined, page: string) {
-             this.isLoading =  true;
+            setLoading(true)
 
             const {data, error} = await useFetch(
                 `${useRuntimeConfig().public.strapi.url}/api/${type}?${pagination(page)}`,
@@ -262,7 +266,7 @@ export const useCatalog = defineStore("catalog", {
             scrollTop()
 
 
-            this.isLoading = false;
+            setLoading(false)
         }
     },
 });

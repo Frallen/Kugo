@@ -23,6 +23,11 @@
   top: 0;
   height: 100%;
   width: 100%;
-  background: rgba(255, 255, 255, 0.98);
+  background: #fff;
+
+  img {
+    height: 150px;
+    width: 150px;
+  }
 }
 </style>

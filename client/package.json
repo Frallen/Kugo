@@ -20,11 +20,11 @@
     "vee-validate": "^4.8.4"
   },
   "dependencies": {
-    "@pinia/nuxt": "^0.4.6",
+    "@pinia/nuxt": "^0.4.8",
     "@vueform/slider": "^2.1.7",
     "modern-normalize": "^1.1.0",
     "moment": "^2.29.4",
-    "pinia": "^2.0.33",
+    "pinia": "^2.0.34",
     "qs": "^6.11.1",
     "sweetalert2": "^11.7.3",
     "swiper": "^9.2.0",

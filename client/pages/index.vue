@@ -50,7 +50,7 @@
                 <SupportWidget></SupportWidget>
             </div>
             <div class="categories-wrapper">
-                <NuxtLink :to="`/catalog/${item.attributes.Slug}`" v-for="item in categories.data" :key="item.id"
+                <NuxtLink :to="`/catalog/${item.attributes.Slug}`" v-for="item in categories" :key="item.id"
                           class="categories-item">
                     <NuxtImg provider="cloudinary"
                              :src="item.attributes.Image.data.attributes.url"></NuxtImg>

@@ -68,8 +68,8 @@ const meta = computed(() =>
     filteredOffers(typeItem()).meta.pagination
 )
 
-const currentPage = useState<string>(() => query.page as string ?? "1")
-
+const currentPage = useState<number>(() => 1)
+if (query.page) currentPage.value=parseInt(query.page)
 const prepare = async (): Promise<void> => {
 
     await router.replace({
@@ -82,7 +82,7 @@ const prepare = async (): Promise<void> => {
 
 
     if (typeItem() && currentPage.value) {
-        loadMore(typeItem(), currentPage.value)
+        await loadMore(typeItem(), currentPage.value.toString())
 
     }
 }
