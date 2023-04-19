@@ -61,7 +61,6 @@ definePageMeta({
 })
 
 await getDeals(typeItem());
-
 const filterStatus = useState<boolean>(() => false)
 /* page, pageSize, pageCount, total*/
 const meta = computed(() =>

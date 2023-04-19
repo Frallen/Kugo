@@ -19,6 +19,7 @@ export interface CatalogItemType {
 //интерфейс скутеров
 export interface ScooterItemType {
     Title: string,
+    About?: string,
     weight: number,
     max_speed: number,
     power: number,

@@ -5,11 +5,11 @@
                :value="{Type:item.attributes.Type,
                    Length:item.attributes.Length,
                    Price:item.attributes.Price}"
-
         >
         {{
         item.attributes.Type
         }}
+        <span v-if="item.attributes.Price">{{ item.attributes.Price }} руб.</span>
     </label>
 </template>
 
@@ -32,9 +32,9 @@ const isChecked = useState<boolean>(() => item.attributes.Default);
 
 
 const checkbox = useState<checkboxType>()
-const emit=defineEmits<{(e:"checkedValue",checkedValue:checkboxType):void}>()
+const emit = defineEmits<{ (e: "checkedValue", checkedValue: checkboxType): void }>()
 
-watch(checkbox,()=> {
+watch(checkbox, () => {
     emit("checkedValue", checkbox.value)
 })
 
@@ -47,10 +47,22 @@ watch(checkbox,()=> {
   border: 1.5px solid #EAEBED;
   cursor: pointer;
   .br(10px);
-  padding: 40px;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 
   input[type=radio] {
     display: none;
+  }
+
+  span {
+    margin: 10px 0 0 0;
+    display: block;
+    color: @gray;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
   }
 }
 </style>

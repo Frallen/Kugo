@@ -5,7 +5,7 @@ import {
     categoryType,
     productType,
     userType,
-    Settings
+    Settings, DetailItemType
 } from "~/types/catalog.types";
 import {errorMessage} from "~/composables/useAlert";
 import {overFlow, scrollTop} from "~/composables/mixins";
@@ -21,6 +21,18 @@ const populate = (): string => {
     );
 };
 
+const filterPopulate = (value: string): string => {
+    return qs.stringify({
+        populate: "*",
+        filters: {
+            id: {
+                $eq: value,
+            },
+        },
+    }, {
+        encodeValuesOnly: true, // prettify URL
+    });
+}
 const pagination = (page: string): string => {
     return qs.stringify({
         populate: "*",
@@ -35,6 +47,7 @@ const pagination = (page: string): string => {
 
 // интерфейс для катлога pinia
 interface stateType {
+    Detail:DetailItemType,
     samokats: CatalogItemType;
     //scooters: [],
     bicycles: CatalogItemType,
@@ -50,8 +63,8 @@ interface stateType {
 
 // пример ответа сервака
 interface responseType {
-    data: CatalogItemType[]
-    meta: {};
+    data: categoryType[] | productType[] | userType[] | Settings[]
+    meta: []
 }
 
 const setLoading = (loading: boolean): void => {
@@ -61,6 +74,7 @@ const setLoading = (loading: boolean): void => {
 
 export const useCatalog = defineStore("catalog", {
     state: (): stateType => ({
+        Detail:[],
         samokats: {
             data: [],
         },
@@ -105,25 +119,6 @@ export const useCatalog = defineStore("catalog", {
                 }
             }
         },
-        filteredItem: (state) => {
-            return (query: string, id: number) => {
-                switch (query) {
-                    case "scooters":
-                        return state.samokats.data.find(p => p.id === id)
-                    /*case "scooters":
-                        return state.scooters*/
-                    case "bicycles":
-                        return state.bicycles.data.find(p => p.id === id)
-                    case "robots":
-                        return state.RobotVacuum.data.find(p => p.id === id)
-                    case "scales":
-                        return state.Scales.data.find(p => p.id === id)
-                    default:
-                        return false
-                }
-            }
-        }
-
     },
     actions: {
         async clearDeals() {
@@ -142,10 +137,6 @@ export const useCatalog = defineStore("catalog", {
         async getFilters() {
             setLoading(true)
 
-            interface responseType {
-                data: categoryType[] | productType[] | userType[] | Settings[]
-                meta: []
-            }
 
 
             const [{data: categories, error},
@@ -226,6 +217,25 @@ export const useCatalog = defineStore("catalog", {
             }
             setLoading(false)
         },
+        async filteredDeal(type: string, id: string) {
+            setLoading(true)
+            let {data, error} = await useFetch(
+                `${useRuntimeConfig().public.strapi.url}/api/${type}?${filterPopulate(id)}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            )
+            if (error.value) {
+
+            } else {
+                this.Detail= data.value.data[0]
+            }
+
+            setLoading(false)
+        },
         async getDeals(type: string) {
             setLoading(true)
 
@@ -238,15 +248,7 @@ export const useCatalog = defineStore("catalog", {
                             "Content-Type": "application/json",
                         },
                     }
-                ) /* useFetch(
-          `${useRuntimeConfig().public.strapi.url}/api/scooters/?${populate()}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        )*/,
+                )
             ]);
             this.samokats = samokat.value as CatalogItemType;
             setLoading(false)

@@ -75,7 +75,7 @@
                         <div class="product-result-delivery">
                             <Icon name="mdi:truck-delivery-outline" class="icon"
                             />
-                            <span>Бесплатная доставка по РФ от 1 дня при заказе до 01.09</span>
+                            <span>Бесплатная доставка по РФ</span>
                         </div>
                         <div class="product-result-buttons">
                             <button class="button button-primary">Купить в 1 клик</button>
@@ -83,6 +83,76 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="product-footer">
+                <Swiper
+                        class="slider-thumbs"
+                        @swiper="setThumbsSwiper"
+                        :modules="modules"
+                        :slides-per-view="5"
+                        :watchSlidesProgress="true"
+                        :space-between="10"
+                >
+                    <Swiper-slide class="slider-thumbs-item"
+                    >
+                        О товаре
+                    </Swiper-slide>
+                    <Swiper-slide class="slider-thumbs-item"
+                    >
+                        Характеристики
+                    </Swiper-slide>
+                    <Swiper-slide class="slider-thumbs-item"
+                    >
+                        Доставка и оплата
+                    </Swiper-slide>
+                    <Swiper-slide class="slider-thumbs-item"
+                    >
+                        Гарантии
+                    </Swiper-slide>
+                    <Swiper-slide class="slider-thumbs-item"
+                    >
+                        Версия MAX
+                    </Swiper-slide>
+                </Swiper>
+                <Swiper
+                        class="slider"
+                        @swiper="onSwiper"
+                        :modules="modules"
+                        :slides-per-view="1"
+                        :space-between="20"
+                        :thumbs="{ swiper: thumbsSwiper }"
+                >
+                    <Swiper-slide class="slider-item">
+                        <div class="about">
+                            <div class="about-item">
+                                <h5>{{ item.attributes.Title }}</h5>
+                                <p v-if="item.attributes.About">{{ item.attributes.About }}</p>
+                            </div>
+                            <div class="about-item">
+                                <div class="about-item-equipment">
+                                    <h6>{{ item.attributes.Title }}</h6>
+                                    <p>
+                                        {{ item.attributes.equipment }}
+                                    </p>
+                                </div>
+                                <div class="about-item-features">
+                                    <h6>Ключевые особенности {{ item.attributes.Title }}</h6>
+                                    <div class="feature">
+                                        <div v-if="item.attributes.type_product" class="feature-item">
+                                            {{ item.attributes.type_product.data.attributes.Title }}
+                                        </div>
+                                        <div class="feature-item">{{
+                                            item.attributes.user_type.data.attributes.Title
+                                            }}
+                                        </div>
+                                        <div class="feature-item">До {{ item.attributes.max_speed }} км/ч</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </Swiper-slide>
+                </Swiper>
+
             </div>
         </div>
     </div>
@@ -93,10 +163,14 @@ import {Navigation, Thumbs} from "swiper";
 import {Swiper, SwiperSlide} from "swiper/vue";
 
 const {
-    filteredItem, Warranties,
+    filteredDeal, Warranties,
     AdditionalServices, Packages
 } = useCatalog()
+
+
 const {params} = useRoute()
+await filteredDeal(typeItem(), params.id as string)
+const {Detail: item} = storeToRefs(useCatalog())
 const modules = [Navigation, Thumbs];
 const slider = useState<null>();
 const onSwiper = (swiper: any) => {
@@ -109,7 +183,6 @@ const setThumbsSwiper = (swiper: any) => {
     thumbsSwiper.value = swiper;
 }
 
-const item = await filteredItem(typeItem(), parseInt(params.id))
 </script>
 
 <style scoped lang="less">
@@ -119,6 +192,7 @@ const item = await filteredItem(typeItem(), parseInt(params.id))
   &-body {
     display: flex;
     justify-content: space-between;
+    margin: 0 0 50px 0;
     @media @lg {
       flex-direction: column;
     }
@@ -182,6 +256,105 @@ const item = await filteredItem(typeItem(), parseInt(params.id))
 
     }
 
+  }
+
+  &-footer {
+    margin: 50px 0;
+
+    .slider-thumbs {
+      padding: 0 0 20px 0;
+      border-bottom: 1.5px solid #EAEBED;
+
+      &-item {
+        text-align: center;
+        position: relative;
+      }
+
+      .swiper-slide-thumb-active::after {
+        display: block;
+        content: " ";
+        position: absolute;
+        bottom: -108%;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: @purple;
+      }
+    }
+
+    .slider {
+      margin: 50px 0;
+
+      &-item {
+        .about {
+          display: flex;
+          justify-content: space-between;
+          @media @md {
+            flex-direction: column
+          }
+
+          h5 {
+            font-weight: 600;
+            font-size: 1.563em;
+            line-height: 36px;
+            text-transform: uppercase;
+            @media @md {
+              font-size: 1.125em;
+            }
+          }
+
+          h6 {
+            font-weight: 500;
+            font-size: 1.250em;
+            line-height: 24px;
+            @media @md {
+              font-size: 1em;
+            }
+          }
+
+          p {
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 20px;
+          }
+
+          &-item {
+            width: 46%;
+            @media @md {
+              width: 100%;
+            }
+
+            &-equipment {
+
+            }
+
+            &-features {
+              .feature {
+                display: flex;
+                flex-wrap: wrap;
+                margin: 0 0 0 -10px;
+
+                &-item {
+                  padding: 14px 20px;
+                  margin: 20px 0 0 10px;
+                  background: #F4F7FB;
+                  .br(5px);
+                  font-weight: 400;
+                  font-size: 14px;
+                  line-height: 20px;
+                  color: @gray;
+                }
+              }
+            }
+          }
+
+          &-item:last-child {
+            margin: 20px 0 0 0;
+          }
+        }
+
+      }
+    }
   }
 
   &-title {
@@ -274,6 +447,14 @@ const item = await filteredItem(typeItem(), parseInt(params.id))
     &-delivery {
       border-top: 1px solid #EAEBED;
       padding: 30px 0;
+
+      .icon {
+        font-size: 1.3em;
+      }
+
+      span {
+        margin: 0 0 0 15px;
+      }
     }
 
     &-buttons {
@@ -282,6 +463,13 @@ const item = await filteredItem(typeItem(), parseInt(params.id))
       justify-content: space-between;
       @media @md {
         flex-direction: column;
+      }
+
+      .button {
+        width: 45%;
+        @media @md {
+          width: 100%;
+        }
       }
 
       .button:last-child {
