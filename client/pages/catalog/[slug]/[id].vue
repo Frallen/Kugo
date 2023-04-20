@@ -87,11 +87,22 @@
             <div class="product-footer">
                 <Swiper
                         class="slider-thumbs"
-                        @swiper="setThumbsSwiper"
+                        @swiper="setThumbsProperty"
                         :modules="modules"
-                        :slides-per-view="5"
+                        :slides-per-view="4"
                         :watchSlidesProgress="true"
                         :space-between="10"
+                        :breakpoints="{
+                             320: {
+                              slidesPerView: 1,
+                            },
+                             480: {
+                              slidesPerView: 3,
+                            },
+                             767: {
+                              slidesPerView: 4,
+                            }
+                        }"
                 >
                     <Swiper-slide class="slider-thumbs-item"
                     >
@@ -109,18 +120,21 @@
                     >
                         Гарантии
                     </Swiper-slide>
-                    <Swiper-slide class="slider-thumbs-item"
-                    >
-                        Версия MAX
-                    </Swiper-slide>
+                    <!--   <Swiper-slide class="slider-thumbs-item"
+                       >
+                           Версия MAX
+                       </Swiper-slide>-->
                 </Swiper>
                 <Swiper
                         class="slider"
-                        @swiper="onSwiper"
+                        @swiper="onProperty"
                         :modules="modules"
                         :slides-per-view="1"
                         :space-between="20"
-                        :thumbs="{ swiper: thumbsSwiper }"
+                        :thumbs="{ swiper: thumbsProperty }"
+                        effect="fade"
+                        :fadeEffect="{ crossFade: true }"
+                        :auto-height="true"
                 >
                     <Swiper-slide class="slider-item">
                         <div class="about">
@@ -151,6 +165,75 @@
                             </div>
                         </div>
                     </Swiper-slide>
+                    <Swiper-slide class="slider-item">
+                        <div class="property">
+                            <div class="column">
+                                <div class="property-item" v-if="item.attributes.weight">Масса нетто
+                                    <span>{{ item.attributes.weight }}</span></div>
+                                <div class="property-item" v-if="item.attributes.power">Мощность
+                                    <span>{{ item.attributes.power }} W</span></div>
+                                <div class="property-item" v-if="item.attributes.battery_capacity">Аккумулятор
+                                    <span>{{ item.attributes.battery_capacity }}</span></div>
+                                <div class="property-item" v-if="item.attributes.max_speed">Максимальная скорость <span>До {{
+                                    item.attributes.max_speed
+                                    }} км/ч*</span></div>
+                                <div class="property-item" v-if="item.attributes.max_range">Максимальный пробег
+                                    <span>До {{ item.attributes.max_range }}км/ч*</span></div>
+                                <div class="property-item" v-if="item.attributes.charge_time">Время полной зарядки
+                                    <span>{{ item.attributes.charge_time }}</span></div>
+                                <div class="property-item" v-if="item.attributes.maximum_load">Максимальная нагрузка
+                                    <span>{{ item.attributes.maximum_load }}кг</span></div>
+                                <div class="property-item" v-if="item.attributes.wheel_size">Размер колес
+                                    <span>{{ item.attributes.wheel_size }}</span></div>
+                            </div>
+                            <div class="column">
+                                <div class="property-item" v-if="item.attributes.type_wheels">Тип колес
+                                    <span>{{ item.attributes.type_wheels }}</span></div>
+                                <div class="property-item" v-if="item.attributes.gabarits">Габариты (ДВШ), см
+                                    <span>{{ item.attributes.gabarits }}</span></div>
+                                <div class="property-item" v-if="item.attributes.lighting">Подсветка
+                                    <span>{{ item.attributes.lighting }}</span></div>
+                                <div class="property-item" v-if="item.attributes.privod">Привод
+                                    <span>{{ item.attributes.privod }}</span></div>
+                                <div class="property-item" v-if="item.attributes.stop_system">Тормозная система
+                                    <span>{{ item.attributes.stop_system }}</span></div>
+                                <div class="property-item" v-if="item.attributes.equipment">Комплектация
+                                    <span>{{ item.attributes.equipment }}</span></div>
+                                <div class="property-item" v-if="item.attributes.guarantee">Гарантия
+                                    <span>{{ item.attributes.guarantee }}</span></div>
+                                <div class="property-item special"
+                                     v-if="item.attributes.max_range||item.attributes.max_speed">
+                                    *указаны максимально возможные характеристики, зависящие от веса райдера, рельефа
+                                    местности, погодных условий и температуры окружающей среды
+                                </div>
+                            </div>
+                        </div>
+
+                    </Swiper-slide>
+                    <Swiper-slide class="slider-item">
+                        <div class="pay">
+                            <div class="pay-item">
+                                <h5>5 способов оплаты</h5>
+                                <ul>
+                                    <li>наличными</li>
+                                    <li>картой</li>
+                                    <li>онлайн на сайте через корзину</li>
+                                    <li>через интернет-банкинг по счету</li>
+                                    <li>в кредит от «Сбербанка»</li>
+                                </ul>
+                            </div>
+                            <div class="pay-item">
+                                <h5>Доставка по всей России</h5>
+                                <ul>
+                                    <li>Отправляем заказы по всей России день в день службой доставки товаров CDEK</li>
+                                    <li>Самовывоз из магазинов в Москве, Санкт-Петербурге и Краснодаре</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </Swiper-slide>
+                    <Swiper-slide class="slider-item">
+                        <Gurantee></Gurantee>
+                    </Swiper-slide>
                 </Swiper>
 
             </div>
@@ -159,7 +242,7 @@
 </template>
 
 <script setup lang="ts">
-import {Navigation, Thumbs} from "swiper";
+import {Navigation, Thumbs, EffectFade} from "swiper";
 import {Swiper, SwiperSlide} from "swiper/vue";
 
 const {
@@ -171,7 +254,7 @@ const {
 const {params} = useRoute()
 await filteredDeal(typeItem(), params.id as string)
 const {Detail: item} = storeToRefs(useCatalog())
-const modules = [Navigation, Thumbs];
+const modules = [Navigation, Thumbs, EffectFade];
 const slider = useState<null>();
 const onSwiper = (swiper: any) => {
     slider.value = swiper;
@@ -181,6 +264,16 @@ let thumbsSwiper = useState<null>();
 
 const setThumbsSwiper = (swiper: any) => {
     thumbsSwiper.value = swiper;
+}
+const Property = useState<null>();
+const onProperty = (swiper: any) => {
+    Property.value = swiper;
+};
+let thumbsProperty = useState<null>();
+
+
+const setThumbsProperty = (swiper: any) => {
+    thumbsProperty.value = swiper;
 }
 
 </script>
@@ -268,6 +361,7 @@ const setThumbsSwiper = (swiper: any) => {
       &-item {
         text-align: center;
         position: relative;
+        cursor: pointer;
       }
 
       .swiper-slide-thumb-active::after {
@@ -283,7 +377,17 @@ const setThumbsSwiper = (swiper: any) => {
     }
 
     .slider {
-      margin: 50px 0;
+      margin: 30px 0 50px 0;
+
+      h5 {
+        font-weight: 600;
+        font-size: 1.563em;
+        line-height: 36px;
+        text-transform: uppercase;
+        @media @md {
+          font-size: 1.125em;
+        }
+      }
 
       &-item {
         .about {
@@ -293,15 +397,6 @@ const setThumbsSwiper = (swiper: any) => {
             flex-direction: column
           }
 
-          h5 {
-            font-weight: 600;
-            font-size: 1.563em;
-            line-height: 36px;
-            text-transform: uppercase;
-            @media @md {
-              font-size: 1.125em;
-            }
-          }
 
           h6 {
             font-weight: 500;
@@ -353,6 +448,62 @@ const setThumbsSwiper = (swiper: any) => {
           }
         }
 
+        .property {
+          display: flex;
+          justify-content: space-between;
+          @media @lg {
+            flex-direction: column;
+          }
+
+          .column {
+            width: 47%;
+            @media @lg {
+              width: 100%;
+            }
+          }
+
+          .special {
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 17px;
+            color: @gray;
+          }
+
+          &-item {
+            padding: 0 0 20px 0;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 23px;
+            border-bottom: 1px solid #EAEBED;
+            margin: 20px 0 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            span {
+              font-weight: 600;
+            }
+          }
+        }
+
+        .pay {
+          display: flex;
+          justify-content: space-between;
+          @media @md {
+            flex-direction: column;
+          }
+
+          &-item {
+            width: 48%;
+            @media @md {
+              width: 100%;
+            }
+
+            ul {
+              padding: 0 0 0 20px;
+            }
+          }
+        }
       }
     }
   }
