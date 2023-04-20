@@ -10,7 +10,7 @@
                             @click="filterStatus = false , overFlow(false)"
                     />
                 </div>
-                <Filter></Filter>
+                <Filter @Filters="e=>Filters=e"></Filter>
             </div>
             <div class="catalog-body">
                 <div class="catalog-body-filters">
@@ -19,8 +19,8 @@
                     </button>
                     <div></div>
                 </div>
-                <template v-if="filteredOffers(typeItem()).data">
-                    <Offers :offerType="filteredOffers(typeItem())"></Offers>
+                <template v-if="filteredOffers(sluggedCatalog()).data">
+                    <Offers :offerType="filteredOffers(sluggedCatalog())"></Offers>
                     <div class="pagination">
                         <div class="pagination-wrapper">
                             <div class="pagination-item pagination-item-first button button-outlined"
@@ -53,22 +53,27 @@
 
 <script setup lang="ts">
 
+import {responseFilterType} from "~/types/catalog.types";
+
 const {getDeals, filteredOffers, loadMore} = useCatalog()
 const {params, path, query} = useRoute()
 const router = useRouter();
 definePageMeta({
     middleware: "catalog"
 })
-
-await getDeals(typeItem());
+const Filters=ref<responseFilterType>()
+watch(Filters,()=>{
+    console.log(Filters.value)
+})
+await getDeals(sluggedCatalog());
 const filterStatus = useState<boolean>(() => false)
 /* page, pageSize, pageCount, total*/
 const meta = computed(() =>
-    filteredOffers(typeItem()).meta.pagination
+    filteredOffers(sluggedCatalog()).meta.pagination
 )
 
 const currentPage = useState<number>(() => 1)
-if (query.page) currentPage.value=parseInt(query.page)
+if (query.page) currentPage.value = parseInt(query.page)
 const prepare = async (): Promise<void> => {
 
     await router.replace({
@@ -80,8 +85,8 @@ const prepare = async (): Promise<void> => {
     });
 
 
-    if (typeItem() && currentPage.value) {
-        await loadMore(typeItem(), currentPage.value.toString())
+    if (sluggedCatalog() && currentPage.value) {
+        await loadMore(sluggedCatalog(), currentPage.value.toString())
 
     }
 }
@@ -131,7 +136,7 @@ watch(currentPage, () => {
   }
 
   &-body {
-    width: 70%;
+    width: 75%;
     @media @lg {
       width: 100%;
     }
@@ -159,11 +164,12 @@ watch(currentPage, () => {
 }
 
 .pagination {
-  margin: 1em 0;
+  margin: 1.5em 0 1em;
 
   &-wrapper {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     margin: -10px 0 0 -10px;
   }
 

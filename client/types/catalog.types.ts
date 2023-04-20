@@ -38,10 +38,10 @@ export interface ScooterItemType {
     privod: string,
     stop_system: string,
     type_product: {
-        data: productType
+        data: commonFilterType
     },
     user_type: {
-        data: userType
+        data: commonFilterType
     },
     images: imageType,
     badges: badgesType,
@@ -62,24 +62,21 @@ export interface categoryType {
     id: number,
 }
 
-export interface productType {
+export interface commonFilterType {
     attributes: {
         Title: string,
         createdAt: string,
         publishedAt: string,
         updatedAt: string,
+        Slug: string,
     }
     id: number,
 }
 
-export interface userType {
-    attributes: {
-        Title: string,
-        createdAt: string,
-        publishedAt: string,
-        updatedAt: string,
-    }
-    id: number,
+export interface responseFilterType {
+    type_product?: []
+    user_type?: []
+    weight?: number
 }
 
 interface badgesType {

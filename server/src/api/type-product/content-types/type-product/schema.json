@@ -4,7 +4,8 @@
   "info": {
     "singularName": "type-product",
     "pluralName": "type-products",
-    "displayName": "TypeProduct"
+    "displayName": "TypeProduct",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -13,6 +14,13 @@
   "attributes": {
     "Title": {
       "type": "string"
+    },
+    "Slug": {
+      "type": "customField",
+      "options": {
+        "pattern": "title"
+      },
+      "customField": "plugin::slug.slug"
     }
   }
 }

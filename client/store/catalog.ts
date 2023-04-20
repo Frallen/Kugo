@@ -3,8 +3,7 @@ import qs from "qs";
 import {
     CatalogItemType,
     categoryType,
-    productType,
-    userType,
+    commonFilterType,
     Settings, DetailItemType
 } from "~/types/catalog.types";
 import {errorMessage} from "~/composables/useAlert";
@@ -21,7 +20,7 @@ const populate = (): string => {
     );
 };
 
-const filterPopulate = (value: string): string => {
+const filterDeal = (value: string): string => {
     return qs.stringify({
         populate: "*",
         filters: {
@@ -47,15 +46,15 @@ const pagination = (page: string): string => {
 
 // интерфейс для катлога pinia
 interface stateType {
-    Detail:DetailItemType,
+    Detail: DetailItemType,
     samokats: CatalogItemType;
     //scooters: [],
     bicycles: CatalogItemType,
     RobotVacuum: CatalogItemType,
     Scales: CatalogItemType,
     categories: categoryType[],
-    type_product: productType[],
-    user_types: userType[],
+    type_product: commonFilterType[],
+    user_types: commonFilterType[],
     Warranties: Settings[],
     AdditionalServices: Settings[],
     Packages: Settings[]
@@ -63,7 +62,7 @@ interface stateType {
 
 // пример ответа сервака
 interface responseType {
-    data: categoryType[] | productType[] | userType[] | Settings[]
+    data: categoryType[] | commonFilterType[] | Settings[]
     meta: []
 }
 
@@ -74,7 +73,7 @@ const setLoading = (loading: boolean): void => {
 
 export const useCatalog = defineStore("catalog", {
     state: (): stateType => ({
-        Detail:[],
+        Detail: [],
         samokats: {
             data: [],
         },
@@ -136,7 +135,6 @@ export const useCatalog = defineStore("catalog", {
         },
         async getFilters() {
             setLoading(true)
-
 
 
             const [{data: categories, error},
@@ -220,7 +218,7 @@ export const useCatalog = defineStore("catalog", {
         async filteredDeal(type: string, id: string) {
             setLoading(true)
             let {data, error} = await useFetch(
-                `${useRuntimeConfig().public.strapi.url}/api/${type}?${filterPopulate(id)}`,
+                `${useRuntimeConfig().public.strapi.url}/api/${type}?${filterDeal(id)}`,
                 {
                     method: "GET",
                     headers: {
@@ -231,7 +229,7 @@ export const useCatalog = defineStore("catalog", {
             if (error.value) {
 
             } else {
-                this.Detail= data.value.data[0]
+                this.Detail = data.value.data[0]
             }
 
             setLoading(false)

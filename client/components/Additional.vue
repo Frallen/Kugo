@@ -20,9 +20,9 @@ interface checkboxType {
     Price: number
 }
 
-const checkedValue = useState<checkboxType>()
+const checkedValue = ref<checkboxType>()
 watch(checkedValue, () => {
-//    console.log(checkedValue.value)
+  // console.log(checkedValue.value)
 })
 </script>
 

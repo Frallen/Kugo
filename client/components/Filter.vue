@@ -1,75 +1,99 @@
 <template>
     <div class="filter">
-        <div class="filter-item">
-            <h6>Цена</h6>
-            <RangeSlider :min="0" :max="30000" @submitEvent="e=>minMax=e"></RangeSlider>
-        </div>
-        <ClientOnly>
+        <Form @submit="onSubmit">
             <div class="filter-item">
-                <h6>Тип</h6>
+                <h6>Цена</h6>
+                <RangeSlider :min="minMax[0]" :max="minMax[1]" @submitEvent="e=>minMax=e"></RangeSlider>
+            </div>
+            <ClientOnly>
+                <div class="filter-item">
+                    <h6>Тип</h6>
+                    <ul class="filter-item-list">
+                        <li v-for="item in type_product" :key="item.id">
+                            <label class="checkbox">
+                                <Field name="type_product" @change="submitButton.click()"
+                                       type="checkbox" :value="item.attributes.Title">
+
+                                </Field>
+                                <span class="icon"></span>
+                                <span class="text">{{ item.attributes.Title }}</span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+                <div class="filter-item">
+                    <h6>Для кого</h6>
+                    <ul class="filter-item-list">
+                        <li v-for="item in user_types" :key="item.id">
+                            <label class="checkbox">
+                                <Field name="user_type"
+                                       type="checkbox" :value="item.attributes.Title" @change="submitButton.click()">
+                                </Field>
+                                <span class="icon"></span>
+                                <span class="text">{{ item.attributes.Title }}</span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </ClientOnly>
+            <div class="filter-item">
+                <h6>Вес</h6>
                 <ul class="filter-item-list">
-                    <li v-for="item in type_product" :key="item.id" @click="">
-                        <label class="checkbox">
-                            <input type="checkbox">
+                    <li>
+                        <label class="radio">
+                            <Field name="weight"
+                                   type="radio" :value="15" @change="submitButton.click()">
+                            </Field>
                             <span class="icon"></span>
-                            <span class="text">{{ item.attributes.Title }}</span>
+                            <span class="text">Легкие (до 15 кг)</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="radio">
+                            <Field name="weight"
+                                   id="weight"
+                                   type="radio" :value="[15,30]" @change="submitButton.click()">
+                            </Field>
+                            <span class="icon"></span>
+                            <span class="text">Средние (15-30 кг)</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="radio">
+                            <Field name="weight"
+                                   id="weight"
+                                   type="radio" :value="30" @change="submitButton.click()">
+                            </Field>
+                            <span class="icon"></span>
+                            <span class="text">Тяжелые (свыше 30 кг)</span>
                         </label>
                     </li>
                 </ul>
             </div>
-            <div class="filter-item">
-                <h6>Для кого</h6>
-                <ul class="filter-item-list">
-                    <li v-for="item in user_types" :key="item.id" @click="">
-                        <label class="checkbox">
-                            <input type="checkbox">
-                            <span class="icon"></span>
-                            <span class="text">{{ item.attributes.Title }}</span>
-                        </label>
-                    </li>
-                </ul>
-            </div>
-        </ClientOnly>
-        <div class="filter-item">
-            <h6>Вес</h6>
-            <ul class="filter-item-list">
-                <li>
-                    <label class="radio">
-                        <input type="radio" name="weight">
-                        <span class="icon"></span>
-                        <span class="text">Легкие (до 15 кг)</span>
-                    </label>
-                </li>
-                <li>
-                    <label class="radio">
-                        <input type="radio" name="weight">
-                        <span class="icon"></span>
-                        <span class="text">Средние (15-30 кг)</span>
-                    </label>
-                </li>
-                <li>
-                    <label class="radio">
-                        <input type="radio" name="weight">
-                        <span class="icon"></span>
-                        <span class="text">Тяжелые (свыше 30 кг)</span>
-                    </label>
-                </li>
-            </ul>
-        </div>
-        <div class="filter-item"></div>
+            <div class="filter-item"></div>
+            <button type="submit" hidden="hidden" ref="submitButton"></button>
+        </Form>
     </div>
 </template>
 
 <script setup lang="ts">
+import {Form, Field} from "vee-validate"
+import {responseFilterType} from "~/types/catalog.types";
 
-let minMax = useState<[min: number, max: number]>(() => [0, 3000])
+let minMax = useState<[min: number, max: number]>(() => [0, 30000])
+const emit = defineEmits<{ (e: "Filters", Filers: responseFilterType): void }>()
 
-watch(minMax,()=>{
+watch(minMax, () => {
 
 })
 
+const submitButton = useState<HTMLButtonElement>()
+const {type_product, user_types} = useCatalog()
 
-const {type_product, user_types, getFilters} = useCatalog()
+
+const onSubmit = (values: responseFilterType) => {
+    emit("Filters", values);
+}
 
 </script>
 
@@ -152,6 +176,8 @@ const {type_product, user_types, getFilters} = useCatalog()
         .icon {
           height: 16px;
           width: 16px;
+          min-width: 16px;
+          min-height: 16px;
         }
 
       }

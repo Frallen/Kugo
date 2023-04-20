@@ -15,26 +15,62 @@ export const scrollTop = (): void => {
     }
 }
 
-export const typeItem = (): string => {
+export const sluggedCatalog = (): string => {
     const {params} = useRoute()
-    switch (true) {
-        case params.slug === "elektrosamokaty": {
+    switch (params.slug) {
+        case "elektrosamokaty": {
             return "scooters"
 
         }
-        case params.slug === "elektrovelosipedy": {
+        case "elektrovelosipedy": {
             return "bicycles"
 
         }
-        case params.slug === "robot-pylesosy": {
+        case "robot-pylesosy": {
             return "robots"
 
         }
-        case params.slug === "vesy": {
+        case "vesy": {
             return "scales"
 
         }
         default :
-            return "scooters"
+            return ""
+    }
+}
+export const sluggedType_product = (): string => {
+    const {params} = useRoute()
+    switch (params.type_product) {
+        case  "vnedorozhnyy": {
+            return "Внедорожный"
+        }
+        case "gorodskoy": {
+            return "Городской"
+
+        }
+        case "zimniy": {
+            return "Зимний"
+
+        }
+        default :
+            return ""
+    }
+}
+export const sluggedUser_type = (): string => {
+    const {params} = useRoute()
+    switch (params.user_type) {
+        case  "dlya-vzroslogo": {
+            return "Для взрослого"
+        }
+        case "dlya-pensionera": {
+            return "Для пенсионера"
+
+        }
+        case "dlya-rebenka": {
+            return "Для ребенка"
+
+        }
+        default :
+            return ""
     }
 }

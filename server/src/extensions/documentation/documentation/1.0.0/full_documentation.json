@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2023-04-20T06:21:03.496Z"
+    "x-generation-date": "2023-04-20T16:25:31.399Z"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -3923,6 +3923,9 @@
                           "Title": {
                             "type": "string"
                           },
+                          "Slug": {
+                            "type": "string"
+                          },
                           "createdAt": {
                             "type": "string",
                             "format": "date-time"
@@ -3988,6 +3991,9 @@
                         "type": "object",
                         "properties": {
                           "Title": {
+                            "type": "string"
+                          },
+                          "Slug": {
                             "type": "string"
                           },
                           "createdAt": {
@@ -5135,6 +5141,9 @@
                           "Title": {
                             "type": "string"
                           },
+                          "Slug": {
+                            "type": "string"
+                          },
                           "createdAt": {
                             "type": "string",
                             "format": "date-time"
@@ -5200,6 +5209,9 @@
                         "type": "object",
                         "properties": {
                           "Title": {
+                            "type": "string"
+                          },
+                          "Slug": {
                             "type": "string"
                           },
                           "createdAt": {
@@ -6380,6 +6392,9 @@
                           "Title": {
                             "type": "string"
                           },
+                          "Slug": {
+                            "type": "string"
+                          },
                           "createdAt": {
                             "type": "string",
                             "format": "date-time"
@@ -6445,6 +6460,9 @@
                         "type": "object",
                         "properties": {
                           "Title": {
+                            "type": "string"
+                          },
+                          "Slug": {
                             "type": "string"
                           },
                           "createdAt": {
@@ -7592,6 +7610,9 @@
                           "Title": {
                             "type": "string"
                           },
+                          "Slug": {
+                            "type": "string"
+                          },
                           "createdAt": {
                             "type": "string",
                             "format": "date-time"
@@ -7657,6 +7678,9 @@
                         "type": "object",
                         "properties": {
                           "Title": {
+                            "type": "string"
+                          },
+                          "Slug": {
                             "type": "string"
                           },
                           "createdAt": {
@@ -23074,6 +23098,9 @@
                           "Title": {
                             "type": "string"
                           },
+                          "Slug": {
+                            "type": "string"
+                          },
                           "createdAt": {
                             "type": "string",
                             "format": "date-time"
@@ -23139,6 +23166,9 @@
                         "type": "object",
                         "properties": {
                           "Title": {
+                            "type": "string"
+                          },
+                          "Slug": {
                             "type": "string"
                           },
                           "createdAt": {
@@ -24982,6 +25012,9 @@
                           "Title": {
                             "type": "string"
                           },
+                          "Slug": {
+                            "type": "string"
+                          },
                           "createdAt": {
                             "type": "string",
                             "format": "date-time"
@@ -25047,6 +25080,9 @@
                         "type": "object",
                         "properties": {
                           "Title": {
+                            "type": "string"
+                          },
+                          "Slug": {
                             "type": "string"
                           },
                           "createdAt": {
@@ -26923,6 +26959,9 @@
                           "Title": {
                             "type": "string"
                           },
+                          "Slug": {
+                            "type": "string"
+                          },
                           "createdAt": {
                             "type": "string",
                             "format": "date-time"
@@ -26988,6 +27027,9 @@
                         "type": "object",
                         "properties": {
                           "Title": {
+                            "type": "string"
+                          },
+                          "Slug": {
                             "type": "string"
                           },
                           "createdAt": {
@@ -28831,6 +28873,9 @@
                           "Title": {
                             "type": "string"
                           },
+                          "Slug": {
+                            "type": "string"
+                          },
                           "createdAt": {
                             "type": "string",
                             "format": "date-time"
@@ -28896,6 +28941,9 @@
                         "type": "object",
                         "properties": {
                           "Title": {
+                            "type": "string"
+                          },
+                          "Slug": {
                             "type": "string"
                           },
                           "createdAt": {
@@ -29025,6 +29073,9 @@
             "properties": {
               "Title": {
                 "type": "string"
+              },
+              "Slug": {
+                "type": "string"
               }
             }
           }
@@ -29040,6 +29091,9 @@
             "type": "object",
             "properties": {
               "Title": {
+                "type": "string"
+              },
+              "Slug": {
                 "type": "string"
               },
               "createdAt": {
@@ -29353,6 +29407,9 @@
             "type": "object",
             "properties": {
               "Title": {
+                "type": "string"
+              },
+              "Slug": {
                 "type": "string"
               },
               "createdAt": {
@@ -29701,6 +29758,9 @@
               "Title": {
                 "type": "string"
               },
+              "Slug": {
+                "type": "string"
+              },
               "createdAt": {
                 "type": "string",
                 "format": "date-time"
@@ -30012,6 +30072,9 @@
             "type": "object",
             "properties": {
               "Title": {
+                "type": "string"
+              },
+              "Slug": {
                 "type": "string"
               },
               "createdAt": {
@@ -30339,6 +30402,9 @@
             "properties": {
               "Title": {
                 "type": "string"
+              },
+              "Slug": {
+                "type": "string"
               }
             }
           }
@@ -30354,6 +30420,9 @@
             "type": "object",
             "properties": {
               "Title": {
+                "type": "string"
+              },
+              "Slug": {
                 "type": "string"
               },
               "createdAt": {
@@ -30667,6 +30736,9 @@
             "type": "object",
             "properties": {
               "Title": {
+                "type": "string"
+              },
+              "Slug": {
                 "type": "string"
               },
               "createdAt": {
@@ -31015,6 +31087,9 @@
               "Title": {
                 "type": "string"
               },
+              "Slug": {
+                "type": "string"
+              },
               "createdAt": {
                 "type": "string",
                 "format": "date-time"
@@ -31326,6 +31401,9 @@
             "type": "object",
             "properties": {
               "Title": {
+                "type": "string"
+              },
+              "Slug": {
                 "type": "string"
               },
               "createdAt": {

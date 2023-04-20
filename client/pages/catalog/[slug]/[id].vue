@@ -246,13 +246,15 @@ import {Navigation, Thumbs, EffectFade} from "swiper";
 import {Swiper, SwiperSlide} from "swiper/vue";
 
 const {
-    filteredDeal, Warranties,
-    AdditionalServices, Packages
+    filteredDeal
 } = useCatalog()
-
+const {
+    Warranties,
+    AdditionalServices, Packages
+} = storeToRefs(useCatalog())
 
 const {params} = useRoute()
-await filteredDeal(typeItem(), params.id as string)
+await filteredDeal(sluggedCatalog(), params.id as string)
 const {Detail: item} = storeToRefs(useCatalog())
 const modules = [Navigation, Thumbs, EffectFade];
 const slider = useState<null>();
@@ -631,4 +633,24 @@ const setThumbsProperty = (swiper: any) => {
     }
   }
 }
+
+ul {
+  li {
+    position: relative;
+    list-style-type: none;
+
+  }
+
+  li::before {
+    position: absolute;
+    left: -20px;
+    top: 32%;
+    display: block;
+    width: 10px;
+    height: 10px;
+    content: " ";
+    background: url("/dot.svg") no-repeat;
+  }
+}
+
 </style>

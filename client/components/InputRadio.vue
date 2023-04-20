@@ -28,7 +28,7 @@ interface checkboxType {
 }
 
 let {item} = defineProps<propsType>()
-const isChecked = useState<boolean>(() => item.attributes.Default);
+const isChecked = ref<boolean>(item.attributes.Default);
 
 
 const checkbox = useState<checkboxType>()
@@ -51,6 +51,7 @@ watch(checkbox, () => {
   display: flex;
   justify-content: center;
   flex-direction: column;
+  user-select: none;
 
   input[type=radio] {
     display: none;
