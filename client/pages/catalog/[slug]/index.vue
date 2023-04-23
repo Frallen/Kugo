@@ -10,7 +10,7 @@
                             @click="filterStatus = false , overFlow(false)"
                     />
                 </div>
-                <Filter @Filters="e=>Filters=e"></Filter>
+                <Filter @filters="e=>Filters=e"></Filter>
             </div>
             <div class="catalog-body">
                 <div class="catalog-body-filters">
@@ -19,8 +19,8 @@
                     </button>
                     <div></div>
                 </div>
-                <template v-if="filteredOffers(sluggedCatalog()).data">
-                    <Offers :offerType="filteredOffers(sluggedCatalog())"></Offers>
+                <template v-if="Deals.data">
+                    <Offers :offerType="Deals"></Offers>
                     <div class="pagination">
                         <div class="pagination-wrapper">
                             <div class="pagination-item pagination-item-first button button-outlined"
@@ -31,13 +31,13 @@
                                 />
                             </div>
                             <div class="pagination-item button button-outlined"
-                                 :class="{'button-primary-current':item===currentPage}" v-for="item in meta.pageCount"
+                                 :class="{'button-primary-current':item===currentPage}" v-for="item in Deals.meta.pagination.pageCount"
                                  :key="item"
                                  @click="currentPage=item">
                                 {{ item }}
                             </div>
                             <div class="pagination-item pagination-item-first button button-outlined"
-                                 v-show="currentPage<meta.pageCount" @click="currentPage++">
+                                 v-show="currentPage<Deals.meta.pagination.pageCount" @click="currentPage++">
                                 <Icon
                                         name="ic:outline-keyboard-arrow-right"
                                 />
@@ -55,22 +55,22 @@
 
 import {responseFilterType} from "~/types/catalog.types";
 
-const {getDeals, filteredOffers, loadMore} = useCatalog()
+const {getDeals, loadMore} = useCatalog()
 const {params, path, query} = useRoute()
 const router = useRouter();
 definePageMeta({
     middleware: "catalog"
 })
-const Filters=ref<responseFilterType>()
-watch(Filters,()=>{
+const Filters = ref<responseFilterType>()
+watch(Filters, () => {
     console.log(Filters.value)
+    prepare()
 })
 await getDeals(sluggedCatalog());
 const filterStatus = useState<boolean>(() => false)
-/* page, pageSize, pageCount, total*/
-const meta = computed(() =>
-    filteredOffers(sluggedCatalog()).meta.pagination
-)
+
+const {Deals}=storeToRefs(useCatalog())
+
 
 const currentPage = useState<number>(() => 1)
 if (query.page) currentPage.value = parseInt(query.page)
@@ -80,7 +80,7 @@ const prepare = async (): Promise<void> => {
         path: path,
         query: {
             page: currentPage.value,
-
+            ...(Filters.value&&Filters.value)
         }
     });
 

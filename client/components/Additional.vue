@@ -1,6 +1,6 @@
 <template>
     <div class="product-deals-wrapper">
-        <InputRadio v-for="item in settings" :key="item.id" :item="item" @checkedValue="e=>checkedValue=e"></InputRadio>
+        <InputRadio v-for="item in settings.data" :key="item.id" :item="item" @checkedValue="e=>checkedValue=e"></InputRadio>
     </div>
 </template>
 
@@ -9,7 +9,7 @@ import {Settings} from "~/types/catalog.types";
 
 
 interface propsType {
-    settings: Settings[]
+    settings: Settings
 }
 
 let {settings} = defineProps<propsType>()

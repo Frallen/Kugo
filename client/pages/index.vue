@@ -16,7 +16,7 @@
     <div class="container">
         <div class="offers-short">
             <h3>Электросамокаты</h3>
-            <Offers :offerType="filteredOffers('scooters')"></Offers>
+            <Offers :offerType="Deals"></Offers>
             <NuxtLink class="button button-primary" to="/catalog">Смотреть все</NuxtLink>
         </div>
     </div>
@@ -50,7 +50,7 @@
                 <SupportWidget></SupportWidget>
             </div>
             <div class="categories-wrapper">
-                <NuxtLink :to="`/catalog/${item.attributes.Slug}`" v-for="item in categories" :key="item.id"
+                <NuxtLink :to="`/catalog/${item.attributes.Slug}`" v-for="item in categories.data" :key="item.id"
                           class="categories-item">
                     <NuxtImg provider="cloudinary"
                              :src="item.attributes.Image.data.attributes.url"></NuxtImg>
@@ -62,8 +62,8 @@
 
 <script setup lang="ts">
 
-const {filteredOffers,getDeals, clearDeals, categories} = useCatalog()
-
+const {getDeals, clearDeals, categories} = useCatalog()
+const {Deals}=storeToRefs(useCatalog())
 await getDeals("scooters");
 onUnmounted(() => {
     clearDeals()

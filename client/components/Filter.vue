@@ -9,7 +9,7 @@
                 <div class="filter-item">
                     <h6>Тип</h6>
                     <ul class="filter-item-list">
-                        <li v-for="item in type_product" :key="item.id">
+                        <li v-for="item in type_product.data" :key="item.id">
                             <label class="checkbox">
                                 <Field name="type_product" @change="submitButton.click()"
                                        type="checkbox" :value="item.attributes.Title">
@@ -24,7 +24,7 @@
                 <div class="filter-item">
                     <h6>Для кого</h6>
                     <ul class="filter-item-list">
-                        <li v-for="item in user_types" :key="item.id">
+                        <li v-for="item in user_types.data" :key="item.id">
                             <label class="checkbox">
                                 <Field name="user_type"
                                        type="checkbox" :value="item.attributes.Title" @change="submitButton.click()">
@@ -81,7 +81,7 @@ import {Form, Field} from "vee-validate"
 import {responseFilterType} from "~/types/catalog.types";
 
 let minMax = useState<[min: number, max: number]>(() => [0, 30000])
-const emit = defineEmits<{ (e: "Filters", Filers: responseFilterType): void }>()
+const emit = defineEmits<{ (e: "filters", Filters: responseFilterType): void }>()
 
 watch(minMax, () => {
 
@@ -92,7 +92,7 @@ const {type_product, user_types} = useCatalog()
 
 
 const onSubmit = (values: responseFilterType) => {
-    emit("Filters", values);
+    emit("filters", values);
 }
 
 </script>

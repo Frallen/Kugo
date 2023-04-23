@@ -120,10 +120,6 @@
                     >
                         Гарантии
                     </Swiper-slide>
-                    <!--   <Swiper-slide class="slider-thumbs-item"
-                       >
-                           Версия MAX
-                       </Swiper-slide>-->
                 </Swiper>
                 <Swiper
                         class="slider"
@@ -169,11 +165,11 @@
                         <div class="property">
                             <div class="column">
                                 <div class="property-item" v-if="item.attributes.weight">Масса нетто
-                                    <span>{{ item.attributes.weight }}</span></div>
+                                    <span>{{ item.attributes.weight }} кг</span></div>
                                 <div class="property-item" v-if="item.attributes.power">Мощность
                                     <span>{{ item.attributes.power }} W</span></div>
                                 <div class="property-item" v-if="item.attributes.battery_capacity">Аккумулятор
-                                    <span>{{ item.attributes.battery_capacity }}</span></div>
+                                    <span>{{ item.attributes.battery_capacity }} mAh</span></div>
                                 <div class="property-item" v-if="item.attributes.max_speed">Максимальная скорость <span>До {{
                                     item.attributes.max_speed
                                     }} км/ч*</span></div>
@@ -182,7 +178,7 @@
                                 <div class="property-item" v-if="item.attributes.charge_time">Время полной зарядки
                                     <span>{{ item.attributes.charge_time }}</span></div>
                                 <div class="property-item" v-if="item.attributes.maximum_load">Максимальная нагрузка
-                                    <span>{{ item.attributes.maximum_load }}кг</span></div>
+                                    <span>{{ item.attributes.maximum_load }} кг</span></div>
                                 <div class="property-item" v-if="item.attributes.wheel_size">Размер колес
                                     <span>{{ item.attributes.wheel_size }}</span></div>
                             </div>

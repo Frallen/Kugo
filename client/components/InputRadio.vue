@@ -14,11 +14,11 @@
 </template>
 
 <script setup lang="ts">
-import {Settings} from "~/types/catalog.types";
+import { SettingsItemType} from "~/types/catalog.types";
 
 
 interface propsType {
-    item: Settings
+    item: SettingsItemType
 }
 
 interface checkboxType {

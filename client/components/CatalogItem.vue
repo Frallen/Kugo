@@ -7,8 +7,8 @@
         >
             <div class="product-badges">
                 <div class="product-badges-item " v-for="p in item.attributes.badges.data" :key="item.id"
-                     :class="{'product-badges-hit':p.attributes.title==='Хит', 'product-badges-new':p.attributes.title==='Новинка'}">
-                    {{ p.attributes.title }}
+                     :class="{'product-badges-hit':p.attributes.Title==='Хит', 'product-badges-new':p.attributes.title==='Новинка'}">
+                    {{ p.attributes.Title }}
                 </div>
             </div>
             <div class="product-compare">

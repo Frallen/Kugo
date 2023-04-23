@@ -1,19 +1,13 @@
+// Элемент из каталога
+export interface CatalogItemType extends metaType {
+    data: DetailItemType[]
+}
+
+
 // общий интерфейс для элементов из каталога
 export interface DetailItemType {
     id: number,
     attributes: ScooterItemType
-}
-
-export interface CatalogItemType {
-    data: DetailItemType[]
-    meta?: {
-        pagination: {
-            page: number,
-            pageSize: number,
-            pageCount: number,
-            total: number
-        } | null
-    }
 }
 
 //интерфейс скутеров
@@ -37,58 +31,68 @@ export interface ScooterItemType {
     equipment: string,
     privod: string,
     stop_system: string,
-    type_product: {
-        data: commonFilterType
-    },
-    user_type: {
-        data: commonFilterType
-    },
+    type_product: commonFilterType
+
+    user_type: commonFilterType
+
     images: imageType,
-    badges: badgesType,
+    badges: {
+        data: badgesType
+    },
     category: {
         data: categoryType
-    },
+    }
 }
 
-export interface categoryType {
+// Интерфейс категорий товаров
+export interface categoryType extends metaType {
+    data: categoryItemType[]
+
+
+}
+
+type categoryItemType = {
     attributes: {
         Title: string,
-        createdAt: string,
-        publishedAt: string,
-        updatedAt: string,
         Slug: string,
         Image: imageType,
-    },
+    } & datesType,
     id: number,
 }
 
-export interface commonFilterType {
-    attributes: {
-        Title: string,
-        createdAt: string,
-        publishedAt: string,
-        updatedAt: string,
-        Slug: string,
-    }
-    id: number,
+export interface commonFilterType extends metaType {
+    data: catalogType[]
 }
 
-export interface responseFilterType {
-    type_product?: []
-    user_type?: []
-    weight?: number
+// Интерфейс фильра
+// Беру все из интерфейса categoryType кроме ключа Image
+interface catalogType extends Omit<categoryType, "Image"> {
+
 }
+
 
 interface badgesType {
-    data: {
-        id: number,
-        attributes: {
-            createdAt: string,
-            publishedAt: string,
-            title: string,
-            updatedAt: string,
-        }
-    }
+    id: number,
+    attributes: {
+        Title: string,
+    } & datesType
+}
+
+// Дополнительные услуги в деталке
+export interface Settings extends metaType {
+    data: SettingsItemType[]
+
+}
+
+export interface SettingsItemType {
+    id: number
+    attributes: {
+        Title: string
+        Type: string
+        Length?: string
+        Price?: number
+        Default: boolean
+    } & datesType
 }
 
 // Тип для изображений
@@ -98,7 +102,7 @@ interface imageType {
             alternativeText: null
             caption: null
             createdAt: string
-            ext: ".png"
+            ext: string
             formats: {}
             hash: string
             height: number
@@ -116,17 +120,26 @@ interface imageType {
     }
 }
 
-export interface Settings {
-    id: number
-    attributes: {
-        Title: string
-        Type: string
-        Length?: string
-        createdAt: string
-        updatedAt: string
-        publishedAt: string
-        Price?: number
-        Default: boolean
-    }
+
+export interface responseFilterType {
+    type_product?: []
+    user_type?: []
+    weight?: number | [number, number]
 }
 
+type datesType = {
+    createdAt: string
+    updatedAt: string
+    publishedAt: string
+}
+
+interface metaType {
+    meta: {
+        pagination: {
+            page: number,
+            pageSize: number,
+            pageCount: number,
+            total: number
+        }
+    }
+}

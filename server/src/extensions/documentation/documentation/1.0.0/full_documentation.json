@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2023-04-20T16:25:31.399Z"
+    "x-generation-date": "2023-04-23T17:19:50.277Z"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -1492,7 +1492,7 @@
             "required": [],
             "type": "object",
             "properties": {
-              "title": {
+              "Title": {
                 "type": "string",
                 "enum": [
                   "Новинка",
@@ -1512,7 +1512,7 @@
           "attributes": {
             "type": "object",
             "properties": {
-              "title": {
+              "Title": {
                 "type": "string",
                 "enum": [
                   "Новинка",
@@ -1829,7 +1829,7 @@
           "attributes": {
             "type": "object",
             "properties": {
-              "title": {
+              "Title": {
                 "type": "string",
                 "enum": [
                   "Новинка",
@@ -2179,7 +2179,7 @@
           "attributes": {
             "type": "object",
             "properties": {
-              "title": {
+              "Title": {
                 "type": "string",
                 "enum": [
                   "Новинка",
@@ -2496,7 +2496,7 @@
           "attributes": {
             "type": "object",
             "properties": {
-              "title": {
+              "Title": {
                 "type": "string",
                 "enum": [
                   "Новинка",
@@ -2906,7 +2906,7 @@
                         "attributes": {
                           "type": "object",
                           "properties": {
-                            "title": {
+                            "Title": {
                               "type": "string",
                               "enum": [
                                 "Новинка",
@@ -4124,7 +4124,7 @@
                         "attributes": {
                           "type": "object",
                           "properties": {
-                            "title": {
+                            "Title": {
                               "type": "string",
                               "enum": [
                                 "Новинка",
@@ -5375,7 +5375,7 @@
                         "attributes": {
                           "type": "object",
                           "properties": {
-                            "title": {
+                            "Title": {
                               "type": "string",
                               "enum": [
                                 "Новинка",
@@ -6593,7 +6593,7 @@
                         "attributes": {
                           "type": "object",
                           "properties": {
-                            "title": {
+                            "Title": {
                               "type": "string",
                               "enum": [
                                 "Новинка",
@@ -22075,7 +22075,7 @@
                         "attributes": {
                           "type": "object",
                           "properties": {
-                            "title": {
+                            "Title": {
                               "type": "string",
                               "enum": [
                                 "Новинка",
@@ -23989,7 +23989,7 @@
                         "attributes": {
                           "type": "object",
                           "properties": {
-                            "title": {
+                            "Title": {
                               "type": "string",
                               "enum": [
                                 "Новинка",
@@ -25936,7 +25936,7 @@
                         "attributes": {
                           "type": "object",
                           "properties": {
-                            "title": {
+                            "Title": {
                               "type": "string",
                               "enum": [
                                 "Новинка",
@@ -27850,7 +27850,7 @@
                         "attributes": {
                           "type": "object",
                           "properties": {
-                            "title": {
+                            "Title": {
                               "type": "string",
                               "enum": [
                                 "Новинка",
