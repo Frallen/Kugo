@@ -33,27 +33,33 @@ const filterDeal = (value: string): string => {
     });
 }
 const filterCatalog = (value: responseFilterType): string => {
-    const TypeWeight = () => {
-
-    }
+    /*if(value.weight&&typeof value.weight==="string"){
+        value.weight=[15,30]
+    }*/
     return qs.stringify({
         populate: "*",
         filters: {
-            ...(value.weight && {
-                weight: {
-                    $eq: value,
+            $and: [
+                /*...( value.weight && {
+                    weight: {
+                        $between: typeof value.weight==="string"?[value.weight[0],value.weight[1]]:value.weight,
+                    }
+                }),*/
+                {
+                    ...(value.type_product && {
+                        type_product: {
+                            $in: value.type_product,
+                        }
+                    })
+                },
+                {
+                    ...(value.user_type && {
+                        user_type: {
+                            $in: value.user_type,
+                        }
+                    })
                 }
-            }),
-            ...(value.type_product && {
-                type_product: {
-                    $eq: value.type_product,
-                }
-            }),
-            ...(value.user_type && {
-                user_type: {
-                    $eq: value.user_type,
-                }
-            })
+            ] ,
 
         },
     }, {
@@ -220,10 +226,10 @@ export const useCatalog = defineStore("catalog", {
 
             setLoading(false)
         },
-        async getDeals(type: string) {
+        async getDeals(type: string, filters?: responseFilterType) {
             setLoading(true)
             const {data, error} = await useFetch(
-                `${useRuntimeConfig().public.strapi.url}/api/${type}?${pagination('1')}`,
+                `${useRuntimeConfig().public.strapi.url}/api/${type}?${pagination('1')}&${filters && filterCatalog(filters)}`,
                 {
                     method: "GET",
                     headers: {
@@ -235,11 +241,27 @@ export const useCatalog = defineStore("catalog", {
             this.Deals = data.value as CatalogItemType;
             setLoading(false)
         },
-        async loadMore(type: string | null | undefined, page: string) {
+        async addFilters(type: string | null | undefined, page: string, filters?: responseFilterType) {
+            setLoading(true)
+            console.log(filterCatalog(filters))
+            const {data, error} = await useFetch(
+                `${useRuntimeConfig().public.strapi.url}/api/${type}?${pagination(page ? page : "1")}&${filters && filterCatalog(filters)}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            )
+
+            this.Deals = data.value as CatalogItemType;
+            setLoading(false)
+        },
+        async loadMore(type: string | null | undefined, page: string, filters?: responseFilterType) {
             setLoading(true)
 
             const {data, error} = await useFetch(
-                `${useRuntimeConfig().public.strapi.url}/api/${type}?${pagination(page)}`,
+                `${useRuntimeConfig().public.strapi.url}/api/${type}?${pagination(page)}&${filters && filterCatalog(filters)}`,
                 {
                     method: "GET",
                     headers: {

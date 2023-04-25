@@ -122,9 +122,9 @@ interface imageType {
 
 
 export interface responseFilterType {
-    type_product?: []
-    user_type?: []
-    weight?: number | [number, number]
+    type_product?: [string]
+    user_type?: [string]
+    weight?: string | [number, number]
 }
 
 type datesType = {
