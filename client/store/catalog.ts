@@ -33,33 +33,38 @@ const filterDeal = (value: string): string => {
     });
 }
 const filterCatalog = (value: responseFilterType): string => {
-    /*if(value.weight&&typeof value.weight==="string"){
-        value.weight=[15,30]
-    }*/
     return qs.stringify({
-        populate: "*",
         filters: {
             $and: [
-                /*...( value.weight && {
-                    weight: {
-                        $between: typeof value.weight==="string"?[value.weight[0],value.weight[1]]:value.weight,
-                    }
-                }),*/
                 {
-                    ...(value.type_product && {
-                        type_product: {
-                            $in: value.type_product,
-                        }
-                    })
+                    weight: {
+                        ...(value.weight&&typeof value.weight === "string" && {
+                                $between: [15, 30],
+                        }),
+                        ...(value.weight&&typeof value.weight === "number"&& value.weight<=15 && {
+
+                            $lt: value.weight,
+
+                        }),
+                        ...(value.weight&&typeof value.weight === "number"&& value.weight>=30 && {
+                            $gt: value.weight,
+                        }),
+                    }
                 },
                 {
-                    ...(value.user_type && {
-                        user_type: {
-                            $in: value.user_type,
-                        }
-                    })
+                    type_product: {
+                        Title: {$in: value.type_product}
+
+                    }
+
+                },
+                {
+                    user_type: {
+                        Title: {$in: value.user_type}
+                    }
+
                 }
-            ] ,
+            ],
 
         },
     }, {
@@ -221,7 +226,7 @@ export const useCatalog = defineStore("catalog", {
             if (error.value) {
 
             } else {
-                this.Detail = (data.value as CatalogItemType).data[0]
+                this.Detail = (data.value as CatalogItemType).data[0] as DetailItemType
             }
 
             setLoading(false)
@@ -243,7 +248,6 @@ export const useCatalog = defineStore("catalog", {
         },
         async addFilters(type: string | null | undefined, page: string, filters?: responseFilterType) {
             setLoading(true)
-            console.log(filterCatalog(filters))
             const {data, error} = await useFetch(
                 `${useRuntimeConfig().public.strapi.url}/api/${type}?${pagination(page ? page : "1")}&${filters && filterCatalog(filters)}`,
                 {
@@ -253,8 +257,13 @@ export const useCatalog = defineStore("catalog", {
                     },
                 }
             )
+            if (error.value) {
 
-            this.Deals = data.value as CatalogItemType;
+            } else {
+                this.Deals = data.value as CatalogItemType;
+            }
+
+
             setLoading(false)
         },
         async loadMore(type: string | null | undefined, page: string, filters?: responseFilterType) {

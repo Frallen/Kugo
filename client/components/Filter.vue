@@ -1,6 +1,6 @@
 <template>
     <div class="filter">
-        <Form @submit="onSubmit">
+        <Form @submit="onSubmit" ref="form" :initial-values="formValues">
             <div class="filter-item">
                 <h6>Цена</h6>
                 <RangeSlider :min="minMax[0]" :max="minMax[1]" @submitEvent="e=>minMax=e"></RangeSlider>
@@ -11,8 +11,10 @@
                     <ul class="filter-item-list">
                         <li v-for="item in type_product.data" :key="item.id">
                             <label class="checkbox">
-                                <Field name="type_product" @change="submitButton.click()"
-                                       type="checkbox" :value="item.attributes.Title">
+                                <Field name="type_product" @change.prevent="submitButton.click()"
+                                       type="checkbox" :value="item.attributes.Title"
+                                       :checked="query.type_product=== item.attributes.Title&&true"
+                                >
 
                                 </Field>
                                 <span class="icon"></span>
@@ -27,7 +29,9 @@
                         <li v-for="item in user_types.data" :key="item.id">
                             <label class="checkbox">
                                 <Field name="user_type"
-                                       type="checkbox" :value="item.attributes.Title" @change="submitButton.click()">
+                                       type="checkbox" :value="item.attributes.Title"
+                                       :checked="query.user_type=== item.attributes.Title&&true"
+                                       @change="submitButton.click()">
                                 </Field>
                                 <span class="icon"></span>
                                 <span class="text">{{ item.attributes.Title }}</span>
@@ -42,7 +46,8 @@
                     <li>
                         <label class="radio">
                             <Field name="weight"
-                                   type="radio" :value="15" @change="submitButton.click()">
+                                   type="radio" :value="15" :checked="query.weight&&parseInt(query.weight)<=15&&true"
+                                   @change="submitButton.click()">
                             </Field>
                             <span class="icon"></span>
                             <span class="text">Легкие (до 15 кг)</span>
@@ -51,8 +56,8 @@
                     <li>
                         <label class="radio">
                             <Field name="weight"
-                                   id="weight"
-                                   type="radio" :value="[15,30]" @change="submitButton.click()">
+                                   type="radio" value="Medium" :checked="query.weight && query.weight==='Medium'&&true"
+                                   @change="submitButton.click()">
                             </Field>
                             <span class="icon"></span>
                             <span class="text">Средние (15-30 кг)</span>
@@ -61,7 +66,7 @@
                     <li>
                         <label class="radio">
                             <Field name="weight"
-                                   id="weight"
+                                   :checked="query.weight&&parseInt(query.weight)>=30&&true"
                                    type="radio" :value="30" @change="submitButton.click()">
                             </Field>
                             <span class="icon"></span>
@@ -80,15 +85,23 @@
 import {Form, Field} from "vee-validate"
 import {responseFilterType} from "~/types/catalog.types";
 
+const form = ref<HTMLFormElement>()
+const {query} = useRoute()
 let minMax = useState<[min: number, max: number]>(() => [0, 30000])
 const emit = defineEmits<{ (e: "filters", Filters: responseFilterType): void }>()
 
+const formValues = useState<responseFilterType>();
+formValues.value = {
+    type_product: query.type_product,
+    user_type: query.user_type,
+    weight: query.weight,
+}
 watch(minMax, () => {
 
 })
 
 const submitButton = useState<HTMLButtonElement>()
-const {type_product, user_types} = useCatalog()
+const {type_product, user_types} = storeToRefs(useCatalog())
 
 
 const onSubmit = (values: responseFilterType) => {

@@ -5,9 +5,9 @@
                   @mouseover="mouseHovered=true"
                   @mouseleave="mouseHovered=false"
         >
-            <div class="product-badges">
+            <div class="product-badges" v-if="item.attributes.badges.data">
                 <div class="product-badges-item " v-for="p in item.attributes.badges.data" :key="item.id"
-                     :class="{'product-badges-hit':p.attributes.Title==='Хит', 'product-badges-new':p.attributes.title==='Новинка'}">
+                     :class="{'product-badges-hit':p.attributes.Title==='Хит', 'product-badges-new':p.attributes.Title==='Новинка'}">
                     {{ p.attributes.Title }}
                 </div>
             </div>
@@ -133,8 +133,10 @@ const mouseHovered = useState<boolean>()
   position: relative;
   user-select: none;
   text-decoration: none;
-  display: block;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   &-badges, &-compare {
     position: absolute;
@@ -149,7 +151,7 @@ const mouseHovered = useState<boolean>()
   }
 
   &-img {
-    height: 231px;
+    height: 47%;
     width: 100%;
     overflow: hidden;
 
@@ -227,7 +229,11 @@ const mouseHovered = useState<boolean>()
   }
 
   &-content {
-    padding: 24px 20px 20px;
+    padding: 0 20px 20px;
+    height: 47%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     .product-body {
       &-price {

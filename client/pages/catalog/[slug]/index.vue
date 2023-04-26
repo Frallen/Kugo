@@ -20,7 +20,7 @@
                     <div></div>
                 </div>
                 <template v-if="Deals.data">
-                    <Offers :offerType="Deals"></Offers>
+                    <Offers :offerType="Deals" :isCatalog="true"></Offers>
                     <div class="pagination">
                         <div class="pagination-wrapper">
                             <div class="pagination-item pagination-item-first button button-outlined"
@@ -31,7 +31,8 @@
                                 />
                             </div>
                             <div class="pagination-item button button-outlined"
-                                 :class="{'button-primary-current':item===currentPage}" v-for="item in Deals.meta.pagination.pageCount"
+                                 :class="{'button-primary-current':item===currentPage}"
+                                 v-for="item in Deals.meta.pagination.pageCount"
                                  :key="item"
                                  @click="currentPage=item">
                                 {{ item }}
@@ -55,21 +56,31 @@
 
 import {responseFilterType} from "~/types/catalog.types";
 
-const {getDeals, loadMore} = useCatalog()
+const {getDeals, loadMore, addFilters} = useCatalog()
 const {params, path, query} = useRoute()
 const router = useRouter();
+const {Deals} = storeToRefs(useCatalog())
 definePageMeta({
     middleware: "catalog"
 })
 const Filters = ref<responseFilterType>()
-watch(Filters, () => {
-    console.log(Filters.value)
-    prepare()
+Filters.value = {
+    type_product: query.type_product,
+    user_type: query.user_type,
+    weight: query.weight,
+}
+watch(Filters, async () => {
+    await router.replace({
+        path: path,
+        query: {
+            page: currentPage.value,
+            ...(Filters.value && Filters.value)
+        }
+    });
+    await addFilters(sluggedCatalog(), currentPage.value.toString(), Filters.value)
 })
-await getDeals(sluggedCatalog());
+await getDeals(sluggedCatalog(), Filters.value && Filters.value);
 const filterStatus = useState<boolean>(() => false)
-
-const {Deals}=storeToRefs(useCatalog())
 
 
 const currentPage = useState<number>(() => 1)
@@ -80,13 +91,13 @@ const prepare = async (): Promise<void> => {
         path: path,
         query: {
             page: currentPage.value,
-            ...(Filters.value&&Filters.value)
+            ...(Filters.value && Filters.value),
         }
     });
 
 
     if (sluggedCatalog() && currentPage.value) {
-        await loadMore(sluggedCatalog(), currentPage.value.toString())
+        await loadMore(sluggedCatalog(), currentPage.value.toString(), Filters.value && Filters.value)
 
     }
 }
@@ -142,10 +153,12 @@ watch(currentPage, () => {
     }
 
     &-filters {
-      margin: 0 0 1em 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      @media @lg {
+        margin: 0 0 1em 0;
+      }
 
       .call-filter {
         display: none;
@@ -192,7 +205,7 @@ watch(currentPage, () => {
   margin: 50px 1em;
   .br(10px);
   @media @md {
-    margin: 0;
+    margin: 50px 0;
     .br(0);
   }
 }

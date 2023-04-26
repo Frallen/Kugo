@@ -32,23 +32,19 @@ export interface ScooterItemType {
     privod: string,
     stop_system: string,
     type_product: commonFilterType
-
     user_type: commonFilterType
-
     images: imageType,
     badges: {
-        data: badgesType
+        data: badgesType[]
     },
     category: {
-        data: categoryType
+        data: categoryItemType
     }
 }
 
 // Интерфейс категорий товаров
 export interface categoryType extends metaType {
     data: categoryItemType[]
-
-
 }
 
 type categoryItemType = {
@@ -124,7 +120,7 @@ interface imageType {
 export interface responseFilterType {
     type_product?: [string]
     user_type?: [string]
-    weight?: string | [number, number]
+    weight?: string | number
 }
 
 type datesType = {

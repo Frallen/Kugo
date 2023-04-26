@@ -14,6 +14,28 @@ export const scrollTop = (): void => {
         });
     }
 }
+const weightSlugged=()=>{
+    switch (params.slug) {
+        case "elektrosamokaty": {
+            return "scooters"
+
+        }
+        case "elektrovelosipedy": {
+            return "bicycles"
+
+        }
+        case "robot-pylesosy": {
+            return "robots"
+
+        }
+        case "vesy": {
+            return "scales"
+
+        }
+        default :
+            return ""
+    }
+}
 
 export const sluggedCatalog = (): string => {
     const {params} = useRoute()

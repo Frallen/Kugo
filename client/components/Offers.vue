@@ -1,7 +1,8 @@
 <template>
-    <div class="offers" ref="el">
+    <div class="offers" :class="{'offers-catalog':isCatalog}">
         <transition-group name="fade">
-            <CatalogItem class="offers-item" v-for="item in offerType.data" :item="item" :key="item.id"></CatalogItem>
+            <CatalogItem class="offers-item" :class="{'offers-catalog-item':isCatalog}" v-for="item in offerType.data"
+                         :item="item" :key="item.id"></CatalogItem>
         </transition-group>
     </div>
 </template>
@@ -10,12 +11,15 @@
 import {type CatalogItemType} from "~/types/catalog.types";
 
 interface propsType {
-    offerType: CatalogItemType
+    offerType: CatalogItemType,
+    isCatalog?: boolean,
 }
 
 let {
     offerType
-} = defineProps<propsType>()
+} = withDefaults(defineProps<propsType>(), {
+    isCatalog: false
+})
 
 </script>
 
@@ -31,13 +35,39 @@ let {
     margin: -15px 0 0 0;
   }
 
-  h3 {
-
-  }
-
   &-item {
     margin: 30px 0 0 30px;
     width: calc(100% / 4 - 30px);
+    height: 492px;
+    @media @xl {
+      margin: 15px 0 0 15px;
+      width: calc(100% / 3 - 15px);
+    }
+    @media @md {
+      margin: 15px 0 0 15px;
+      width: calc(100% / 2 - 15px);
+    }
+    @media @xs {
+      width: 100%;
+      margin: 15px 0 0 0;
+
+    }
+
+  }
+}
+
+.offers-catalog {
+  margin: -30px 0 0 -15px;
+  @media @lg {
+    margin: -15px 0 0 -15px;
+  }
+  @media @xs {
+    margin: -15px 0 0 0;
+  }
+
+  &-item {
+    margin: 30px 0 0 15px;
+    width: calc(100% / 4 - 15px);
     @media @xl {
       margin: 15px 0 0 15px;
       width: calc(100% / 3 - 15px);
