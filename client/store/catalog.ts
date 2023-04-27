@@ -4,7 +4,7 @@ import {
     CatalogItemType,
     categoryType,
     commonFilterType,
-    Settings, DetailItemType, responseFilterType
+    Settings, DetailItemType, responseFilterType, SelectFilterType
 } from "~/types/catalog.types";
 import {errorMessage} from "~/composables/useAlert";
 import {overFlow, scrollTop} from "~/composables/mixins";
@@ -38,15 +38,15 @@ const filterCatalog = (value: responseFilterType): string => {
             $and: [
                 {
                     weight: {
-                        ...(value.weight&&typeof value.weight === "string" && {
-                                $between: [15, 30],
+                        ...(value.weight && typeof value.weight === "string" && {
+                            $between: [15, 30],
                         }),
-                        ...(value.weight&&typeof value.weight === "number"&& value.weight<=15 && {
+                        ...(value.weight && typeof value.weight === "number" && value.weight <= 15 && {
 
                             $lt: value.weight,
 
                         }),
-                        ...(value.weight&&typeof value.weight === "number"&& value.weight>=30 && {
+                        ...(value.weight && typeof value.weight === "number" && value.weight >= 30 && {
                             $gt: value.weight,
                         }),
                     }
@@ -71,6 +71,14 @@ const filterCatalog = (value: responseFilterType): string => {
         encodeValuesOnly: true, // prettify URL
     });
 }
+const sortCatalog = (value: SelectFilterType): string => {
+
+    return qs.stringify({
+        sort: [value.sort],
+    }, {
+        encodeValuesOnly: true, // prettify URL
+    });
+}
 const pagination = (page: string): string => {
     return qs.stringify({
         populate: "*",
@@ -85,6 +93,7 @@ const pagination = (page: string): string => {
 
 // интерфейс для катлога pinia
 interface stateType {
+    SortOptions: SelectFilterType[],
     Detail: DetailItemType | {},
     Deals: CatalogItemType | {};
     categories: categoryType,
@@ -103,6 +112,12 @@ const setLoading = (loading: boolean): void => {
 
 export const useCatalog = defineStore("catalog", {
     state: (): stateType => ({
+        // объект для сортировки
+        SortOptions: [
+            {label: 'Сначала дешевле', sort: 'Price:asc'},
+            {label: 'Сначала дороже', sort: 'Price:desc'},
+            {label: 'По сумме скидки', sort: 'discount_percent:desc'}
+        ],
         Detail: {},
         Deals: {},
         categories: {
@@ -231,10 +246,12 @@ export const useCatalog = defineStore("catalog", {
 
             setLoading(false)
         },
-        async getDeals(type: string, filters?: responseFilterType) {
+        async getDeals(type: string, filters?: responseFilterType, sort?: SelectFilterType) {
             setLoading(true)
             const {data, error} = await useFetch(
-                `${useRuntimeConfig().public.strapi.url}/api/${type}?${pagination('1')}&${filters && filterCatalog(filters)}`,
+                `${useRuntimeConfig().public.strapi.url}/api/${type}?${pagination('1')}
+                &${filters && filterCatalog(filters)}
+                &${sort && sortCatalog(sort)}`,
                 {
                     method: "GET",
                     headers: {
@@ -246,10 +263,12 @@ export const useCatalog = defineStore("catalog", {
             this.Deals = data.value as CatalogItemType;
             setLoading(false)
         },
-        async addFilters(type: string | null | undefined, page: string, filters?: responseFilterType) {
+        async addFilters(type: string, page: string, filters?: responseFilterType, sort?: SelectFilterType) {
             setLoading(true)
             const {data, error} = await useFetch(
-                `${useRuntimeConfig().public.strapi.url}/api/${type}?${pagination(page ? page : "1")}&${filters && filterCatalog(filters)}`,
+                `${useRuntimeConfig().public.strapi.url}/api/${type}?${pagination(page ? page : "1")}
+                &${filters && filterCatalog(filters)}
+                &${sort && sortCatalog(sort)}`,
                 {
                     method: "GET",
                     headers: {
@@ -266,11 +285,13 @@ export const useCatalog = defineStore("catalog", {
 
             setLoading(false)
         },
-        async loadMore(type: string | null | undefined, page: string, filters?: responseFilterType) {
+        async loadMore(type: string, page: string, filters?: responseFilterType, sort?: SelectFilterType) {
             setLoading(true)
 
             const {data, error} = await useFetch(
-                `${useRuntimeConfig().public.strapi.url}/api/${type}?${pagination(page)}&${filters && filterCatalog(filters)}`,
+                `${useRuntimeConfig().public.strapi.url}/api/${type}?${pagination(page)}
+                &${filters && filterCatalog(filters)}
+                &${sort && sortCatalog(sort)}`,
                 {
                     method: "GET",
                     headers: {

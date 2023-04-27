@@ -68,7 +68,7 @@ let {
   &-item {
     margin: 30px 0 0 15px;
     width: calc(100% / 4 - 15px);
-    @media @xl {
+    @media @xxl {
       margin: 15px 0 0 15px;
       width: calc(100% / 3 - 15px);
     }

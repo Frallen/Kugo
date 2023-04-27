@@ -1,6 +1,6 @@
 <template>
     <StockBlock></StockBlock>
-    <div class="container">
+    <div class="container-catalog">
         <div class="catalog">
             <div class="catalog-filter" :class="{'visible':filterStatus}">
                 <div class="catalog-filter-close">
@@ -17,7 +17,9 @@
                     <button class="button button-outlined call-filter" @click="filterStatus=true , overFlow(true)">
                         Фильтры
                     </button>
-                    <div></div>
+                    <div class="catalog-body-selects">
+                        <Select :options="SortOptions" @selectValue="e=>Sort=e"></Select>
+                    </div>
                 </div>
                 <template v-if="Deals.data">
                     <Offers :offerType="Deals" :isCatalog="true"></Offers>
@@ -54,36 +56,57 @@
 
 <script setup lang="ts">
 
-import {responseFilterType} from "~/types/catalog.types";
+import {responseFilterType, SelectFilterType} from "~/types/catalog.types";
 
 const {getDeals, loadMore, addFilters} = useCatalog()
 const {params, path, query} = useRoute()
 const router = useRouter();
-const {Deals} = storeToRefs(useCatalog())
+const {Deals,SortOptions} = storeToRefs(useCatalog())
 definePageMeta({
     middleware: "catalog"
 })
 const Filters = ref<responseFilterType>()
+const Sort = ref<SelectFilterType>()
+Sort.value = {
+    sort: query.sort,
+}
 Filters.value = {
     type_product: query.type_product,
     user_type: query.user_type,
     weight: query.weight,
 }
+
+// блок с фильтрами
 watch(Filters, async () => {
     await router.replace({
         path: path,
         query: {
             page: currentPage.value,
-            ...(Filters.value && Filters.value)
+            ...(Filters.value && Filters.value),
+            ...(Sort.value && Sort.value.sort)
         }
     });
-    await addFilters(sluggedCatalog(), currentPage.value.toString(), Filters.value)
+    await addFilters(sluggedCatalog(), currentPage.value.toString(), Filters.value, Sort.value && Sort.value)
+})
+// блок с фильтрами
+watch(Sort, async () => {
+    console.log(Sort.value)
+    await router.replace({
+        path: path,
+        query: {
+            page: currentPage.value,
+            ...(Filters.value && Filters.value),
+            ...(Sort.value && Sort.value.sort)
+        }
+    });
+    await addFilters(sluggedCatalog(), currentPage.value.toString(), Filters.value && Filters.value, Sort.value && Sort.value)
 })
 await getDeals(sluggedCatalog(), Filters.value && Filters.value);
+// показ мобильной версии фильтра
 const filterStatus = useState<boolean>(() => false)
-
-
+// начальная страница пагинации
 const currentPage = useState<number>(() => 1)
+// проверка url на наличие страницы
 if (query.page) currentPage.value = parseInt(query.page)
 const prepare = async (): Promise<void> => {
 
@@ -92,16 +115,17 @@ const prepare = async (): Promise<void> => {
         query: {
             page: currentPage.value,
             ...(Filters.value && Filters.value),
+            ...(Sort.value && Sort.value.sort)
         }
     });
 
 
     if (sluggedCatalog() && currentPage.value) {
-        await loadMore(sluggedCatalog(), currentPage.value.toString(), Filters.value && Filters.value)
+        await loadMore(sluggedCatalog(), currentPage.value.toString(), Filters.value && Filters.value, Sort.value && Sort.value)
 
     }
 }
-
+// немедленный запуск вотчера для получения данных
 watch(currentPage, () => {
     prepare()
 
@@ -111,6 +135,23 @@ watch(currentPage, () => {
 </script>
 
 <style scoped lang="less">
+.container-catalog {
+  padding: 0 6vw;
+  @media @xxl {
+    padding: 0 4vw;
+  }
+
+  @media @lg {
+    padding: 0 1.3em;
+  }
+  @media @md {
+    padding: 0 1em;
+  }
+  @media @sm {
+    padding: 0 0.5em;
+  }
+}
+
 .catalog {
   display: flex;
   justify-content: space-between;
@@ -156,8 +197,9 @@ watch(currentPage, () => {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin: 0 0 2em 0;
       @media @lg {
-        margin: 0 0 1em 0;
+
       }
 
       .call-filter {
@@ -166,6 +208,13 @@ watch(currentPage, () => {
           display: block;
         }
       }
+    }
+
+    &-selects {
+      margin: 0 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     &-empty {

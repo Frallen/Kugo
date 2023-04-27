@@ -139,3 +139,8 @@ interface metaType {
         }
     }
 }
+
+export interface SelectFilterType {
+    label: string,
+    sort: string
+}
