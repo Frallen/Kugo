@@ -1,5 +1,5 @@
 <template>
-    <div class="offers" :class="{'offers-catalog':isCatalog}">
+    <div class="offers" :class="{'offers-catalog':specialView}">
         <transition-group name="fade">
             <CatalogItem class="offers-item" :class="{'offers-catalog-item':isCatalog}" v-for="item in offerType.data"
                          :item="item" :key="item.id"></CatalogItem>
@@ -16,10 +16,10 @@ interface propsType {
 }
 
 let {
-    offerType
-} = withDefaults(defineProps<propsType>(), {
-    isCatalog: false
-})
+    offerType, isCatalog
+} = defineProps<propsType>()
+
+const specialView = useState<boolean>(() => isCatalog ?? false)
 
 </script>
 
@@ -68,7 +68,7 @@ let {
   &-item {
     margin: 30px 0 0 15px;
     width: calc(100% / 4 - 15px);
-    @media @xl {
+    @media @xxl {
       margin: 15px 0 0 15px;
       width: calc(100% / 3 - 15px);
     }
