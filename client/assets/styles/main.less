@@ -161,3 +161,30 @@ h3 {
     margin: 0 0 50px 0;
   }
 }
+
+.select {
+  min-width: 220px;
+  font-family: "Jost", sans-serif;
+  .vs__dropdown-toggle {
+    border: 1.3px solid @purple;
+    .br(5px);
+    padding: 10px 15px;
+  }
+
+  .vs__selected,.vs__search{
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 17px;
+    color: @purple;
+  }
+  .vs__open-indicator,.vs__clear{
+    fill: @purple;
+  }
+  .vs__dropdown-option{
+    color: @black;
+  }
+  .vs__dropdown-option--highlight{
+    color: #fff;
+    background: @purple;
+  }
+}

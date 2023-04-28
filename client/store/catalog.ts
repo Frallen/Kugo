@@ -68,7 +68,6 @@ const filterCatalog = (value: responseFilterType): string => {
 
         },
     }, {
-        encodeValuesOnly: true, // prettify URL
     });
 }
 const sortCatalog = (value: SelectFilterType): string => {
@@ -76,7 +75,6 @@ const sortCatalog = (value: SelectFilterType): string => {
     return qs.stringify({
         sort: [value.sort],
     }, {
-        encodeValuesOnly: true, // prettify URL
     });
 }
 const pagination = (page: string): string => {
@@ -248,10 +246,9 @@ export const useCatalog = defineStore("catalog", {
         },
         async getDeals(type: string, filters?: responseFilterType, sort?: SelectFilterType) {
             setLoading(true)
+            const sorting=sort?sortCatalog(sort):false
             const {data, error} = await useFetch(
-                `${useRuntimeConfig().public.strapi.url}/api/${type}?${pagination('1')}
-                &${filters && filterCatalog(filters)}
-                &${sort && sortCatalog(sort)}`,
+                `${useRuntimeConfig().public.strapi.url}/api/${type}?${pagination('1')}&${filters && filterCatalog(filters)}&${sorting && sorting}`,
                 {
                     method: "GET",
                     headers: {
@@ -266,9 +263,7 @@ export const useCatalog = defineStore("catalog", {
         async addFilters(type: string, page: string, filters?: responseFilterType, sort?: SelectFilterType) {
             setLoading(true)
             const {data, error} = await useFetch(
-                `${useRuntimeConfig().public.strapi.url}/api/${type}?${pagination(page ? page : "1")}
-                &${filters && filterCatalog(filters)}
-                &${sort && sortCatalog(sort)}`,
+                `${useRuntimeConfig().public.strapi.url}/api/${type}?${pagination(page ? page : "1")}&${filters && filterCatalog(filters)}&${sort && sortCatalog(sort)}`,
                 {
                     method: "GET",
                     headers: {
@@ -289,9 +284,7 @@ export const useCatalog = defineStore("catalog", {
             setLoading(true)
 
             const {data, error} = await useFetch(
-                `${useRuntimeConfig().public.strapi.url}/api/${type}?${pagination(page)}
-                &${filters && filterCatalog(filters)}
-                &${sort && sortCatalog(sort)}`,
+                `${useRuntimeConfig().public.strapi.url}/api/${type}?${pagination(page)}&${filters && filterCatalog(filters)}&${sort && sortCatalog(sort)}`,
                 {
                     method: "GET",
                     headers: {

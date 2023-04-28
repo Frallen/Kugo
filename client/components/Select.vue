@@ -1,5 +1,5 @@
 <template>
-    <vSelect v-model="Option"
+    <vSelect class="select" v-model="Option" :placeholder="placeholder" :searchable="false"
              :options="options"></vSelect>
 </template>
 
@@ -9,9 +9,10 @@ import {SelectFilterType} from "~/types/catalog.types";
 
 interface propsType {
     options: SelectFilterType[],
+    placeholder: string
 }
 
-const {options} = defineProps<propsType>()
+const {options,placeholder} = defineProps<propsType>()
 
 const Option = useState<SelectFilterType>()
 

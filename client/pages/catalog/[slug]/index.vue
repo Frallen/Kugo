@@ -18,7 +18,7 @@
                         Фильтры
                     </button>
                     <div class="catalog-body-selects">
-                        <Select :options="SortOptions" @selectValue="e=>Sort=e"></Select>
+                        <Select :options="SortOptions" :placeholder="'Фильтр'" @selectValue="e=>Sort=e"></Select>
                     </div>
                 </div>
                 <template v-if="Deals.data">
@@ -56,24 +56,24 @@
 
 <script setup lang="ts">
 
-import {responseFilterType, SelectFilterType} from "~/types/catalog.types";
+import {categoryType, responseFilterType, SelectFilterType} from "~/types/catalog.types";
 
 const {getDeals, loadMore, addFilters} = useCatalog()
 const {params, path, query} = useRoute()
 const router = useRouter();
-const {Deals,SortOptions} = storeToRefs(useCatalog())
+const {Deals, SortOptions} = storeToRefs(useCatalog())
 definePageMeta({
     middleware: "catalog"
 })
 const Filters = ref<responseFilterType>()
 const Sort = ref<SelectFilterType>()
 Sort.value = {
-    sort: query.sort,
+    sort: query.sort as string,
 }
 Filters.value = {
-    type_product: query.type_product,
-    user_type: query.user_type,
-    weight: query.weight,
+    type_product: query.type_product as [string],
+    user_type: query.user_type as [string],
+    weight: query.weight as string|number,
 }
 
 // блок с фильтрами
