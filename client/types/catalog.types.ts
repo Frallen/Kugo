@@ -66,7 +66,12 @@ interface catalogType extends Omit<categoryType, "Image"> {
 
 }
 
+export interface weightType {
+    Title: string,
+    value: number | string,
+}
 
+//интерфейс меток скидка/хит
 interface badgesType {
     id: number,
     attributes: {
@@ -120,7 +125,7 @@ interface imageType {
 export interface responseFilterType {
     type_product?: [string]
     user_type?: [string]
-    weight?: string | number
+    weight?: string
 }
 
 type datesType = {

@@ -43,34 +43,15 @@
             <div class="filter-item">
                 <h6>Вес</h6>
                 <ul class="filter-item-list">
-                    <li>
+                    <li v-for="item in weight" :key="item.value">
                         <label class="radio">
                             <Field name="weight"
-                                   type="radio" :value="15" :checked="query.weight&&parseInt(query.weight)<=15&&true"
+                                   type="radio" :value="item.value"
+                                   :checked="query.weight === item.value.toString()"
                                    @change="submitButton.click()">
                             </Field>
                             <span class="icon"></span>
-                            <span class="text">Легкие (до 15 кг)</span>
-                        </label>
-                    </li>
-                    <li>
-                        <label class="radio">
-                            <Field name="weight"
-                                   type="radio" value="Medium" :checked="query.weight && query.weight==='Medium'&&true"
-                                   @change="submitButton.click()">
-                            </Field>
-                            <span class="icon"></span>
-                            <span class="text">Средние (15-30 кг)</span>
-                        </label>
-                    </li>
-                    <li>
-                        <label class="radio">
-                            <Field name="weight"
-                                   :checked="query.weight&&parseInt(query.weight)>=30&&true"
-                                   type="radio" :value="30" @change="submitButton.click()">
-                            </Field>
-                            <span class="icon"></span>
-                            <span class="text">Тяжелые (свыше 30 кг)</span>
+                            <span class="text">{{ item.Title }}</span>
                         </label>
                     </li>
                 </ul>
@@ -92,19 +73,20 @@ const emit = defineEmits<{ (e: "filters", Filters: responseFilterType): void }>(
 
 const formValues = useState<responseFilterType>();
 formValues.value = {
-    type_product: query.type_product,
-    user_type: query.user_type,
-    weight: query.weight,
+    type_product: query.type_product as [string],
+    user_type: query.user_type as [string],
+    weight: query.weight as string,
 }
 watch(minMax, () => {
 
 })
 
 const submitButton = useState<HTMLButtonElement>()
-const {type_product, user_types} = storeToRefs(useCatalog())
+const {type_product, user_types, weight} = storeToRefs(useCatalog())
 
 
 const onSubmit = (values: responseFilterType) => {
+
     emit("filters", values);
 }
 

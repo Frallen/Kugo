@@ -56,9 +56,9 @@
 
 <script setup lang="ts">
 
-import {categoryType, responseFilterType, SelectFilterType} from "~/types/catalog.types";
+import {responseFilterType} from "~/types/catalog.types";
 
-const {getDeals, loadMore, addFilters} = useCatalog()
+const {getDeals} = useCatalog()
 const {params, path, query} = useRoute()
 const router = useRouter();
 const {Deals, SortOptions} = storeToRefs(useCatalog())
@@ -66,14 +66,12 @@ definePageMeta({
     middleware: "catalog"
 })
 const Filters = ref<responseFilterType>()
-const Sort = ref<SelectFilterType>()
-Sort.value = {
-    sort: query.sort as string,
-}
+const Sort = ref<string>()
+Sort.value = query.sort as string
 Filters.value = {
     type_product: query.type_product as [string],
     user_type: query.user_type as [string],
-    weight: query.weight as string|number,
+    weight: query.weight as string | number,
 }
 
 // блок с фильтрами
@@ -83,25 +81,26 @@ watch(Filters, async () => {
         query: {
             page: currentPage.value,
             ...(Filters.value && Filters.value),
-            ...(Sort.value && Sort.value.sort)
+            sort: Sort.value,
         }
     });
-    await addFilters(sluggedCatalog(), currentPage.value.toString(), Filters.value, Sort.value && Sort.value)
+    await getDeals(sluggedCatalog(), currentPage.value.toString(), Filters.value, Sort.value && Sort.value)
 })
+
 // блок с фильтрами
 watch(Sort, async () => {
-    console.log(Sort.value)
     await router.replace({
         path: path,
         query: {
             page: currentPage.value,
             ...(Filters.value && Filters.value),
-            ...(Sort.value && Sort.value.sort)
+            sort: Sort.value,
         }
     });
-    await addFilters(sluggedCatalog(), currentPage.value.toString(), Filters.value && Filters.value, Sort.value && Sort.value)
+    //add filters
+    await getDeals(sluggedCatalog(), "1", Filters.value && Filters.value, Sort.value && Sort.value)
 })
-await getDeals(sluggedCatalog(), Filters.value && Filters.value);
+//await getDeals(sluggedCatalog(), "1",Filters.value && Filters.value,Sort.value && Sort.value);
 // показ мобильной версии фильтра
 const filterStatus = useState<boolean>(() => false)
 // начальная страница пагинации
@@ -115,13 +114,13 @@ const prepare = async (): Promise<void> => {
         query: {
             page: currentPage.value,
             ...(Filters.value && Filters.value),
-            ...(Sort.value && Sort.value.sort)
+            sort: Sort.value,
         }
     });
 
 
     if (sluggedCatalog() && currentPage.value) {
-        await loadMore(sluggedCatalog(), currentPage.value.toString(), Filters.value && Filters.value, Sort.value && Sort.value)
+        await getDeals(sluggedCatalog(), currentPage.value.toString(), Filters.value && Filters.value, Sort.value && Sort.value);
 
     }
 }

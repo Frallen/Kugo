@@ -12,14 +12,15 @@ interface propsType {
     placeholder: string
 }
 
-const {options,placeholder} = defineProps<propsType>()
+const {options, placeholder} = defineProps<propsType>()
 
 const Option = useState<SelectFilterType>()
 
 const emit = defineEmits<{ (e: "selectValue", Value: SelectFilterType): void }>()
 
 watch(Option, () => {
-    emit("selectValue", Option.value)
+    let value = Option.value.sort
+    emit("selectValue", value)
 })
 </script>
 
