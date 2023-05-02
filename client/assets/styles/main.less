@@ -42,6 +42,9 @@ h3 {
   line-height: 51px;
   text-transform: uppercase;
   color: @black;
+  @media @md {
+    font-size: 25px;
+  }
 }
 
 .container {
@@ -165,25 +168,29 @@ h3 {
 .select {
   min-width: 220px;
   font-family: "Jost", sans-serif;
+
   .vs__dropdown-toggle {
     border: 1.3px solid @purple;
     .br(5px);
     padding: 15px;
   }
 
-  .vs__selected,.vs__search{
+  .vs__selected, .vs__search {
     font-weight: 400;
     font-size: 15px;
     line-height: 17px;
     color: @purple;
   }
-  .vs__open-indicator,.vs__clear{
+
+  .vs__open-indicator, .vs__clear {
     fill: @purple;
   }
-  .vs__dropdown-option{
+
+  .vs__dropdown-option {
     color: @black;
   }
-  .vs__dropdown-option--highlight{
+
+  .vs__dropdown-option--highlight {
     color: #fff;
     background: @purple;
   }
