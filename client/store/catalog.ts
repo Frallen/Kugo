@@ -259,10 +259,9 @@ export const useCatalog = defineStore("catalog", {
         },
         async getDeals(type: string, page: string, filters?: responseFilterType, sort?: string) {
             setLoading(true)
-            console.log(filters?.weight)
-            console.log(filters.weight && typeof filters.weight === "number" && filters.weight <= 15)
-            const sorting = sort ? sortCatalog(sort) : false
-            const filtered = filters ? filterCatalog(filters) : false
+
+            //const sorting = sort ? sortCatalog(sort) : false
+            //const filtered = filters ? filterCatalog(filters) : false
             const {data, error} = await useFetch(
                 `${useRuntimeConfig().public.strapi.url}/api/${type}?${pagination(page ?? "1")}&${filters !== undefined && filterCatalog(filters)}&${sort !== undefined && sortCatalog(sort)}`,
                 {

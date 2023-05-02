@@ -71,7 +71,7 @@ Sort.value = query.sort as string
 Filters.value = {
     type_product: query.type_product as [string],
     user_type: query.user_type as [string],
-    weight: query.weight as string | number,
+    weight: query.weight as string,
 }
 
 // блок с фильтрами
