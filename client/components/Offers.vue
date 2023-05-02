@@ -28,8 +28,11 @@ const specialView = useState<boolean>(() => isCatalog ?? false)
   display: flex;
   flex-wrap: wrap;
   margin: -30px 0 0 -30px;
-  @media @lg {
+  @media @xl {
     margin: -15px 0 0 -30px;
+  }
+  @media @md {
+    margin: -15px 0 0 -20px;
   }
   @media @xs {
     margin: -15px 0 0 0;
@@ -40,12 +43,12 @@ const specialView = useState<boolean>(() => isCatalog ?? false)
     width: calc(100% / 4 - 30px);
     height: 492px;
     @media @xl {
-      margin: 15px 0 0 15px;
-      width: calc(100% / 3 - 15px);
+      margin: 15px 0 0 30px;
+      width: calc(100% / 3 - 30px);
     }
     @media @md {
-      margin: 15px 0 0 15px;
-      width: calc(100% / 2 - 15px);
+      margin: 15px 0 0 20px;
+      width: calc(100% / 2 - 20px);
     }
     @media @xs {
       width: 100%;
@@ -59,8 +62,11 @@ const specialView = useState<boolean>(() => isCatalog ?? false)
 .offers-catalog {
   margin: -30px 0 0 -15px;
   @media @lg {
-    margin: -15px 0 0 -15px;
+    margin: -15px 0 0 -30px;
   }
+    @media @md {
+        margin: -15px 0 0 -15px;
+    }
   @media @xs {
     margin: -15px 0 0 0;
   }
@@ -71,6 +77,10 @@ const specialView = useState<boolean>(() => isCatalog ?? false)
     @media @xxl {
       margin: 15px 0 0 15px;
       width: calc(100% / 3 - 15px);
+    }
+    @media @lg {
+      margin: 15px 0 0 30px;
+      width: calc(100% / 3 - 30px);
     }
     @media @md {
       margin: 15px 0 0 15px;

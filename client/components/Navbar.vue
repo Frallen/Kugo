@@ -393,6 +393,7 @@ watch(mobileModal, () => {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin: 0 10px;
       }
 
       &-menu {
@@ -418,11 +419,19 @@ watch(mobileModal, () => {
           display: flex;
           .br(5px);
           background: #ffffff;
-          padding: 10px 40px 10px 10px;
+          min-width: 650px;
+          padding: 20px 40px 20px 10px;
           box-shadow: 0px 10px 30px rgba(111, 115, 238, 0.1);
+          @media @lg {
+            min-width: 550px;
+            padding: 20px 40px 20px 10px;
+          }
 
           &-item {
             margin: 0 0 0 40px;
+            @media @lg {
+              margin: 0 0 0 30px;
+            }
 
             &-link {
               color: @gray;
@@ -430,6 +439,7 @@ watch(mobileModal, () => {
               align-items: center;
               margin: 15px 0 0 0;
               .trs(0.3s);
+              text-decoration: none;
 
               .icon {
                 margin-right: 10px;
@@ -488,7 +498,10 @@ watch(mobileModal, () => {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-left: 25px;
+          margin: 0 0 0 25px;
+          @media @lg {
+            margin: 0 0 0 14px;
+          }
         }
 
         a:last-child {

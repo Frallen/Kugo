@@ -68,8 +68,7 @@
                     </div>
                 </div>
             </Swiper-slide>
-
-            <div class="slider-nav">
+            <div class="slider-nav container">
                 <div class="btn" @click.stop="slider.slidePrev()">
                     <Icon name="ph:caret-left" class="icon"
                     />
@@ -98,16 +97,18 @@ const onSwiper = (swiper: any) => {
 .slider {
   margin: 30px 20px 39px;
 
-
   &-nav {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     width: 100px;
     position: absolute;
     bottom: 7%;
-    left: 7%;
+    left: 0;
     z-index: 1;
+    @media @lg {
+      right: 3%;
+      left: initial;
+    }
 
     .btn {
       .br(300px);
@@ -119,6 +120,10 @@ const onSwiper = (swiper: any) => {
         font-size: 1em;
         color: #fff;
       }
+    }
+
+    .btn:last-child {
+      margin: 0 0 0 1em;
     }
   }
 
