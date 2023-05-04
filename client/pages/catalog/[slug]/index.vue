@@ -55,7 +55,6 @@
 </template>
 
 <script setup lang="ts">
-
 import {responseFilterType} from "~/types/catalog.types";
 
 const {getDeals} = useCatalog()
@@ -69,6 +68,7 @@ const Filters = ref<responseFilterType>()
 const Sort = ref<string>()
 Sort.value = query.sort as string
 Filters.value = {
+    price:query.price as string,
     type_product: query.type_product as [string],
     user_type: query.user_type as [string],
     weight: query.weight as string,
@@ -87,7 +87,7 @@ watch(Filters, async () => {
     await getDeals(sluggedCatalog(), currentPage.value.toString(), Filters.value, Sort.value && Sort.value)
 })
 
-// блок с фильтрами
+// блок с сортировки
 watch(Sort, async () => {
     await router.replace({
         path: path,
@@ -97,10 +97,10 @@ watch(Sort, async () => {
             sort: Sort.value,
         }
     });
-    //add filters
+    //add sort
     await getDeals(sluggedCatalog(), "1", Filters.value && Filters.value, Sort.value && Sort.value)
 })
-//await getDeals(sluggedCatalog(), "1",Filters.value && Filters.value,Sort.value && Sort.value);
+
 // показ мобильной версии фильтра
 const filterStatus = useState<boolean>(() => false)
 // начальная страница пагинации

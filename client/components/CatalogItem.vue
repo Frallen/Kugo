@@ -5,10 +5,10 @@
                   @mouseover="mouseHovered=true"
                   @mouseleave="mouseHovered=false"
         >
-            <div class="product-badges" v-if="item.attributes.badges.data">
-                <div class="product-badges-item " v-for="p in item.attributes.badges.data" :key="item.id"
-                     :class="{'product-badges-hit':p.attributes.Title==='Хит', 'product-badges-new':p.attributes.Title==='Новинка'}">
-                    {{ p.attributes.Title }}
+            <div class="product-badges" v-if="item.attributes.badges">
+                <div class="product-badges-item " v-for="(p,index) in item.attributes.badges" :key="index"
+                     :class="{'product-badges-hit':p==='Хит', 'product-badges-new':p==='Новинка'}">
+                    {{ p }}
                 </div>
             </div>
             <div class="product-compare">

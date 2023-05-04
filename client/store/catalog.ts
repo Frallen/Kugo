@@ -7,7 +7,7 @@ import {
     Settings, DetailItemType, responseFilterType, SelectFilterType, weightType
 } from "~/types/catalog.types";
 import {errorMessage} from "~/composables/useAlert";
-import {overFlow, scrollTop} from "~/composables/mixins";
+import {checkQueryPrice} from "~/composables/mixins";
 
 const populate = (): string => {
     return qs.stringify(
@@ -48,6 +48,13 @@ const filterCatalog = (value: responseFilterType): string => {
                         }),
                         ...(value.weight && parseInt(value.weight) >= 30 && {
                             $gt: value.weight,
+                        }),
+                    }
+                },
+                {
+                    Price: {
+                        ...(value.price && {
+                            $between: checkQueryPrice(value.price),
                         }),
                     }
                 },

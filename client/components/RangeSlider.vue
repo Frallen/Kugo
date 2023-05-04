@@ -4,12 +4,12 @@
                 :options="{
            start: [min, max],
             range: {
-                min: [min],
-                max: [max]
+                min: 0,
+                max: 100000
             },
                 connect: true,
-                 margin: 40
-    }" @change="submitEvent"
+                margin: 40
+                }" @change="submitEvent"
         />
     </div>
 </template>
@@ -31,32 +31,8 @@ let emit = defineEmits<{ (e: "submitEvent", data: [number, number]): void }>()
 
 let submitEvent = (arr: [number, number]) => {
 
-    emit("submitEvent", [arr[0], arr[1]])
+    emit("submitEvent", `${arr[0]}-${arr[1]}`)
 }
-
-
-/*
-onMounted(()=>{
-    noUiSlider.create(range.value, {
-        start: [min, max],
-        range: {
-            min: [min],
-            max: [max]
-        },
-        connect: true, margin: 10
-    })
-    range.value.noUiSlider.on("change", (value) => {
-
-        emit("minMax", [parseInt(value[0]), parseInt(value[1])])
-    })
-
-
-
-
-
-    range.value.noUiSlider.set([set[0],set[1]])
-})
-*/
 
 </script>
 <style lang="less" src="@vueform/slider/themes/default.css">

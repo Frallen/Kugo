@@ -1,9 +1,12 @@
 <template>
     <div class="filter">
-        <Form @submit="onSubmit" ref="form" :initial-values="formValues">
+        <Form @submit="onSubmit" v-slot="{ setFieldValue, setValues }" :initial-values="formValues">
             <div class="filter-item">
                 <h6>Цена</h6>
-                <RangeSlider :min="minMax[0]" :max="minMax[1]" @submitEvent="e=>minMax=e"></RangeSlider>
+                <Field name="price" type="text" hidden>
+                </Field>
+                <RangeSlider :min="minMax[0]" :max="minMax[1]"
+                             @submitEvent="e=> {setFieldValue('price',e),submitButton.click()}"></RangeSlider>
             </div>
             <ClientOnly>
                 <div class="filter-item">
@@ -66,9 +69,10 @@
 import {Form, Field} from "vee-validate"
 import {responseFilterType} from "~/types/catalog.types";
 
-const form = ref<HTMLFormElement>()
 const {query} = useRoute()
-let minMax = useState<[min: number, max: number]>(() => [0, 30000])
+let minMax = useState<[min: number, max: number]>()
+minMax.value = query.price ? checkQueryPrice(query.price) : [0, 100000]
+
 const emit = defineEmits<{ (e: "filters", Filters: responseFilterType): void }>()
 
 const formValues = useState<responseFilterType>();
@@ -77,16 +81,14 @@ formValues.value = {
     user_type: query.user_type as [string],
     weight: query.weight as string,
 }
-watch(minMax, () => {
 
-})
 
 const submitButton = useState<HTMLButtonElement>()
 const {type_product, user_types, weight} = storeToRefs(useCatalog())
 
 
 const onSubmit = (values: responseFilterType) => {
-
+    console.log(values)
     emit("filters", values);
 }
 

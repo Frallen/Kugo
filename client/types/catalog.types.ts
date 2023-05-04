@@ -34,9 +34,7 @@ export interface ScooterItemType {
     type_product: commonFilterType
     user_type: commonFilterType
     images: imageType,
-    badges: {
-        data: badgesType[]
-    },
+    badges: [string]
     category: {
         data: categoryItemType
     }
@@ -71,13 +69,6 @@ export interface weightType {
     value: number | string,
 }
 
-//интерфейс меток скидка/хит
-interface badgesType {
-    id: number,
-    attributes: {
-        Title: string,
-    } & datesType
-}
 
 // Дополнительные услуги в деталке
 export interface Settings extends metaType {
@@ -123,6 +114,7 @@ interface imageType {
 
 
 export interface responseFilterType {
+    price?: string | [number, number]
     type_product?: [string]
     user_type?: [string]
     weight?: string
