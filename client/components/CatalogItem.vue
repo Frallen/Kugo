@@ -49,7 +49,7 @@
             </div>
             <div class="product-content">
                 <h4 class="product-title">
-                    {{ item.attributes.Title }}
+                    {{ item.attributes.Basic.Title }}
                 </h4>
                 <div class="product-features">
                     <div class="product-features-item">
@@ -60,7 +60,7 @@
                     <div class="product-features-item">
                         <Icon name="material-symbols:weight-outline" class="icon"
                         />
-                        {{ item.attributes.weight }} кг
+                        {{ item.attributes.Basic.Weight }} кг
                     </div>
                     <div class="product-features-item">
                         <Icon name="icon-park-outline:speed-one" class="icon"
@@ -76,13 +76,12 @@
                 </div>
                 <div class="product-body">
                     <div class="product-body-price">
-                        <h5 v-if="item.attributes.discount_percent">
-                            <span>{{ item.attributes.Price }} ₽</span>
-                            {{ item.attributes.Price - item.attributes.Price / 100 * item.attributes.discount_percent }}
-                            ₽
+                        <h5 v-if="item.attributes.Basic.oldPrice">
+                            <span>{{ item.attributes.Basic.oldPrice }} ₽</span>
+                            {{ item.attributes.Basic.Price }} ₽
                         </h5>
                         <h5 v-else>
-                            {{ item.attributes.Price }} ₽
+                            {{ item.attributes.Basic.Price }} ₽
                         </h5>
                         <div class="product-actions">
                             <div class="product-actions-item">

@@ -1,0 +1,53 @@
+{
+  "kind": "collectionType",
+  "collectionName": "filters",
+  "info": {
+    "singularName": "filter",
+    "pluralName": "filters",
+    "displayName": "Filter",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "minPrice": {
+      "type": "float",
+      "required": true,
+      "default": 0,
+      "min": 0
+    },
+    "maxPrice": {
+      "type": "float",
+      "required": true,
+      "default": 100000
+    },
+    "category": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::category.category"
+    },
+    "NameFilter": {
+      "type": "string",
+      "required": true
+    },
+    "weight": {
+      "type": "component",
+      "repeatable": true,
+      "component": "filter.weight"
+    },
+    "type_products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::type-product.type-product",
+      "mappedBy": "filter"
+    },
+    "user_types": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-type.user-type",
+      "mappedBy": "filter"
+    }
+  }
+}

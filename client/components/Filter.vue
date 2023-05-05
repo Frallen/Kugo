@@ -12,7 +12,7 @@
                 <div class="filter-item">
                     <h6>Тип</h6>
                     <ul class="filter-item-list">
-                        <li v-for="item in type_product.data" :key="item.id">
+                        <li v-for="item in Filter.attributes.type_products.data" :key="item.id">
                             <label class="checkbox">
                                 <Field name="type_product" @change.prevent="submitButton.click()"
                                        type="checkbox" :value="item.attributes.Title"
@@ -29,7 +29,7 @@
                 <div class="filter-item">
                     <h6>Для кого</h6>
                     <ul class="filter-item-list">
-                        <li v-for="item in user_types.data" :key="item.id">
+                        <li v-for="item in Filter.attributes.user_types.data" :key="item.id">
                             <label class="checkbox">
                                 <Field name="user_type"
                                        type="checkbox" :value="item.attributes.Title"
@@ -45,12 +45,12 @@
             </ClientOnly>
             <div class="filter-item">
                 <h6>Вес</h6>
-                <ul class="filter-item-list">
-                    <li v-for="item in weight" :key="item.value">
+                <ul class="filter-item-list" v-if="Filter.attributes.weight">
+                    <li v-for="item in Filter.attributes.weight" :key="item.id">
                         <label class="radio">
                             <Field name="weight"
-                                   type="radio" :value="item.value"
-                                   :checked="query.weight === item.value.toString()"
+                                   type="radio" :value="item.Value"
+                                   :checked="query.weight === item.Value"
                                    @change="submitButton.click()">
                             </Field>
                             <span class="icon"></span>
@@ -68,10 +68,11 @@
 <script setup lang="ts">
 import {Form, Field} from "vee-validate"
 import {responseFilterType} from "~/types/catalog.types";
-
+const {Filter} = storeToRefs(useCatalog())
 const {query} = useRoute()
 let minMax = useState<[min: number, max: number]>()
-minMax.value = query.price ? checkQueryPrice(query.price) : [0, 100000]
+
+minMax.value = query.price ? checkQueryPrice(query.price) : [Filter.value.attributes.minPrice, Filter.value.attributes.maxPrice]
 
 const emit = defineEmits<{ (e: "filters", Filters: responseFilterType): void }>()
 
@@ -84,7 +85,7 @@ formValues.value = {
 
 
 const submitButton = useState<HTMLButtonElement>()
-const {type_product, user_types, weight} = storeToRefs(useCatalog())
+
 
 
 const onSubmit = (values: responseFilterType) => {

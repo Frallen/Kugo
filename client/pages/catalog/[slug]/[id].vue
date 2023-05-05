@@ -11,7 +11,7 @@
                             :space-between="20"
                             :thumbs="{ swiper: thumbsSwiper }"
                     >
-                        <Swiper-slide class="slider-item" v-for="item in item.attributes.images.data"
+                        <Swiper-slide class="slider-item" v-for="item in Detail.attributes.images.data"
                         >
                             <NuxtImg
                                     provider="cloudinary"
@@ -27,7 +27,7 @@
                             :watchSlidesProgress="true"
                             :space-between="10"
                     >
-                        <Swiper-slide class="slider-thumbs-item" v-for="item in item.attributes.images.data"
+                        <Swiper-slide class="slider-thumbs-item" v-for="item in Detail.attributes.images.data"
                         >
                             <NuxtImg
                                     provider="cloudinary"
@@ -37,19 +37,18 @@
                     </Swiper>
                 </div>
                 <div class="product-body-info">
-                    <h1 class="product-title">{{ item.attributes.Title }}</h1>
+                    <h1 class="product-title">{{ Detail.attributes.Basic.Title }}</h1>
                     <div class="product-short">
                         <div>В наличии</div>
                         <div>Сравнить</div>
                         <div>Поделиться</div>
                     </div>
                     <div class="product-price">
-                        <h5 class="product-price-title" v-if="item.attributes.discount_percent">
-                            <span>{{ item.attributes.Price }} ₽</span>
-                            {{ item.attributes.Price - item.attributes.Price / 100 * item.attributes.discount_percent }}
-                            ₽
+                        <h5 class="product-price-title" v-if="Detail.attributes.Basic.oldPrice">
+                            <span>{{ Detail.attributes.Basic.Price }} ₽</span>
+                            {{ Detail.attributes.Basic.oldPrice }} ₽
                         </h5>
-                        <h5 class="product-price-title" v-else>{{ item.attributes.Price }} ₽</h5>
+                        <h5 class="product-price-title" v-else> {{ Detail.attributes.Basic.Price }} ₽</h5>
                         <div class="product-price-credit"></div>
                     </div>
 
@@ -135,27 +134,27 @@
                     <Swiper-slide class="slider-item">
                         <div class="about">
                             <div class="about-item">
-                                <h5>{{ item.attributes.Title }}</h5>
-                                <p v-if="item.attributes.About">{{ item.attributes.About }}</p>
+                                <h5>{{ Detail.attributes.Basic.Title }}</h5>
+                                <p v-if="Detail.attributes.Basic.About">{{ Detail.attributes.Basic.About }}</p>
                             </div>
                             <div class="about-item">
                                 <div class="about-item-equipment">
-                                    <h6>{{ item.attributes.Title }}</h6>
+                                    <h6>{{ Detail.attributes.Title }}</h6>
                                     <p>
-                                        {{ item.attributes.equipment }}
+                                        {{ Detail.attributes.equipment }}
                                     </p>
                                 </div>
                                 <div class="about-item-features">
-                                    <h6>Ключевые особенности {{ item.attributes.Title }}</h6>
+                                    <h6>Ключевые особенности {{ Detail.attributes.Title }}</h6>
                                     <div class="feature">
-                                        <div v-if="item.attributes.type_product" class="feature-item">
-                                            {{ item.attributes.type_product.data.attributes.Title }}
+                                        <div v-if="Detail.attributes.type_product" class="feature-item">
+                                            {{ Detail.attributes.type_product.data.attributes.Title }}
                                         </div>
                                         <div class="feature-item">{{
-                                            item.attributes.user_type.data.attributes.Title
+                                            Detail.attributes.user_type.data.attributes.Title
                                             }}
                                         </div>
-                                        <div class="feature-item">До {{ item.attributes.max_speed }} км/ч</div>
+                                        <div class="feature-item">До {{ Detail.attributes.max_speed }} км/ч</div>
                                     </div>
                                 </div>
                             </div>
@@ -164,41 +163,41 @@
                     <Swiper-slide class="slider-item">
                         <div class="property">
                             <div class="column">
-                                <div class="property-item" v-if="item.attributes.weight">Масса нетто
-                                    <span>{{ item.attributes.weight }} кг</span></div>
-                                <div class="property-item" v-if="item.attributes.power">Мощность
-                                    <span>{{ item.attributes.power }} W</span></div>
-                                <div class="property-item" v-if="item.attributes.battery_capacity">Аккумулятор
-                                    <span>{{ item.attributes.battery_capacity }} mAh</span></div>
-                                <div class="property-item" v-if="item.attributes.max_speed">Максимальная скорость <span>До {{
-                                    item.attributes.max_speed
+                                <div class="property-item" v-if="Detail.attributes.Basic.Weight">Масса нетто
+                                    <span>{{ Detail.attributes.Basic.Weight }} кг</span></div>
+                                <div class="property-item" v-if="Detail.attributes.power">Мощность
+                                    <span>{{ Detail.attributes.power }} W</span></div>
+                                <div class="property-item" v-if="Detail.attributes.battery_capacity">Аккумулятор
+                                    <span>{{ Detail.attributes.battery_capacity }} mAh</span></div>
+                                <div class="property-item" v-if="Detail.attributes.max_speed">Максимальная скорость <span>До {{
+                                    Detail.attributes.max_speed
                                     }} км/ч*</span></div>
-                                <div class="property-item" v-if="item.attributes.max_range">Максимальный пробег
-                                    <span>До {{ item.attributes.max_range }}км/ч*</span></div>
-                                <div class="property-item" v-if="item.attributes.charge_time">Время полной зарядки
-                                    <span>{{ item.attributes.charge_time }}</span></div>
-                                <div class="property-item" v-if="item.attributes.maximum_load">Максимальная нагрузка
-                                    <span>{{ item.attributes.maximum_load }} кг</span></div>
-                                <div class="property-item" v-if="item.attributes.wheel_size">Размер колес
-                                    <span>{{ item.attributes.wheel_size }}</span></div>
+                                <div class="property-item" v-if="Detail.attributes.max_range">Максимальный пробег
+                                    <span>До {{ Detail.attributes.max_range }}км/ч*</span></div>
+                                <div class="property-item" v-if="Detail.attributes.charge_time">Время полной зарядки
+                                    <span>{{ Detail.attributes.charge_time }}</span></div>
+                                <div class="property-item" v-if="Detail.attributes.maximum_load">Максимальная нагрузка
+                                    <span>{{ Detail.attributes.maximum_load }} кг</span></div>
+                                <div class="property-item" v-if="Detail.attributes.wheel_size">Размер колес
+                                    <span>{{ Detail.attributes.wheel_size }}</span></div>
                             </div>
                             <div class="column">
-                                <div class="property-item" v-if="item.attributes.type_wheels">Тип колес
-                                    <span>{{ item.attributes.type_wheels }}</span></div>
-                                <div class="property-item" v-if="item.attributes.gabarits">Габариты (ДВШ), см
-                                    <span>{{ item.attributes.gabarits }}</span></div>
-                                <div class="property-item" v-if="item.attributes.lighting">Подсветка
-                                    <span>{{ item.attributes.lighting }}</span></div>
-                                <div class="property-item" v-if="item.attributes.privod">Привод
-                                    <span>{{ item.attributes.privod }}</span></div>
-                                <div class="property-item" v-if="item.attributes.stop_system">Тормозная система
-                                    <span>{{ item.attributes.stop_system }}</span></div>
-                                <div class="property-item" v-if="item.attributes.equipment">Комплектация
-                                    <span>{{ item.attributes.equipment }}</span></div>
-                                <div class="property-item" v-if="item.attributes.guarantee">Гарантия
-                                    <span>{{ item.attributes.guarantee }}</span></div>
+                                <div class="property-item" v-if="Detail.attributes.type_wheels">Тип колес
+                                    <span>{{ Detail.attributes.type_wheels }}</span></div>
+                                <div class="property-item" v-if="Detail.attributes.gabarits">Габариты (ДВШ), см
+                                    <span>{{ Detail.attributes.gabarits }}</span></div>
+                                <div class="property-item" v-if="Detail.attributes.lighting">Подсветка
+                                    <span>{{ Detail.attributes.lighting }}</span></div>
+                                <div class="property-item" v-if="Detail.attributes.privod">Привод
+                                    <span>{{ Detail.attributes.privod }}</span></div>
+                                <div class="property-item" v-if="Detail.attributes.stop_system">Тормозная система
+                                    <span>{{ Detail.attributes.stop_system }}</span></div>
+                                <div class="property-item" v-if="Detail.attributes.equipment">Комплектация
+                                    <span>{{ Detail.attributes.equipment }}</span></div>
+                                <div class="property-item" v-if="Detail.attributes.guarantee">Гарантия
+                                    <span>{{ Detail.attributes.guarantee }}</span></div>
                                 <div class="property-item special"
-                                     v-if="item.attributes.max_range||item.attributes.max_speed">
+                                     v-if="Detail.attributes.max_range||Detail.attributes.max_speed">
                                     *указаны максимально возможные характеристики, зависящие от веса райдера, рельефа
                                     местности, погодных условий и температуры окружающей среды
                                 </div>
@@ -251,7 +250,8 @@ const {
 
 const {params} = useRoute()
 await filteredDeal(sluggedCatalog(), params.id as string)
-const {Detail: item} = storeToRefs(useCatalog())
+const {Detail} = storeToRefs(useCatalog())
+
 const modules = [Navigation, Thumbs, EffectFade];
 const slider = useState<null>();
 const onSwiper = (swiper: any) => {

@@ -21,6 +21,12 @@
         "pattern": "title"
       },
       "customField": "plugin::slug.slug"
+    },
+    "filter": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::filter.filter",
+      "inversedBy": "type_products"
     }
   }
 }

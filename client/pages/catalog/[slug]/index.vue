@@ -57,7 +57,7 @@
 <script setup lang="ts">
 import {responseFilterType} from "~/types/catalog.types";
 
-const {getDeals} = useCatalog()
+const {getDeals, getFilter} = useCatalog()
 const {params, path, query} = useRoute()
 const router = useRouter();
 const {Deals, SortOptions} = storeToRefs(useCatalog())
@@ -68,7 +68,7 @@ const Filters = ref<responseFilterType>()
 const Sort = ref<string>()
 Sort.value = query.sort as string
 Filters.value = {
-    price:query.price as string,
+    price: query.price as string,
     type_product: query.type_product as [string],
     user_type: query.user_type as [string],
     weight: query.weight as string,
@@ -130,7 +130,7 @@ watch(currentPage, () => {
 
 }, {immediate: true})
 
-
+await getFilter(params.slug as string)
 </script>
 
 <style scoped lang="less">

@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_catalog_item_catalog_items",
+  "info": {
+    "displayName": "catalog-item",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string",
+      "required": true
+    },
+    "Weight": {
+      "type": "float",
+      "required": true
+    },
+    "Price": {
+      "required": true,
+      "type": "float"
+    },
+    "oldPrice": {
+      "type": "float",
+      "required": false
+    },
+    "About": {
+      "type": "text",
+      "required": false
+    }
+  }
+}

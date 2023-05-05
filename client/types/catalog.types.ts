@@ -12,14 +12,17 @@ export interface DetailItemType {
 
 //интерфейс скутеров
 export interface ScooterItemType {
-    Title: string,
-    About?: string,
-    weight: number,
+    Basic: {
+        About: string
+        Price: number
+        Title: string
+        Weight: number
+        id: number
+        oldPrice: number
+    }
     max_speed: number,
     power: number,
     max_range: string,
-    Price: number,
-    discount_percent: number | null,
     battery_capacity: number,
     charge_time: string,
     wheel_size: number,
@@ -31,8 +34,8 @@ export interface ScooterItemType {
     equipment: string,
     privod: string,
     stop_system: string,
-    type_product: commonFilterType
-    user_type: commonFilterType
+    type_product: categoryType
+    user_type: categoryType
     images: imageType,
     badges: [string]
     category: {
@@ -54,19 +57,24 @@ type categoryItemType = {
     id: number,
 }
 
-export interface commonFilterType extends metaType {
-    data: catalogType[]
+export interface filterType {
+    id: number,
+    attributes: {
+        NameFilter: string,
+        type_products?: categoryType
+        user_types?: categoryType
+        category: categoryType
+        maxPrice: number
+        minPrice: number
+        weight: weightType[]
+    } & datesType
 }
 
-// Интерфейс фильра
-// Беру все из интерфейса categoryType кроме ключа Image
-interface catalogType extends Omit<categoryType, "Image"> {
-
-}
 
 export interface weightType {
+    id: number,
     Title: string,
-    value: number | string,
+    Value: number | string,
 }
 
 
@@ -114,7 +122,7 @@ interface imageType {
 
 
 export interface responseFilterType {
-    price?: string | [number, number]
+    price?: string
     type_product?: [string]
     user_type?: [string]
     weight?: string

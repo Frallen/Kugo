@@ -12,14 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "Title": {
-      "type": "string",
-      "required": true
-    },
-    "weight": {
-      "type": "decimal",
-      "required": true
-    },
     "max_speed": {
       "type": "decimal",
       "required": true
@@ -31,14 +23,6 @@
     "max_range": {
       "type": "decimal",
       "required": true
-    },
-    "Price": {
-      "type": "float",
-      "required": true
-    },
-    "discount_percent": {
-      "type": "decimal",
-      "required": false
     },
     "battery_capacity": {
       "type": "decimal",
@@ -98,16 +82,6 @@
         "videos"
       ]
     },
-    "badges": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::badge.badge"
-    },
-    "category": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::category.category"
-    },
     "gabarits": {
       "type": "string",
       "required": true
@@ -126,8 +100,24 @@
       "relation": "oneToOne",
       "target": "api::user-type.user-type"
     },
-    "About": {
-      "type": "text"
+    "badges": {
+      "type": "customField",
+      "options": [
+        "Хит",
+        "Новинка"
+      ],
+      "customField": "plugin::multi-select.multi-select"
+    },
+    "Basic": {
+      "type": "component",
+      "repeatable": false,
+      "component": "catalog-item.catalog-item",
+      "required": true
+    },
+    "category": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::category.category"
     }
   }
 }
