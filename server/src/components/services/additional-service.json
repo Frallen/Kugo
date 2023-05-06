@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_services_additional_services",
+  "info": {
+    "displayName": "AdditionalService",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Price": {
+      "type": "float",
+      "required": true
+    },
+    "Title": {
+      "type": "string",
+      "required": true
+    },
+    "Default": {
+      "type": "boolean"
+    }
+  }
+}

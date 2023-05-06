@@ -25,6 +25,11 @@
     "About": {
       "type": "text",
       "required": false
+    },
+    "services": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::service.service"
     }
   }
 }

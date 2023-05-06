@@ -1,0 +1,20 @@
+{
+  "kind": "collectionType",
+  "collectionName": "orders",
+  "info": {
+    "singularName": "order",
+    "pluralName": "orders",
+    "displayName": "Order"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "scooters": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::scooter.scooter"
+    }
+  }
+}

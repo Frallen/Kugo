@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_services_packages",
+  "info": {
+    "displayName": "Packages",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Color": {
+      "type": "customField",
+      "regex": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+      "customField": "plugin::color-picker.color"
+    },
+    "Price": {
+      "type": "float",
+      "required": true
+    },
+    "Title": {
+      "type": "string",
+      "required": true
+    },
+    "Default": {
+      "type": "boolean"
+    }
+  }
+}

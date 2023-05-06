@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_services_warranties",
+  "info": {
+    "displayName": "Warranty",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Length": {
+      "type": "string",
+      "unique": false,
+      "required": true
+    },
+    "Price": {
+      "type": "float",
+      "required": true
+    },
+    "Title": {
+      "type": "string",
+      "required": true
+    },
+    "Default": {
+      "type": "boolean"
+    }
+  }
+}

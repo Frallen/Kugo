@@ -64,6 +64,8 @@ const {Deals, SortOptions} = storeToRefs(useCatalog())
 definePageMeta({
     middleware: "catalog"
 })
+await getFilter(params.slug as string)
+
 const Filters = ref<responseFilterType>()
 const Sort = ref<string>()
 Sort.value = query.sort as string
@@ -130,7 +132,7 @@ watch(currentPage, () => {
 
 }, {immediate: true})
 
-await getFilter(params.slug as string)
+
 </script>
 
 <style scoped lang="less">

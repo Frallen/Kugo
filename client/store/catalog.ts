@@ -3,7 +3,7 @@ import qs from "qs";
 import {
     CatalogItemType,
     categoryType,
-    Settings, DetailItemType, responseFilterType, SelectFilterType, weightType, filterType
+    Settings, DetailItemType, responseFilterType, SelectFilterType, weightType, filterType, ServicesType
 } from "~/types/catalog.types";
 import {errorMessage} from "~/composables/useAlert";
 import {checkQueryPrice} from "~/composables/mixins";
@@ -49,7 +49,7 @@ const chooseFilter = (value: string): string => {
 const filterCatalog = (value?: responseFilterType, sort?: string): string => {
 
     return qs.stringify({
-        sort:[sort],
+        sort: [sort],
 
         filters: {
             $and: [
@@ -120,9 +120,7 @@ interface stateType {
     Deals: CatalogItemType | {};
     categories: categoryType,
     Filter: filterType,
-    Warranties: Settings | {},
-    AdditionalServices: Settings | {},
-    Packages: Settings | {}
+    Services: ServicesType
 }
 
 
@@ -146,9 +144,7 @@ export const useCatalog = defineStore("catalog", {
             data: [],
             meta: {},
         },
-        Warranties: {},
-        AdditionalServices: {},
-        Packages: {},
+        Services: {}
     }),
     getters: {
         // middleware существует ли slug путь
@@ -169,9 +165,7 @@ export const useCatalog = defineStore("catalog", {
 
 
             const [{data: categories, error},
-                {data: warranty},
-                {data: AdditionalServices},
-                {data: Packages}
+                {data: services},
             ] = await Promise.all([
                 useFetch(
                     `${useRuntimeConfig().public.strapi.url}/api/categories?${populate()}`,
@@ -183,7 +177,7 @@ export const useCatalog = defineStore("catalog", {
                     }
                 ),
                 useFetch(
-                    `${useRuntimeConfig().public.strapi.url}/api/warranties`,
+                    `${useRuntimeConfig().public.strapi.url}/api/services?${populate()}`,
                     {
                         method: "GET",
                         headers: {
@@ -191,24 +185,7 @@ export const useCatalog = defineStore("catalog", {
                         },
                     }
                 ),
-                useFetch(
-                    `${useRuntimeConfig().public.strapi.url}/api/additional-services`,
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    }
-                ),
-                useFetch(
-                    `${useRuntimeConfig().public.strapi.url}/api/packages`,
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    }
-                ),
+
 
             ]);
 
@@ -218,10 +195,8 @@ export const useCatalog = defineStore("catalog", {
                         errorMessage("Повторите попытку позже");
                 }
             } else {
-                this.Packages = Packages.value as Settings
-                this.AdditionalServices = AdditionalServices.value as Settings
-                this.Warranties = warranty.value as Settings
                 this.categories = categories.value as categoryType
+                this.Services = services.value as ServicesType
             }
             setLoading(false)
         },

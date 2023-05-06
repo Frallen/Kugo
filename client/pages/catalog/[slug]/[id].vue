@@ -36,7 +36,11 @@
                         </Swiper-slide>
                     </Swiper>
                 </div>
-                <div class="product-body-info">
+                <Form  @submit="onSubmit" class="product-body-info">
+                    <Field name="Price" type="text" hidden v-model="Price">
+                    </Field>
+                    <Field name="Item" type="text" hidden :value="Detail.id">
+                    </Field>
                     <h1 class="product-title">{{ Detail.attributes.Basic.Title }}</h1>
                     <div class="product-short">
                         <div>В наличии</div>
@@ -45,28 +49,21 @@
                     </div>
                     <div class="product-price">
                         <h5 class="product-price-title" v-if="Detail.attributes.Basic.oldPrice">
-                            <span>{{ Detail.attributes.Basic.Price }} ₽</span>
-                            {{ Detail.attributes.Basic.oldPrice }} ₽
+                            <span>{{ Detail.attributes.Basic.oldPrice }} ₽</span>
+                            {{ Detail.attributes.Basic.Price }} ₽
                         </h5>
                         <h5 class="product-price-title" v-else> {{ Detail.attributes.Basic.Price }} ₽</h5>
                         <div class="product-price-credit"></div>
                     </div>
 
-                    <div class="product-deals">
-                        <h6>Гарантия</h6>
-                        <Additional :settings="Warranties"></Additional>
+                    <div class="product-deals" v-for="item in Services.data" :key="item.id">
+                        <h6>{{ item.attributes.Name }}</h6>
+                        <Additional :settings="item"></Additional>
                     </div>
-                    <div class="product-deals">
-                        <h6>Комплектация</h6>
-                        <Additional :settings="AdditionalServices"></Additional>
-                    </div>
-                    <div class="product-deals">
-                        <h6>Дополнительные услуги</h6>
-                        <Additional :settings="Packages"></Additional>
-                    </div>
+
                     <div class="product-result">
                         <div class="product-result-price">
-                            <h6>45 900 руб.</h6>
+                            <h6>{{ Price }} руб.</h6>
                             <div class="product-actions-item">
                                 <Favorite :isFavorite="false"></Favorite>
                             </div>
@@ -81,7 +78,7 @@
                             <button class="button button-outlined">Добавить в корзину</button>
                         </div>
                     </div>
-                </div>
+                </Form>
             </div>
             <div class="product-footer">
                 <Swiper
@@ -139,13 +136,13 @@
                             </div>
                             <div class="about-item">
                                 <div class="about-item-equipment">
-                                    <h6>{{ Detail.attributes.Title }}</h6>
+                                    <h6>{{ Detail.attributes.Basic.Title }}</h6>
                                     <p>
                                         {{ Detail.attributes.equipment }}
                                     </p>
                                 </div>
                                 <div class="about-item-features">
-                                    <h6>Ключевые особенности {{ Detail.attributes.Title }}</h6>
+                                    <h6>Ключевые особенности {{ Detail.attributes.Basic.Title }}</h6>
                                     <div class="feature">
                                         <div v-if="Detail.attributes.type_product" class="feature-item">
                                             {{ Detail.attributes.type_product.data.attributes.Title }}
@@ -239,20 +236,23 @@
 <script setup lang="ts">
 import {Navigation, Thumbs, EffectFade} from "swiper";
 import {Swiper, SwiperSlide} from "swiper/vue";
-
+import {Form,Field} from "vee-validate"
+const modules = [Navigation, Thumbs, EffectFade];
 const {
     filteredDeal
 } = useCatalog()
 const {
-    Warranties,
-    AdditionalServices, Packages
+   Services
 } = storeToRefs(useCatalog())
 
 const {params} = useRoute()
 await filteredDeal(sluggedCatalog(), params.id as string)
 const {Detail} = storeToRefs(useCatalog())
+const Price=useState(()=>Detail.value.attributes.Basic.Price)
+const onSubmit=(values)=>{
+console.log(values)
+}
 
-const modules = [Navigation, Thumbs, EffectFade];
 const slider = useState<null>();
 const onSwiper = (swiper: any) => {
     slider.value = swiper;

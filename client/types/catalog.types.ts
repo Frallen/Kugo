@@ -79,20 +79,33 @@ export interface weightType {
 
 
 // Дополнительные услуги в деталке
-export interface Settings extends metaType {
-    data: SettingsItemType[]
+export interface ServicesType extends metaType {
+    data: ServicesItemType[]
 
 }
 
-export interface SettingsItemType {
+export interface ServicesItemType {
     id: number
     attributes: {
-        Title: string
-        Type: string
-        Length?: string
-        Price?: number
-        Default: boolean
+        AdditionalService?: AdditionalType[]
+        Name: string
+        PackageColor?: [{
+            Color: string
+
+        } & AdditionalType]
+        Warranty?: [{
+            Length: string
+
+        } & AdditionalType]
+
     } & datesType
+}
+
+type AdditionalType = {
+    Title: string
+    Price: number
+    id: number
+    Default: boolean
 }
 
 // Тип для изображений
