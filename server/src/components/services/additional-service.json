@@ -16,6 +16,11 @@
     },
     "Default": {
       "type": "boolean"
+    },
+    "Uid": {
+      "unique": false,
+      "required": true,
+      "type": "integer"
     }
   }
 }

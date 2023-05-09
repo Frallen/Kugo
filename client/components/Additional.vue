@@ -1,49 +1,13 @@
 <template>
     <div class="product-deals-wrapper">
         <template v-if="settings.attributes.PackageColor">
-            <label v-for="item in settings.attributes.PackageColor" :key="item.id" class="product-deals-item"
-                   :class="{'product-deals-active':item.Default}">
-                <span class="color" :style="{background:item.Color}" v-if="item.Color"></span>
-                <Field type="radio" name="Color" :checked="item.Default" @change="onChange"
-
-                       :value="{
-                   Name:item.Title,
-                   Price:item.Price}"
-                />
-                {{
-                item.Title
-                }}
-                <span v-if="item.Price" class="price">{{ item.Price }} руб.</span>
-            </label>
+            <InputRadio v-for="item in settings.attributes.PackageColor" :item="item" :name="'PackageColor'" :key="item.id"></InputRadio>
         </template>
         <template v-if="settings.attributes.Warranty">
-            <label v-for="item in settings.attributes.Warranty" :key="item.id" class="product-deals-item"
-                   :class="{'product-deals-active':item.Default}">
-                <Field type="radio" name="Warranty" :checked="item.Default" @change="onChange"
-                       :value="{
-                   Name:item.Title,
-                   Price:item.Price}"
-                />
-                {{
-                item.Title
-                }}
-                <span v-if="item.Price" class="price">{{ item.Price }} руб.</span>
-            </label>
+            <InputRadio v-for="item in settings.attributes.Warranty" :item="item" :name="'Warranty'" :key="item.id"></InputRadio>
         </template>
         <template v-if="settings.attributes.AdditionalService">
-            <label v-for="item in settings.attributes.AdditionalService" :key="item.id" class="product-deals-item"
-                   :class="{'product-deals-active':item.Default}">
-                <Field type="radio" name="Service" :checked="item.Default" @change="onChange"
-                       :value="{
-                   Name:item.Title,
-                   Price:item.Price
-                }"
-                />
-                {{
-                item.Title
-                }}
-                <span v-if="item.Price" class="price">{{ item.Price }} руб.</span>
-            </label>
+            <InputRadio v-for="item in settings.attributes.AdditionalService" :item="item" :name="'Service'" :key="item.id"></InputRadio>
         </template>
 
     </div>
@@ -61,9 +25,7 @@ let {settings} = defineProps<propsType>()
 
 const emit = defineEmits<{ (e: "addPrice", value: number): void }>()
 
-const onChange = (value) => {
 
-}
 </script>
 
 <style scoped lang="less">

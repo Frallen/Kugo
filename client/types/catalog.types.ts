@@ -45,7 +45,7 @@ export interface ScooterItemType {
 
 // Интерфейс категорий товаров
 export interface categoryType extends metaType {
-    data: categoryItemType[]
+    data: categoryItemType
 }
 
 type categoryItemType = {
@@ -101,16 +101,23 @@ export interface ServicesItemType {
     } & datesType
 }
 
-type AdditionalType = {
+export interface AdditionalType {
     Title: string
     Price: number
     id: number
-    Default: boolean
+    Uid: string
+    Default?: boolean
+}
+
+export interface cookieOrderType {
+    id: number,
+    Price: number
+    Service?: AdditionalType[]
 }
 
 // Тип для изображений
 interface imageType {
-    data: {
+    data: [{
         attributes: {
             alternativeText: null
             caption: null
@@ -131,6 +138,7 @@ interface imageType {
         }
         id: number
     }
+    ]
 }
 
 

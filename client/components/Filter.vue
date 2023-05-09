@@ -89,7 +89,6 @@ const submitButton = useState<HTMLButtonElement>()
 
 
 const onSubmit = (values: responseFilterType) => {
-    console.log(values)
     emit("filters", values);
 }
 

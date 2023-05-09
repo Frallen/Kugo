@@ -1,24 +1,29 @@
 <template>
-    <label class="product-deals-item" :class="{'product-deals-active':isChecked}">
-        <input type="radio" :name="item.attributes.Title"
-               v-model="checkbox"
-               :value="{Type:item.attributes.Type,
-                   Length:item.attributes.Length,
-                   Price:item.attributes.Price}"
-        >
+    <label class="product-deals-item" @click="setPrice()"
+    >
+        <span class="color" :style="{background:item.Color}" v-if="item.Color"></span>
+            <input type="radio" :name="name"   :checked="item.Default"
+                   :value="{
+                   Name:item.Title,
+                   Price:item.Price
+                }"
+            />
         {{
-        item.attributes.Type
+        item.Title
         }}
-        <span v-if="item.attributes.Price">{{ item.attributes.Price }} руб.</span>
+        <span v-if="item.Price" class="price">{{ item.Price }} руб.</span>
     </label>
 </template>
 
 <script setup lang="ts">
-import { SettingsItemType} from "~/types/catalog.types";
+import {Field} from "vee-validate";
+import {AdditionalType,} from "~/types/catalog.types";
 
+const {setDetailData} = useCatalog()
 
 interface propsType {
-    item: SettingsItemType
+    item: AdditionalType
+    name: string
 }
 
 interface checkboxType {
@@ -27,16 +32,12 @@ interface checkboxType {
     Price: number
 }
 
-let {item} = defineProps<propsType>()
-const isChecked = ref<boolean>(item.attributes.Default);
+let {item, name} = defineProps<propsType>()
 
+const setPrice = () => {
+    setDetailData(item)
 
-const checkbox = useState<checkboxType>()
-const emit = defineEmits<{ (e: "checkedValue", checkedValue: checkboxType): void }>()
-
-watch(checkbox, () => {
-    emit("checkedValue", checkbox.value)
-})
+}
 
 </script>
 
@@ -54,10 +55,18 @@ watch(checkbox, () => {
   user-select: none;
 
   input[type=radio] {
-    display: none;
+    //   display: none;
   }
 
-  span {
+  .color {
+    display: block;
+    width: 45px;
+    height: 45px;
+    .br(100%);
+    margin: 0 0 1em 0;
+  }
+
+  .price {
     margin: 10px 0 0 0;
     display: block;
     color: @gray;

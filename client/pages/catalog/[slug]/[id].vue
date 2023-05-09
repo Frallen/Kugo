@@ -36,10 +36,10 @@
                         </Swiper-slide>
                     </Swiper>
                 </div>
-                <Form  @submit="onSubmit" class="product-body-info">
+                <Form @submit="onSubmit" class="product-body-info">
                     <Field name="Price" type="text" hidden v-model="Price">
                     </Field>
-                    <Field name="Item" type="text" hidden :value="Detail.id">
+                    <Field name="id" type="text" hidden :value="Detail.id">
                     </Field>
                     <h1 class="product-title">{{ Detail.attributes.Basic.Title }}</h1>
                     <div class="product-short">
@@ -74,8 +74,8 @@
                             <span>Бесплатная доставка по РФ</span>
                         </div>
                         <div class="product-result-buttons">
-                            <button class="button button-primary">Купить в 1 клик</button>
                             <button class="button button-outlined">Добавить в корзину</button>
+                            <button class="button button-primary">Купить в 1 клик</button>
                         </div>
                     </div>
                 </Form>
@@ -166,9 +166,10 @@
                                     <span>{{ Detail.attributes.power }} W</span></div>
                                 <div class="property-item" v-if="Detail.attributes.battery_capacity">Аккумулятор
                                     <span>{{ Detail.attributes.battery_capacity }} mAh</span></div>
-                                <div class="property-item" v-if="Detail.attributes.max_speed">Максимальная скорость <span>До {{
-                                    Detail.attributes.max_speed
-                                    }} км/ч*</span></div>
+                                <div class="property-item" v-if="Detail.attributes.max_speed">Максимальная скорость
+                                    <span>До {{
+                                        Detail.attributes.max_speed
+                                        }} км/ч*</span></div>
                                 <div class="property-item" v-if="Detail.attributes.max_range">Максимальный пробег
                                     <span>До {{ Detail.attributes.max_range }}км/ч*</span></div>
                                 <div class="property-item" v-if="Detail.attributes.charge_time">Время полной зарядки
@@ -236,21 +237,35 @@
 <script setup lang="ts">
 import {Navigation, Thumbs, EffectFade} from "swiper";
 import {Swiper, SwiperSlide} from "swiper/vue";
-import {Form,Field} from "vee-validate"
+import {Form, Field} from "vee-validate"
+import {AdditionalType, cookieOrderType} from "~/types/catalog.types";
+
 const modules = [Navigation, Thumbs, EffectFade];
 const {
-    filteredDeal
+    filteredDeal,orderToCookie
 } = useCatalog()
 const {
-   Services
+    Services, Detail, ServiceToOrder
 } = storeToRefs(useCatalog())
 
 const {params} = useRoute()
 await filteredDeal(sluggedCatalog(), params.id as string)
-const {Detail} = storeToRefs(useCatalog())
-const Price=useState(()=>Detail.value.attributes.Basic.Price)
-const onSubmit=(values)=>{
-console.log(values)
+const {} = storeToRefs(useCatalog())
+const Price = computed(() => {
+    if (ServiceToOrder.value) {
+        return ServiceToOrder.value.reduce(
+            (total, item) => item.Price + total,
+            0
+        ) + Detail.value.attributes.Basic.Price
+    } else {
+        return Detail.value.attributes.Basic.Price
+    }
+})
+
+
+const onSubmit = (values: { Price: number, id: number }) => {
+
+    orderToCookie(values)
 }
 
 const slider = useState<null>();
@@ -284,13 +299,13 @@ const setThumbsProperty = (swiper: any) => {
     display: flex;
     justify-content: space-between;
     margin: 0 0 50px 0;
-    @media @lg {
+    @media @xl {
       flex-direction: column;
     }
 
     &-wrapper {
       width: 48%;
-      @media @lg {
+      @media @xl {
         width: 100%;
       }
 
@@ -341,7 +356,7 @@ const setThumbsProperty = (swiper: any) => {
     &-info {
       width: 48%;
       overflow: hidden;
-      @media @lg {
+      @media @xl {
         width: 100%;
       }
 

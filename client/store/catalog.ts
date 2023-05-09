@@ -3,7 +3,13 @@ import qs from "qs";
 import {
     CatalogItemType,
     categoryType,
-    Settings, DetailItemType, responseFilterType, SelectFilterType, weightType, filterType, ServicesType
+    DetailItemType,
+    responseFilterType,
+    SelectFilterType,
+    filterType,
+    ServicesType,
+    AdditionalType,
+    cookieOrderType
 } from "~/types/catalog.types";
 import {errorMessage} from "~/composables/useAlert";
 import {checkQueryPrice} from "~/composables/mixins";
@@ -121,6 +127,7 @@ interface stateType {
     categories: categoryType,
     Filter: filterType,
     Services: ServicesType
+    ServiceToOrder: AdditionalType[]
 }
 
 
@@ -144,7 +151,8 @@ export const useCatalog = defineStore("catalog", {
             data: [],
             meta: {},
         },
-        Services: {}
+        Services: {},
+        ServiceToOrder: []
     }),
     getters: {
         // middleware существует ли slug путь
@@ -152,13 +160,56 @@ export const useCatalog = defineStore("catalog", {
             return (query: string) =>
                 state.categories.data.some(p => p.attributes.Slug === query)
         },
+        ServiceCalc: (state) => {
+            if (state.ServiceToOrder) {
+                return state.ServiceToOrder.reduce(
+                    (total, item) => item.Price + total,
+                    0
+                ) + state.Detail.attributes.Basic.Price
+            } else {
+                return state.Detail.attributes.Basic.Price
+            }
+
+        }
     },
     actions: {
+        async setDetailData(data: AdditionalType) {
+
+            if (!this.ServiceToOrder.some(p => p.Uid === data.Uid)) {
+                this.ServiceToOrder.push(data)
+            } else {
+                let detail = this.ServiceToOrder.filter(p => p.Uid !== data.Uid)
+                detail.push(data)
+                this.ServiceToOrder = detail
+            }
+        },
         async clearDeals() {
             this.Detail = {}
             this.Deals = {}
 
 
+        },
+        async orderToCookie(values: { Price: number, id: number }) {
+            const cookie = useCookie<cookieOrderType[]>("order");
+            let order = [...(cookie.value ?? "")] as cookieOrderType[];
+            if (order&&order.some(p => p.id === values.id)) {
+                order.map(p => {
+                    if (p.id === values.id) {
+                        p.id = values.id
+                        p.Price = values.Price
+                        p.Service = this.ServiceToOrder
+                    }
+                })
+                cookie.value=order
+            } else {
+                order.push({
+                    ...values,
+                    ...(this.ServiceToOrder && this.ServiceToOrder),
+
+                })
+                cookie.value=order
+            }
+            console.log(cookie.value)
         },
         async getFilters() {
             setLoading(true)
