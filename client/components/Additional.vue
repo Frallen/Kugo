@@ -14,7 +14,6 @@
 </template>
 
 <script setup lang="ts">
-import {Field} from "vee-validate"
 import {ServicesItemType} from "~/types/catalog.types";
 
 interface propsType {
@@ -40,40 +39,6 @@ const emit = defineEmits<{ (e: "addPrice", value: number): void }>()
   }
 
 
-  &-item {
-    margin: 30px 0 0 20px;
-    text-align: center;
-    border: 1.5px solid #EAEBED;
-    cursor: pointer;
-    .br(10px);
-    padding: 20px 40px;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    user-select: none;
-    align-items: center;
-
-    input[type=radio] {
-      //  display: none;
-    }
-
-    .color {
-      display: block;
-      width: 45px;
-      height: 45px;
-      .br(100%);
-      margin: 0 0 1em 0;
-    }
-
-    .price {
-      margin: 10px 0 0 0;
-      display: block;
-      color: @gray;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 20px;
-    }
-  }
 
   &-active {
     border: 1.5px solid @purple;

@@ -7,20 +7,20 @@
                     <div class="nav-wrapper-actions">
                         <NuxtLink to="tel:+78005055461"
                         >
-                            <Icon name="material-symbols:call" class="icon"
+                            <Icon name="material-symbols:call" class="phone icon"
                             />
                         </NuxtLink>
                         <transition name="fade" v-if="mobileModal">
                             <Icon
                                     name="ic:twotone-close"
-                                    class="icon nav-wrapper-modal"
+                                    class="icon hamburger nav-wrapper-modal"
                                     @click="mobileModal = false"
                             />
                         </transition>
                         <transition name="fade" v-else>
                             <Icon
                                     name="cil:hamburger-menu"
-                                    class="icon nav-wrapper-modal"
+                                    class="icon hamburger nav-wrapper-modal"
                                     @click="mobileModal = true"
                             />
                         </transition>
@@ -70,31 +70,33 @@
             </div>
         </div>
         <div class="nav-default">
-            <div class="container">
-                <div class="nav-header">
-                    <div class="nav-header-list">
-                        <NuxtLink to="/service">Сервис</NuxtLink>
-                        <NuxtLink to="/service">Сотрудничество</NuxtLink>
-                        <NuxtLink to="/service"> Заказать звонок</NuxtLink>
-                        <NuxtLink to="/service">
-                            <Icon name="basil:viber-solid"
-                            />
-                        </NuxtLink>
-                        <NuxtLink to="/service">
-                            <Icon name="ri:whatsapp-fill"/>
-                        </NuxtLink>
-                        <NuxtLink to="/service">
-                            <Icon name="mdi:telegram"/>
-                        </NuxtLink>
-                    </div>
-                    <div class="nav-header-phone">
-                        <NuxtLink to="tel:+78005055461">+7 (800) 505-54-61
-                        </NuxtLink
-                        >
-                        <Icon name="material-symbols:add-circle-outline" class="icon"/>
+            <transition name="fade">
+                <div class="container" v-if="!isScrolled">
+                    <div class="nav-header">
+                        <div class="nav-header-list">
+                            <NuxtLink to="/service">Сервис</NuxtLink>
+                            <NuxtLink to="/service">Сотрудничество</NuxtLink>
+                            <NuxtLink to="/service"> Заказать звонок</NuxtLink>
+                            <NuxtLink to="/service">
+                                <Icon name="basil:viber-solid"
+                                />
+                            </NuxtLink>
+                            <NuxtLink to="/service">
+                                <Icon name="ri:whatsapp-fill"/>
+                            </NuxtLink>
+                            <NuxtLink to="/service">
+                                <Icon name="mdi:telegram"/>
+                            </NuxtLink>
+                        </div>
+                        <div class="nav-header-phone">
+                            <NuxtLink to="tel:+78005055461">+7 (800) 505-54-61
+                            </NuxtLink
+                            >
+                            <Icon name="material-symbols:add-circle-outline" class="icon"/>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </transition>
             <div class="hr"></div>
             <div class="container">
                 <div class="nav-body">
@@ -121,12 +123,6 @@
                                             Электросамокаты
                                         </NuxtLink
                                         >
-                                        <!-- <NuxtLink to="" class="menu-item-link"
-                                         >
-                                             <nuxt-img src="scooter.svg" class="icon"></nuxt-img>
-                                             Электроскутеры
-                                         </NuxtLink
-                                         > -->
                                         <NuxtLink to="/catalog/elektrovelosipedy" class="menu-item-link"
                                         >
                                             <nuxt-img src="mountain-bike.svg" class="icon"></nuxt-img>
@@ -184,7 +180,7 @@
                             <Icon name="ph:heart-straight" class="icon"
                             />
                         </NuxtLink>
-                        <NuxtLink to=""
+                        <NuxtLink to="/cart"
                         >
                             <Icon
                                     name="ri:shopping-basket-2-fill"
@@ -219,7 +215,6 @@
 
 <script lang="ts" setup>
 //кнопка каталога
-
 const menuButton = useState<null>();
 //вложенное меню навигацию по каталогу
 const menu = useState<null>();
@@ -228,6 +223,15 @@ const menuHovered = useElementHover(menu);
 //наведен ли курсор на кнопку меню
 const menuButtonHovered = useElementHover(menuButton);
 
+const isScrolled = useState<boolean>()
+const {x, y} = useWindowScroll()
+watch(y, () => {
+    if (y.value === 0) {
+        isScrolled.value = false
+    } else if (y.value > 300) {
+        isScrolled.value = true
+    }
+})
 const mobileModal = useState<boolean>(() => false);
 watch(mobileModal, () => {
     if (mobileModal.value) {
@@ -244,7 +248,7 @@ watch(mobileModal, () => {
   background: #fff;
   box-shadow: 0 -2px 8px 0 #000;
 
-  &-mobile, &-default {
+  &-mobile {
     padding: 0 0 1em 0;
 
   }
@@ -266,9 +270,17 @@ watch(mobileModal, () => {
         .icon {
           text-decoration: none;
           color: @purple;
-          font-size: 1.4em;
+
           outline: none;
           cursor: pointer;
+        }
+
+        .hamburger {
+          font-size: 1.5em;
+        }
+
+        .phone {
+          font-size: 1.2em;
         }
       }
 
@@ -387,7 +399,7 @@ watch(mobileModal, () => {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 27px 0 34px;
+      padding: 15px 0 20px;
 
       &-action {
         display: flex;
@@ -499,6 +511,7 @@ watch(mobileModal, () => {
           justify-content: space-between;
           align-items: center;
           margin: 0 0 0 25px;
+          color: @black;
           @media @lg {
             margin: 0 0 0 14px;
           }

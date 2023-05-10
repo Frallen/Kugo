@@ -37,9 +37,7 @@
                     </Swiper>
                 </div>
                 <Form @submit="onSubmit" class="product-body-info">
-                    <Field name="Price" type="text" hidden v-model="Price">
-                    </Field>
-                    <Field name="id" type="text" hidden :value="Detail.id">
+                    <Field name="OrderPrice" type="text" hidden v-model="Price">
                     </Field>
                     <h1 class="product-title">{{ Detail.attributes.Basic.Title }}</h1>
                     <div class="product-short">
@@ -56,7 +54,7 @@
                         <div class="product-price-credit"></div>
                     </div>
 
-                    <div class="product-deals" v-for="item in Services.data" :key="item.id">
+                    <div class="product-deals" v-for="item in Detail.attributes.Basic.Services?.data" :key="item.id">
                         <h6>{{ item.attributes.Name }}</h6>
                         <Additional :settings="item"></Additional>
                     </div>
@@ -238,11 +236,9 @@
 import {Navigation, Thumbs, EffectFade} from "swiper";
 import {Swiper, SwiperSlide} from "swiper/vue";
 import {Form, Field} from "vee-validate"
-import {AdditionalType, cookieOrderType} from "~/types/catalog.types";
-
 const modules = [Navigation, Thumbs, EffectFade];
 const {
-    filteredDeal,orderToCookie
+    filteredDeal, orderToCookie
 } = useCatalog()
 const {
     Services, Detail, ServiceToOrder
@@ -263,7 +259,7 @@ const Price = computed(() => {
 })
 
 
-const onSubmit = (values: { Price: number, id: number }) => {
+const onSubmit = (values: { OrderPrice: number }) => {
 
     orderToCookie(values)
 }
@@ -310,7 +306,10 @@ const setThumbsProperty = (swiper: any) => {
       }
 
       .slider {
-        max-height: 506px;
+        height: 506px;
+        @media @xl {
+          height: 306px;
+        }
 
         &-item {
           .br(10px);
@@ -326,6 +325,7 @@ const setThumbsProperty = (swiper: any) => {
 
       .slider-thumbs {
         height: 90px;
+        margin: 1em 0;
 
         .swiper-slide-thumb-active {
           border: 1px solid @purple;

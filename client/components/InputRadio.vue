@@ -2,12 +2,12 @@
     <label class="product-deals-item" @click="setPrice()"
     >
         <span class="color" :style="{background:item.Color}" v-if="item.Color"></span>
-            <input type="radio" :name="name"   :checked="item.Default"
-                   :value="{
+        <input type="radio" :name="name" :checked="item.Default"
+               :value="{
                    Name:item.Title,
                    Price:item.Price
                 }"
-            />
+        />
         {{
         item.Title
         }}
@@ -16,7 +16,6 @@
 </template>
 
 <script setup lang="ts">
-import {Field} from "vee-validate";
 import {AdditionalType,} from "~/types/catalog.types";
 
 const {setDetailData} = useCatalog()
@@ -26,11 +25,6 @@ interface propsType {
     name: string
 }
 
-interface checkboxType {
-    Type: string
-    Length?: string,
-    Price: number
-}
 
 let {item, name} = defineProps<propsType>()
 
@@ -44,7 +38,7 @@ const setPrice = () => {
 <style scoped lang="less">
 .product-deals-item {
   margin: 30px 0 0 20px;
-  text-align: center;
+  width: calc(90% / 2 - 20px);
   border: 1.5px solid #EAEBED;
   cursor: pointer;
   .br(10px);
@@ -53,6 +47,7 @@ const setPrice = () => {
   justify-content: center;
   flex-direction: column;
   user-select: none;
+  align-items: center;
 
   input[type=radio] {
     //   display: none;

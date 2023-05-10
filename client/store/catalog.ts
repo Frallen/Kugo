@@ -1,5 +1,6 @@
 import {useMain} from "~/store/main";
 import qs from "qs";
+import Localbase from "localbase";
 import {
     CatalogItemType,
     categoryType,
@@ -9,7 +10,6 @@ import {
     filterType,
     ServicesType,
     AdditionalType,
-    cookieOrderType
 } from "~/types/catalog.types";
 import {errorMessage} from "~/composables/useAlert";
 import {checkQueryPrice} from "~/composables/mixins";
@@ -27,7 +27,7 @@ const populate = (): string => {
 
 const filterDeal = (value: string): string => {
     return qs.stringify({
-        populate: "*",
+        populate: "deep",
         filters: {
             id: {
                 $eq: value,
@@ -126,7 +126,6 @@ interface stateType {
     Deals: CatalogItemType | {};
     categories: categoryType,
     Filter: filterType,
-    Services: ServicesType
     ServiceToOrder: AdditionalType[]
 }
 
@@ -151,7 +150,6 @@ export const useCatalog = defineStore("catalog", {
             data: [],
             meta: {},
         },
-        Services: {},
         ServiceToOrder: []
     }),
     getters: {
@@ -160,17 +158,6 @@ export const useCatalog = defineStore("catalog", {
             return (query: string) =>
                 state.categories.data.some(p => p.attributes.Slug === query)
         },
-        ServiceCalc: (state) => {
-            if (state.ServiceToOrder) {
-                return state.ServiceToOrder.reduce(
-                    (total, item) => item.Price + total,
-                    0
-                ) + state.Detail.attributes.Basic.Price
-            } else {
-                return state.Detail.attributes.Basic.Price
-            }
-
-        }
     },
     actions: {
         async setDetailData(data: AdditionalType) {
@@ -189,34 +176,37 @@ export const useCatalog = defineStore("catalog", {
 
 
         },
-        async orderToCookie(values: { Price: number, id: number }) {
-            const cookie = useCookie<cookieOrderType[]>("order");
-            let order = [...(cookie.value ?? "")] as cookieOrderType[];
-            if (order&&order.some(p => p.id === values.id)) {
+        async orderToCookie(values: { OrderPrice: number }) {
+
+            const cookie = useCookie<DetailItemType[]>("order");
+            let order = [...(cookie.value ?? "")] as DetailItemType[];
+            if (order && order.some(p => p.id === this.Detail.id)) {
                 order.map(p => {
-                    if (p.id === values.id) {
-                        p.id = values.id
-                        p.Price = values.Price
-                        p.Service = this.ServiceToOrder
+                    if (p.id === this.Detail.id) {
+
+                        p.attributes.OrderPrice = values.OrderPrice
+                        p.attributes.OrderService = this.ServiceToOrder
                     }
                 })
-                cookie.value=order
-            } else {
-                order.push({
-                    ...values,
-                    ...(this.ServiceToOrder && this.ServiceToOrder),
 
-                })
-                cookie.value=order
+                cookie.value = order
+            } else {
+                const Detail = this.Detail
+                Detail.attributes.OrderPrice = values.OrderPrice
+                Detail.attributes.OrderService = this.ServiceToOrder
+                order.push(
+                    Detail
+                )
+
+                cookie.value = order
+                console.log(cookie.value)
             }
-            console.log(cookie.value)
+
         },
         async getFilters() {
             setLoading(true)
-
-
             const [{data: categories, error},
-                {data: services},
+
             ] = await Promise.all([
                 useFetch(
                     `${useRuntimeConfig().public.strapi.url}/api/categories?${populate()}`,
@@ -227,16 +217,6 @@ export const useCatalog = defineStore("catalog", {
                         },
                     }
                 ),
-                useFetch(
-                    `${useRuntimeConfig().public.strapi.url}/api/services?${populate()}`,
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    }
-                ),
-
 
             ]);
 
@@ -247,7 +227,6 @@ export const useCatalog = defineStore("catalog", {
                 }
             } else {
                 this.categories = categories.value as categoryType
-                this.Services = services.value as ServicesType
             }
             setLoading(false)
         },

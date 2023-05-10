@@ -26,7 +26,7 @@
       "type": "text",
       "required": false
     },
-    "services": {
+    "Services": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::service.service"

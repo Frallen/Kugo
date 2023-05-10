@@ -19,6 +19,7 @@ export interface ScooterItemType {
         Weight: number
         id: number
         oldPrice: number
+        Services?:ServicesType
     }
     max_speed: number,
     power: number,
@@ -41,6 +42,8 @@ export interface ScooterItemType {
     category: {
         data: categoryItemType
     }
+    OrderPrice?: number
+    OrderService?: AdditionalType[]
 }
 
 // Интерфейс категорий товаров
@@ -109,11 +112,6 @@ export interface AdditionalType {
     Default?: boolean
 }
 
-export interface cookieOrderType {
-    id: number,
-    Price: number
-    Service?: AdditionalType[]
-}
 
 // Тип для изображений
 interface imageType {

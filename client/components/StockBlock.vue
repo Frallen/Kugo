@@ -40,7 +40,7 @@
     padding: 50px 0;
     display: flex;
     flex-direction: column;
-    @media @lg {
+    @media @xl {
       width: 100%;
     }
     @media @md {
@@ -49,7 +49,7 @@
 
     .button {
       margin: 27px 0 0;
-      @media @lg {
+      @media @xl {
         align-self: flex-end;
       }
     }
@@ -57,8 +57,8 @@
 
   &-img {
     width: 65%;
-    @media @lg {
-      width: 100%;
+    @media @xl {
+      display: none;
     }
 
     img {
