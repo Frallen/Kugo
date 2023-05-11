@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import {AdditionalType,} from "~/types/catalog.types";
 
-const {setDetailData} = useCatalog()
+const {setServiceData} = useCatalog()
 
 interface propsType {
     item: AdditionalType
@@ -29,7 +29,7 @@ interface propsType {
 let {item, name} = defineProps<propsType>()
 
 const setPrice = () => {
-    setDetailData(item)
+    setServiceData(item)
 
 }
 

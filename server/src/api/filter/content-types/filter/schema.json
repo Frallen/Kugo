@@ -32,7 +32,7 @@
       "type": "string",
       "required": true
     },
-    "weight": {
+    "Weight": {
       "type": "component",
       "repeatable": true,
       "component": "filter.weight"

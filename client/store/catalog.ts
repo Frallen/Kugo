@@ -1,6 +1,5 @@
 import {useMain} from "~/store/main";
 import qs from "qs";
-import Localbase from "localbase";
 import {
     CatalogItemType,
     categoryType,
@@ -8,8 +7,8 @@ import {
     responseFilterType,
     SelectFilterType,
     filterType,
-    ServicesType,
     AdditionalType,
+    cookieOrderType,
 } from "~/types/catalog.types";
 import {errorMessage} from "~/composables/useAlert";
 import {checkQueryPrice} from "~/composables/mixins";
@@ -17,7 +16,7 @@ import {checkQueryPrice} from "~/composables/mixins";
 const populate = (): string => {
     return qs.stringify(
         {
-            populate: "*",
+            populate: "deep",
         },
         {
             encodeValuesOnly: true, // prettify URL
@@ -25,7 +24,7 @@ const populate = (): string => {
     );
 };
 
-const filterDeal = (value: string): string => {
+const filterDeal = (value: string | [string]): string => {
     return qs.stringify({
         populate: "deep",
         filters: {
@@ -52,7 +51,7 @@ const chooseFilter = (value: string): string => {
         encodeValuesOnly: true, // prettify URL
     });
 }
-const filterCatalog = (value?: responseFilterType, sort?: string): string => {
+const filterCatalog = (type: string, value?: responseFilterType, sort?: string): string => {
 
     return qs.stringify({
         sort: [sort],
@@ -60,47 +59,54 @@ const filterCatalog = (value?: responseFilterType, sort?: string): string => {
         filters: {
             $and: [
                 {
-                    Basic: {
+                    category: {
+                        Title: {$eq: type}
+                    }
+                },
 
+                {
+                    ...(value && value.price && {
+                        Price: {
 
-                        ...(value && value.price && {
-                            Price: {
+                            $between: checkQueryPrice(value.price as string),
 
-                                $between: checkQueryPrice(value.price as string),
+                        }
+                    }),
+                }, {
+                    Weight: {
+
+                        ...(value && value.weight?.includes("-") && {
+                            $between: checkQueryPrice(value.weight as string),
+                        }),
+                        ...(value && !value.weight?.includes("-") && value.weight && parseInt(value.weight as string) <= 15 && {
+
+                            $lt: value.weight,
+
+                        }),
+                        ...(value && !value.weight?.includes("-") && value.weight && parseInt(value.weight as string) >= 30 && {
+                            $gt: value.weight,
+                        }),
+                    }
+                },
+                {
+                    Scooter: {
+                        $and: [
+                            {
+                                type_product: {
+                                    Title: {$in: value && value.type_product}
+
+                                }
+                            },
+                            {
+                                user_type: {
+                                    Title: {$in: value && value.user_type}
+                                }
 
                             }
-                        }),
-                        weight: {
-                            ...(value && value.weight?.includes("-") && {
-                                $between: checkQueryPrice(value.weight as string),
-                            }),
-                            ...(value && value.weight && parseInt(value.weight as string) <= 15 && {
-
-                                $lt: value.weight,
-
-                            }),
-                            ...(value && value.weight && parseInt(value.weight as string) >= 30 && {
-                                $gt: value.weight,
-                            }),
-                        }
-
-
+                        ]
                     }
                 },
 
-                {
-                    type_product: {
-                        Title: {$in: value && value.type_product}
-
-                    }
-
-                },
-                {
-                    user_type: {
-                        Title: {$in: value && value.user_type}
-                    }
-
-                }
             ],
 
         },
@@ -139,9 +145,9 @@ export const useCatalog = defineStore("catalog", {
     state: (): stateType => ({
         // объект для сортировки
         SortOptions: [
-            {label: 'Сначала дешевле', sort: 'Basic:Price:asc'},
-            {label: 'Сначала дороже', sort: 'Basic:Price:desc'},
-            {label: 'По сумме скидки', sort: 'Basic:oldPrice:desc'}
+            {label: 'Сначала дешевле', sort: 'Price:asc'},
+            {label: 'Сначала дороже', sort: 'Price:desc'},
+            {label: 'По сумме скидки', sort: 'oldPrice:desc'}
         ],
         Detail: {},
         Deals: {},
@@ -160,7 +166,8 @@ export const useCatalog = defineStore("catalog", {
         },
     },
     actions: {
-        async setDetailData(data: AdditionalType) {
+        // Дополнительные услуги для деталки товара
+        async setServiceData(data: AdditionalType) {
 
             if (!this.ServiceToOrder.some(p => p.Uid === data.Uid)) {
                 this.ServiceToOrder.push(data)
@@ -170,39 +177,66 @@ export const useCatalog = defineStore("catalog", {
                 this.ServiceToOrder = detail
             }
         },
+
+        //очистка делатки и каталога
         async clearDeals() {
             this.Detail = {}
             this.Deals = {}
-
-
         },
         async orderToCookie(values: { OrderPrice: number }) {
 
-            const cookie = useCookie<DetailItemType[]>("order");
-            let order = [...(cookie.value ?? "")] as DetailItemType[];
+            const cookie = useCookie<cookieOrderType[]>("order");
+            let order = [...(cookie.value ?? "")] as cookieOrderType[];
             if (order && order.some(p => p.id === this.Detail.id)) {
                 order.map(p => {
                     if (p.id === this.Detail.id) {
 
-                        p.attributes.OrderPrice = values.OrderPrice
-                        p.attributes.OrderService = this.ServiceToOrder
+                        p.OrderPrice = values.OrderPrice
+                        p.OrderService = this.ServiceToOrder
                     }
                 })
 
                 cookie.value = order
             } else {
-                const Detail = this.Detail
-                Detail.attributes.OrderPrice = values.OrderPrice
-                Detail.attributes.OrderService = this.ServiceToOrder
-                order.push(
-                    Detail
-                )
 
+                order.push({
+                        id: this.Detail.id,
+                        OrderPrice: values.OrderPrice,
+                        OrderService: this.ServiceToOrder
+                    }
+                )
                 cookie.value = order
-                console.log(cookie.value)
+
+            }
+        },
+        async cartOrders() {
+            const cookie = useCookie<cookieOrderType[]>("order");
+            let order = [...(cookie.value ?? "")] as cookieOrderType[];
+            const searchedItems = []
+            if (order) {
+                order.map(p => searchedItems.push(p.id))
+                setLoading(true)
+                let {data, error} = await useFetch(
+                    `${useRuntimeConfig().public.strapi.url}/api/${type}?${filterDeal(id)}`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                )
+                if (error.value) {
+
+                } else {
+                    this.Detail = (data.value as CatalogItemType).data[0] as DetailItemType
+                }
+
+                setLoading(false)
+
             }
 
         },
+        // Проверка на существование категории
         async getFilters() {
             setLoading(true)
             const [{data: categories, error},
@@ -230,6 +264,7 @@ export const useCatalog = defineStore("catalog", {
             }
             setLoading(false)
         },
+        // фильтр под текущую категорию
         async getFilter(type: string) {
             setLoading(true)
             let {data, error} = await useFetch(
@@ -249,6 +284,7 @@ export const useCatalog = defineStore("catalog", {
             }
             setLoading(false)
         },
+        // делальная страница товара
         async filteredDeal(type: string, id: string) {
             setLoading(true)
             let {data, error} = await useFetch(
@@ -268,12 +304,12 @@ export const useCatalog = defineStore("catalog", {
 
             setLoading(false)
         },
+        // каталог с пагинацией
         async getDeals(type: string, page: string, filters?: responseFilterType, sort?: string) {
             setLoading(true)
 
-
             const {data, error} = await useFetch(
-                `${useRuntimeConfig().public.strapi.url}/api/${type}?${pagination(page ?? "1")}&${filterCatalog(filters, sort)}`,
+                `${useRuntimeConfig().public.strapi.url}/api/catalog-items?${pagination(page ?? "1")}&${filterCatalog(type, filters, sort)}`,
                 {
                     method: "GET",
                     headers: {

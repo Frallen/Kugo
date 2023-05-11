@@ -16,11 +16,6 @@
       "type": "string",
       "required": true
     },
-    "badges": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::badge.badge"
-    },
     "category": {
       "type": "relation",
       "relation": "oneToOne",

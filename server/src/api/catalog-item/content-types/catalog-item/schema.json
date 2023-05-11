@@ -1,0 +1,65 @@
+{
+  "kind": "collectionType",
+  "collectionName": "catalog_items",
+  "info": {
+    "singularName": "catalog-item",
+    "pluralName": "catalog-items",
+    "displayName": "CatalogItem",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Title": {
+      "type": "string",
+      "required": true
+    },
+    "badges": {
+      "type": "customField",
+      "options": [
+        "Хит",
+        "Новинка"
+      ],
+      "customField": "plugin::multi-select.multi-select"
+    },
+    "Weight": {
+      "type": "float",
+      "required": true
+    },
+    "Price": {
+      "type": "float",
+      "required": true
+    },
+    "oldPrice": {
+      "type": "float"
+    },
+    "About": {
+      "type": "string"
+    },
+    "Services": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::service.service"
+    },
+    "category": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::category.category"
+    },
+    "Scooter": {
+      "type": "component",
+      "repeatable": false,
+      "component": "catalog-item.scooter"
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

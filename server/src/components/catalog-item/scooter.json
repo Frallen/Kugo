@@ -1,0 +1,89 @@
+{
+  "collectionName": "components_catalog_item_scooters",
+  "info": {
+    "displayName": "scooter",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "max_speed": {
+      "type": "float",
+      "required": true
+    },
+    "power": {
+      "type": "float",
+      "required": true
+    },
+    "max_range": {
+      "type": "float",
+      "required": true
+    },
+    "battery_capacity": {
+      "type": "float",
+      "required": true
+    },
+    "wheel_size": {
+      "type": "float",
+      "required": true
+    },
+    "maximum_load": {
+      "type": "decimal",
+      "required": true
+    },
+    "lighting": {
+      "type": "string",
+      "required": true,
+      "default": "Передняя фара, стоп-сигнал, боковая"
+    },
+    "guarantee": {
+      "type": "string",
+      "default": "12 месяцев",
+      "required": true
+    },
+    "type_wheels": {
+      "type": "enumeration",
+      "enum": [
+        "Полиуретан",
+        "Надувные"
+      ],
+      "required": true,
+      "default": "Надувные"
+    },
+    "equipment": {
+      "type": "string",
+      "required": true,
+      "default": "Товарный чек, гарантийный талон, з/у"
+    },
+    "privod": {
+      "type": "enumeration",
+      "enum": [
+        "Передний",
+        "Задний",
+        "Передний и задний"
+      ],
+      "required": true
+    },
+    "stop_system": {
+      "type": "string",
+      "required": true
+    },
+    "gabarits": {
+      "type": "string",
+      "required": true
+    },
+    "charge_time": {
+      "type": "string",
+      "required": true
+    },
+    "type_product": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::type-product.type-product"
+    },
+    "user_type": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::user-type.user-type"
+    }
+  }
+}

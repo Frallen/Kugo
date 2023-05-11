@@ -45,8 +45,8 @@
             </ClientOnly>
             <div class="filter-item">
                 <h6>Вес</h6>
-                <ul class="filter-item-list" v-if="Filter.attributes.weight">
-                    <li v-for="item in Filter.attributes.weight" :key="item.id">
+                <ul class="filter-item-list" v-if="Filter.attributes.Weight">
+                    <li v-for="item in Filter.attributes.Weight" :key="item.id">
                         <label class="radio">
                             <Field name="weight"
                                    type="radio" :value="item.Value"

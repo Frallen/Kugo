@@ -12,31 +12,32 @@ export interface DetailItemType {
 
 //интерфейс скутеров
 export interface ScooterItemType {
-    Basic: {
-        About: string
-        Price: number
-        Title: string
-        Weight: number
-        id: number
-        oldPrice: number
-        Services?:ServicesType
+    About: string
+    Price: number
+    Title: string
+    Weight: number
+    id: number
+    oldPrice: number
+    Services?: ServicesType
+    Scooter?: {
+        max_speed: number,
+        power: number,
+        max_range: string,
+        battery_capacity: number,
+        charge_time: string,
+        wheel_size: number,
+        gabarits: string,
+        maximum_load: number,
+        lighting: string,
+        guarantee: string,
+        type_wheels: string,
+        equipment: string,
+        privod: string,
+        stop_system: string,
+        type_product: categoryType
+        user_type: categoryType
     }
-    max_speed: number,
-    power: number,
-    max_range: string,
-    battery_capacity: number,
-    charge_time: string,
-    wheel_size: number,
-    gabarits: string,
-    maximum_load: number,
-    lighting: string,
-    guarantee: string,
-    type_wheels: string,
-    equipment: string,
-    privod: string,
-    stop_system: string,
-    type_product: categoryType
-    user_type: categoryType
+
     images: imageType,
     badges: [string]
     category: {
@@ -69,7 +70,7 @@ export interface filterType {
         category: categoryType
         maxPrice: number
         minPrice: number
-        weight: weightType[]
+        Weight: weightType[]
     } & datesType
 }
 
@@ -112,6 +113,11 @@ export interface AdditionalType {
     Default?: boolean
 }
 
+export interface cookieOrderType {
+    id: number
+    OrderPrice?: number
+    OrderService?: AdditionalType[]
+}
 
 // Тип для изображений
 interface imageType {

@@ -49,39 +49,39 @@
             </div>
             <div class="product-content">
                 <h4 class="product-title">
-                    {{ item.attributes.Basic.Title }}
+                    {{ item.attributes.Title }}
                 </h4>
                 <div class="product-features">
                     <div class="product-features-item">
                         <Icon name="material-symbols:battery-charging-20-rounded" class="icon"
                         />
-                        {{ item.attributes.power }} W
+                        {{ item.attributes.Scooter.power }} W
                     </div>
                     <div class="product-features-item">
                         <Icon name="material-symbols:weight-outline" class="icon"
                         />
-                        {{ item.attributes.Basic.Weight }} кг
+                        {{ item.attributes.Weight }} кг
                     </div>
                     <div class="product-features-item">
                         <Icon name="icon-park-outline:speed-one" class="icon"
                         />
-                        {{ item.attributes.max_speed }} км/ч
+                        {{ item.attributes.Scooter.max_speed }} км/ч
                     </div>
                     <div class="product-features-item">
 
                         <Icon name="ion:ios-flash" class="icon"
                         />
-                        {{ item.attributes.battery_capacity }} mAh
+                        {{ item.attributes.Scooter.battery_capacity }} mAh
                     </div>
                 </div>
                 <div class="product-body">
                     <div class="product-body-price">
-                        <h5 v-if="item.attributes.Basic.oldPrice">
-                            <span>{{ item.attributes.Basic.oldPrice }} ₽</span>
-                            {{ item.attributes.Basic.Price }} ₽
+                        <h5 v-if="item.attributes.oldPrice">
+                            <span>{{ item.attributes.oldPrice }} ₽</span>
+                            {{ item.attributes.Price }} ₽
                         </h5>
                         <h5 v-else>
-                            {{ item.attributes.Basic.Price }} ₽
+                            {{ item.attributes.Price }} ₽
                         </h5>
                         <div class="product-actions">
                             <div class="product-actions-item">
