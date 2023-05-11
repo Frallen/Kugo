@@ -117,9 +117,6 @@ interface propsType {
 
 
 let {item} = defineProps<propsType>();
-const catalogItem = useState<HTMLLIElement>()
-
-//const isHovered = useElementHover(catalogItem)
 
 const mouseHovered = useState<boolean>()
 

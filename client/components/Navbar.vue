@@ -247,6 +247,7 @@ watch(mobileModal, () => {
   z-index: 99;
   background: #fff;
   box-shadow: 0 -2px 8px 0 #000;
+  user-select: none;
 
   &-mobile {
     padding: 0 0 1em 0;

@@ -3,38 +3,41 @@
         <div class="product">
             <div class="product-body">
                 <div class="product-body-wrapper">
-                    <Swiper
-                            class="slider"
-                            @swiper="onSwiper"
-                            :modules="modules"
-                            :slides-per-view="1"
-                            :space-between="20"
-                            :thumbs="{ swiper: thumbsSwiper }"
-                    >
-                        <Swiper-slide class="slider-item" v-for="item in Detail.attributes.images.data"
+                    <ClientOnly>
+                        <Swiper
+                                class="slider"
+                                @swiper="onSwiper"
+                                :modules="modules"
+                                :slides-per-view="1"
+                                :space-between="20"
+                                :thumbs="{ swiper: thumbsSwiper }"
                         >
-                            <NuxtImg
-                                    provider="cloudinary"
-                                    :src="item.attributes.url"
-                            ></NuxtImg>
-                        </Swiper-slide>
-                    </Swiper>
-                    <Swiper
-                            class="slider-thumbs"
-                            @swiper="setThumbsSwiper"
-                            :modules="modules"
-                            :slides-per-view="5"
-                            :watchSlidesProgress="true"
-                            :space-between="10"
-                    >
-                        <Swiper-slide class="slider-thumbs-item" v-for="item in Detail.attributes.images.data"
+                            <Swiper-slide class="slider-item" v-for="item in Detail.attributes.images.data"
+                            >
+                                <NuxtImg
+                                        provider="cloudinary"
+                                        :src="item.attributes.url"
+                                ></NuxtImg>
+                            </Swiper-slide>
+                        </Swiper>
+                        <Swiper
+                                class="slider-thumbs"
+                                @swiper="setThumbsSwiper"
+                                :modules="modules"
+                                :slides-per-view="5"
+                                :watchSlidesProgress="true"
+                                :space-between="10"
+                                :slide-active-class="'active-slide'"
                         >
-                            <NuxtImg
-                                    provider="cloudinary"
-                                    :src="item.attributes.url"
-                            ></NuxtImg>
-                        </Swiper-slide>
-                    </Swiper>
+                            <Swiper-slide class="slider-thumbs-item" v-for="item in Detail.attributes.images.data"
+                            >
+                                <NuxtImg
+                                        provider="cloudinary"
+                                        :src="item.attributes.url"
+                                ></NuxtImg>
+                            </Swiper-slide>
+                        </Swiper>
+                    </ClientOnly>
                 </div>
                 <Form @submit="onSubmit" class="product-body-info">
                     <Field name="OrderPrice" type="text" hidden v-model="Price">
@@ -53,12 +56,12 @@
                         <h5 class="product-price-title" v-else> {{ Detail.attributes.Basic.Price }} ₽</h5>
                         <div class="product-price-credit"></div>
                     </div>
-
-                    <div class="product-deals" v-for="item in Detail.attributes.Basic.Services?.data" :key="item.id">
-                        <h6>{{ item.attributes.Name }}</h6>
-                        <Additional :settings="item"></Additional>
-                    </div>
-
+                    <template v-if="Detail.attributes.Basic.Services">
+                        <div class="product-deals" v-for="item in Detail.attributes.Basic.Services.data" :key="item.id">
+                            <h6>{{ item.attributes.Name }}</h6>
+                            <Additional :settings="item"></Additional>
+                        </div>
+                    </template>
                     <div class="product-result">
                         <div class="product-result-price">
                             <h6>{{ Price }} руб.</h6>
@@ -79,14 +82,16 @@
                 </Form>
             </div>
             <div class="product-footer">
-                <Swiper
-                        class="slider-thumbs"
-                        @swiper="setThumbsProperty"
-                        :modules="modules"
-                        :slides-per-view="4"
-                        :watchSlidesProgress="true"
-                        :space-between="10"
-                        :breakpoints="{
+                <ClientOnly>
+                    <Swiper
+                            class="slider-thumbs"
+                            @swiper="setThumbsProperty"
+                            :modules="modules"
+                            :slides-per-view="4"
+                            :watchSlidesProgress="true"
+                            :space-between="10"
+                            :slide-active-class="'active-slide'"
+                            :breakpoints="{
                              320: {
                               slidesPerView: 1,
                             },
@@ -97,136 +102,139 @@
                               slidesPerView: 4,
                             }
                         }"
-                >
-                    <Swiper-slide class="slider-thumbs-item"
                     >
-                        О товаре
-                    </Swiper-slide>
-                    <Swiper-slide class="slider-thumbs-item"
+                        <Swiper-slide class="slider-thumbs-item"
+                        >
+                            О товаре
+                        </Swiper-slide>
+                        <Swiper-slide class="slider-thumbs-item"
+                        >
+                            Характеристики
+                        </Swiper-slide>
+                        <Swiper-slide class="slider-thumbs-item"
+                        >
+                            Доставка и оплата
+                        </Swiper-slide>
+                        <Swiper-slide class="slider-thumbs-item"
+                        >
+                            Гарантии
+                        </Swiper-slide>
+                    </Swiper>
+                    <Swiper
+                            class="slider"
+                            @swiper="onProperty"
+                            :modules="modules"
+                            :slides-per-view="1"
+                            :space-between="20"
+                            :thumbs="{ swiper: thumbsProperty }"
+                            effect="fade"
+                            :fadeEffect="{ crossFade: true }"
+                            :auto-height="true"
                     >
-                        Характеристики
-                    </Swiper-slide>
-                    <Swiper-slide class="slider-thumbs-item"
-                    >
-                        Доставка и оплата
-                    </Swiper-slide>
-                    <Swiper-slide class="slider-thumbs-item"
-                    >
-                        Гарантии
-                    </Swiper-slide>
-                </Swiper>
-                <Swiper
-                        class="slider"
-                        @swiper="onProperty"
-                        :modules="modules"
-                        :slides-per-view="1"
-                        :space-between="20"
-                        :thumbs="{ swiper: thumbsProperty }"
-                        effect="fade"
-                        :fadeEffect="{ crossFade: true }"
-                        :auto-height="true"
-                >
-                    <Swiper-slide class="slider-item">
-                        <div class="about">
-                            <div class="about-item">
-                                <h5>{{ Detail.attributes.Basic.Title }}</h5>
-                                <p v-if="Detail.attributes.Basic.About">{{ Detail.attributes.Basic.About }}</p>
-                            </div>
-                            <div class="about-item">
-                                <div class="about-item-equipment">
-                                    <h6>{{ Detail.attributes.Basic.Title }}</h6>
-                                    <p>
-                                        {{ Detail.attributes.equipment }}
-                                    </p>
+                        <Swiper-slide class="slider-item">
+                            <div class="about">
+                                <div class="about-item">
+                                    <h5>{{ Detail.attributes.Basic.Title }}</h5>
+                                    <p v-if="Detail.attributes.Basic.About">{{ Detail.attributes.Basic.About }}</p>
                                 </div>
-                                <div class="about-item-features">
-                                    <h6>Ключевые особенности {{ Detail.attributes.Basic.Title }}</h6>
-                                    <div class="feature">
-                                        <div v-if="Detail.attributes.type_product" class="feature-item">
-                                            {{ Detail.attributes.type_product.data.attributes.Title }}
+                                <div class="about-item">
+                                    <div class="about-item-equipment">
+                                        <h6>{{ Detail.attributes.Basic.Title }}</h6>
+                                        <p>
+                                            {{ Detail.attributes.equipment }}
+                                        </p>
+                                    </div>
+                                    <div class="about-item-features">
+                                        <h6>Ключевые особенности {{ Detail.attributes.Basic.Title }}</h6>
+                                        <div class="feature">
+                                            <div v-if="Detail.attributes.type_product" class="feature-item">
+                                                {{ Detail.attributes.type_product.data.attributes.Title }}
+                                            </div>
+                                            <div class="feature-item">{{
+                                                Detail.attributes.user_type.data.attributes.Title
+                                                }}
+                                            </div>
+                                            <div class="feature-item">До {{ Detail.attributes.max_speed }} км/ч</div>
                                         </div>
-                                        <div class="feature-item">{{
-                                            Detail.attributes.user_type.data.attributes.Title
-                                            }}
-                                        </div>
-                                        <div class="feature-item">До {{ Detail.attributes.max_speed }} км/ч</div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </Swiper-slide>
-                    <Swiper-slide class="slider-item">
-                        <div class="property">
-                            <div class="column">
-                                <div class="property-item" v-if="Detail.attributes.Basic.Weight">Масса нетто
-                                    <span>{{ Detail.attributes.Basic.Weight }} кг</span></div>
-                                <div class="property-item" v-if="Detail.attributes.power">Мощность
-                                    <span>{{ Detail.attributes.power }} W</span></div>
-                                <div class="property-item" v-if="Detail.attributes.battery_capacity">Аккумулятор
-                                    <span>{{ Detail.attributes.battery_capacity }} mAh</span></div>
-                                <div class="property-item" v-if="Detail.attributes.max_speed">Максимальная скорость
-                                    <span>До {{
-                                        Detail.attributes.max_speed
-                                        }} км/ч*</span></div>
-                                <div class="property-item" v-if="Detail.attributes.max_range">Максимальный пробег
-                                    <span>До {{ Detail.attributes.max_range }}км/ч*</span></div>
-                                <div class="property-item" v-if="Detail.attributes.charge_time">Время полной зарядки
-                                    <span>{{ Detail.attributes.charge_time }}</span></div>
-                                <div class="property-item" v-if="Detail.attributes.maximum_load">Максимальная нагрузка
-                                    <span>{{ Detail.attributes.maximum_load }} кг</span></div>
-                                <div class="property-item" v-if="Detail.attributes.wheel_size">Размер колес
-                                    <span>{{ Detail.attributes.wheel_size }}</span></div>
-                            </div>
-                            <div class="column">
-                                <div class="property-item" v-if="Detail.attributes.type_wheels">Тип колес
-                                    <span>{{ Detail.attributes.type_wheels }}</span></div>
-                                <div class="property-item" v-if="Detail.attributes.gabarits">Габариты (ДВШ), см
-                                    <span>{{ Detail.attributes.gabarits }}</span></div>
-                                <div class="property-item" v-if="Detail.attributes.lighting">Подсветка
-                                    <span>{{ Detail.attributes.lighting }}</span></div>
-                                <div class="property-item" v-if="Detail.attributes.privod">Привод
-                                    <span>{{ Detail.attributes.privod }}</span></div>
-                                <div class="property-item" v-if="Detail.attributes.stop_system">Тормозная система
-                                    <span>{{ Detail.attributes.stop_system }}</span></div>
-                                <div class="property-item" v-if="Detail.attributes.equipment">Комплектация
-                                    <span>{{ Detail.attributes.equipment }}</span></div>
-                                <div class="property-item" v-if="Detail.attributes.guarantee">Гарантия
-                                    <span>{{ Detail.attributes.guarantee }}</span></div>
-                                <div class="property-item special"
-                                     v-if="Detail.attributes.max_range||Detail.attributes.max_speed">
-                                    *указаны максимально возможные характеристики, зависящие от веса райдера, рельефа
-                                    местности, погодных условий и температуры окружающей среды
+                        </Swiper-slide>
+                        <Swiper-slide class="slider-item">
+                            <div class="property">
+                                <div class="column">
+                                    <div class="property-item" v-if="Detail.attributes.Basic.Weight">Масса нетто
+                                        <span>{{ Detail.attributes.Basic.Weight }} кг</span></div>
+                                    <div class="property-item" v-if="Detail.attributes.power">Мощность
+                                        <span>{{ Detail.attributes.power }} W</span></div>
+                                    <div class="property-item" v-if="Detail.attributes.battery_capacity">Аккумулятор
+                                        <span>{{ Detail.attributes.battery_capacity }} mAh</span></div>
+                                    <div class="property-item" v-if="Detail.attributes.max_speed">Максимальная скорость
+                                        <span>До {{
+                                            Detail.attributes.max_speed
+                                            }} км/ч*</span></div>
+                                    <div class="property-item" v-if="Detail.attributes.max_range">Максимальный пробег
+                                        <span>До {{ Detail.attributes.max_range }}км/ч*</span></div>
+                                    <div class="property-item" v-if="Detail.attributes.charge_time">Время полной зарядки
+                                        <span>{{ Detail.attributes.charge_time }}</span></div>
+                                    <div class="property-item" v-if="Detail.attributes.maximum_load">Максимальная
+                                        нагрузка
+                                        <span>{{ Detail.attributes.maximum_load }} кг</span></div>
+                                    <div class="property-item" v-if="Detail.attributes.wheel_size">Размер колес
+                                        <span>{{ Detail.attributes.wheel_size }}</span></div>
+                                </div>
+                                <div class="column">
+                                    <div class="property-item" v-if="Detail.attributes.type_wheels">Тип колес
+                                        <span>{{ Detail.attributes.type_wheels }}</span></div>
+                                    <div class="property-item" v-if="Detail.attributes.gabarits">Габариты (ДВШ), см
+                                        <span>{{ Detail.attributes.gabarits }}</span></div>
+                                    <div class="property-item" v-if="Detail.attributes.lighting">Подсветка
+                                        <span>{{ Detail.attributes.lighting }}</span></div>
+                                    <div class="property-item" v-if="Detail.attributes.privod">Привод
+                                        <span>{{ Detail.attributes.privod }}</span></div>
+                                    <div class="property-item" v-if="Detail.attributes.stop_system">Тормозная система
+                                        <span>{{ Detail.attributes.stop_system }}</span></div>
+                                    <div class="property-item" v-if="Detail.attributes.equipment">Комплектация
+                                        <span>{{ Detail.attributes.equipment }}</span></div>
+                                    <div class="property-item" v-if="Detail.attributes.guarantee">Гарантия
+                                        <span>{{ Detail.attributes.guarantee }}</span></div>
+                                    <div class="property-item special"
+                                         v-if="Detail.attributes.max_range||Detail.attributes.max_speed">
+                                        *указаны максимально возможные характеристики, зависящие от веса райдера,
+                                        рельефа
+                                        местности, погодных условий и температуры окружающей среды
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                    </Swiper-slide>
-                    <Swiper-slide class="slider-item">
-                        <div class="pay">
-                            <div class="pay-item">
-                                <h5>5 способов оплаты</h5>
-                                <ul>
-                                    <li>наличными</li>
-                                    <li>картой</li>
-                                    <li>онлайн на сайте через корзину</li>
-                                    <li>через интернет-банкинг по счету</li>
-                                    <li>в кредит от «Сбербанка»</li>
-                                </ul>
+                        </Swiper-slide>
+                        <Swiper-slide class="slider-item">
+                            <div class="pay">
+                                <div class="pay-item">
+                                    <h5>5 способов оплаты</h5>
+                                    <ul>
+                                        <li>наличными</li>
+                                        <li>картой</li>
+                                        <li>онлайн на сайте через корзину</li>
+                                        <li>через интернет-банкинг по счету</li>
+                                        <li>в кредит от «Сбербанка»</li>
+                                    </ul>
+                                </div>
+                                <div class="pay-item">
+                                    <h5>Доставка по всей России</h5>
+                                    <ul>
+                                        <li>Отправляем заказы по всей России день в день службой доставки товаров CDEK
+                                        </li>
+                                        <li>Самовывоз из магазинов в Москве, Санкт-Петербурге и Краснодаре</li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div class="pay-item">
-                                <h5>Доставка по всей России</h5>
-                                <ul>
-                                    <li>Отправляем заказы по всей России день в день службой доставки товаров CDEK</li>
-                                    <li>Самовывоз из магазинов в Москве, Санкт-Петербурге и Краснодаре</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </Swiper-slide>
-                    <Swiper-slide class="slider-item">
-                        <Gurantee></Gurantee>
-                    </Swiper-slide>
-                </Swiper>
-
+                        </Swiper-slide>
+                        <Swiper-slide class="slider-item">
+                            <Gurantee></Gurantee>
+                        </Swiper-slide>
+                    </Swiper>
+                </ClientOnly>
             </div>
         </div>
     </div>
@@ -236,17 +244,18 @@
 import {Navigation, Thumbs, EffectFade} from "swiper";
 import {Swiper, SwiperSlide} from "swiper/vue";
 import {Form, Field} from "vee-validate"
+
 const modules = [Navigation, Thumbs, EffectFade];
 const {
     filteredDeal, orderToCookie
 } = useCatalog()
 const {
-    Services, Detail, ServiceToOrder
+    Detail, ServiceToOrder
 } = storeToRefs(useCatalog())
 
 const {params} = useRoute()
 await filteredDeal(sluggedCatalog(), params.id as string)
-const {} = storeToRefs(useCatalog())
+
 const Price = computed(() => {
     if (ServiceToOrder.value) {
         return ServiceToOrder.value.reduce(
@@ -327,7 +336,7 @@ const setThumbsProperty = (swiper: any) => {
         height: 90px;
         margin: 1em 0;
 
-        .swiper-slide-thumb-active {
+        .active-slide {
           border: 1px solid @purple;
         }
 
