@@ -1,5 +1,7 @@
 <template>
-    <SliderIndex></SliderIndex>
+    <ClientOnly>
+        <SliderIndex></SliderIndex>
+    </ClientOnly>
     <div class="container">
         <div class="features">
             <div class="features-item text">Гарантия 1 год <span>на весь ассортимент</span></div>
@@ -65,9 +67,8 @@
 const {getDeals, clearDeals, categories} = useCatalog()
 const {Deals}=storeToRefs(useCatalog())
 await getDeals("scooters","1");
-onUnmounted(() => {
-    clearDeals()
-})
+
+
 </script>
 
 <style scoped lang="less">

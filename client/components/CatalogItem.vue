@@ -21,8 +21,8 @@
                         :slides-per-view="1"
                         :space-between="20"
                         :autoplay="{
-          delay: 3000,
-        }"
+                          delay: 3000,
+                        }"
                         class="slider"
                         @swiper="onSwiper"
                 >

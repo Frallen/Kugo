@@ -7,11 +7,11 @@ export interface CatalogItemType extends metaType {
 // общий интерфейс для элементов из каталога
 export interface DetailItemType {
     id: number,
-    attributes: ScooterItemType
+    attributes: DealType
 }
 
 //интерфейс скутеров
-export interface ScooterItemType {
+export interface DealType {
     About: string
     Price: number
     Title: string
@@ -43,13 +43,14 @@ export interface ScooterItemType {
     category: {
         data: categoryItemType
     }
+    OrderCount?: number
     OrderPrice?: number
     OrderService?: AdditionalType[]
 }
 
 // Интерфейс категорий товаров
 export interface categoryType extends metaType {
-    data: categoryItemType
+    data: categoryItemType[]
 }
 
 type categoryItemType = {

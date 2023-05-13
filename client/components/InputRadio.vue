@@ -48,6 +48,7 @@ const setPrice = () => {
   flex-direction: column;
   user-select: none;
   align-items: center;
+  text-align: center;
 
   input[type=radio] {
     //   display: none;

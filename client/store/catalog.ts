@@ -24,7 +24,7 @@ const populate = (): string => {
     );
 };
 
-const filterDeal = (value: string | [string]): string => {
+const filterDeal = (value: string | [number]): string => {
     return qs.stringify({
         populate: "deep",
         filters: {
@@ -129,7 +129,8 @@ const pagination = (page: string): string => {
 interface stateType {
     SortOptions: SelectFilterType[],
     Detail: DetailItemType,
-    Deals: CatalogItemType | {};
+    Deals: CatalogItemType,
+    Cart: CatalogItemType,
     categories: categoryType,
     Filter: filterType,
     ServiceToOrder: AdditionalType[]
@@ -151,11 +152,9 @@ export const useCatalog = defineStore("catalog", {
         ],
         Detail: {},
         Deals: {},
+        Cart: {},
         Filter: {},
-        categories: {
-            data: [],
-            meta: {},
-        },
+        categories: {},
         ServiceToOrder: []
     }),
     getters: {
@@ -212,26 +211,36 @@ export const useCatalog = defineStore("catalog", {
         async cartOrders() {
             const cookie = useCookie<cookieOrderType[]>("order");
             let order = [...(cookie.value ?? "")] as cookieOrderType[];
-            const searchedItems = []
+            const searchedItems: [number] = []
             if (order) {
                 order.map(p => searchedItems.push(p.id))
-                setLoading(true)
-                let {data, error} = await useFetch(
-                    `${useRuntimeConfig().public.strapi.url}/api/${type}?${filterDeal(id)}`,
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
+                if (searchedItems.length>0) {
+                    setLoading(true)
+                    let {data, error} = await useFetch(
+                        `${useRuntimeConfig().public.strapi.url}/api/catalog-items?${filterDeal(searchedItems)}`,
+                        {
+                            method: "GET",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                        }
+                    )
+                    if (error.value) {
+
+                    } else {
+                        (data.value as CatalogItemType).data.map(i => {
+                            order.map(p => {
+                                if (p.id === i.id) {
+                                    i.attributes.OrderPrice = p.OrderPrice
+                                    i.attributes.OrderService = p.OrderService
+                                }
+                            })
+                        })
+                        this.Cart = data.value as CatalogItemType;
                     }
-                )
-                if (error.value) {
+                    setLoading(false)
 
-                } else {
-                    this.Detail = (data.value as CatalogItemType).data[0] as DetailItemType
                 }
-
-                setLoading(false)
 
             }
 
@@ -285,10 +294,10 @@ export const useCatalog = defineStore("catalog", {
             setLoading(false)
         },
         // делальная страница товара
-        async filteredDeal(type: string, id: string) {
+        async filteredDeal(id: string) {
             setLoading(true)
             let {data, error} = await useFetch(
-                `${useRuntimeConfig().public.strapi.url}/api/${type}?${filterDeal(id)}`,
+                `${useRuntimeConfig().public.strapi.url}/api/catalog-items?${filterDeal(id)}`,
                 {
                     method: "GET",
                     headers: {
