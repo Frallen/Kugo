@@ -1,9 +1,9 @@
 <template>
     <div>
-        <NuxtLink :to="`/catalog/${item.attributes.category.data.attributes.Slug}/${item.id}`"
-                  class="product"
-                  @mouseover="mouseHovered=true"
-                  @mouseleave="mouseHovered=false"
+        <div @click.stop="useRouter().push(`/catalog/${item.attributes.category.data.attributes.Slug}/${item.id}`)"
+             class="product"
+             @mouseover="mouseHovered=true"
+             @mouseleave="mouseHovered=false"
         >
             <div class="product-badges" v-if="item.attributes.badges">
                 <div class="product-badges-item " v-for="(p,index) in item.attributes.badges" :key="index"
@@ -88,23 +88,26 @@
                                 <Favorite :isFavorite="false"></Favorite>
                             </div>
                             <div class="product-actions-item">
-                                <BasketButton></BasketButton>
+                                <BasketButton
+                                        @click.stop="orderToCookie(item.attributes.Price,item.id)"></BasketButton>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </NuxtLink>
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import {type DetailItemType} from "~/types/catalog.types";
 import {Navigation} from "swiper";
-
 import {Swiper, SwiperSlide} from "swiper/vue";
 
 const modules = [Navigation];
+const {orderToCookie} = useCatalog()
+
+
 const slider = useState<null>();
 
 const onSwiper = (swiper: any) => {

@@ -164,7 +164,7 @@
                         </Swiper-slide>
                         <Swiper-slide class="slider-item">
                             <div class="property">
-                                <div class="column">
+                                <div class="column" v-if="Detail.attributes.Scooter">
                                     <div class="property-item" v-if="Detail.attributes.Weight">Масса нетто
                                         <span>{{ Detail.attributes.Weight }} кг</span></div>
                                     <div class="property-item" v-if="Detail.attributes.Scooter?.power">Мощность
@@ -254,7 +254,7 @@ import {Form, Field} from "vee-validate"
 
 const modules = [Navigation, Thumbs, EffectFade];
 const {
-    filteredDeal, orderToCookie
+    filteredDeal, orderToCookie, clearDeals
 } = useCatalog()
 const {
     Detail, ServiceToOrder
@@ -264,7 +264,7 @@ const {params} = useRoute()
 await filteredDeal(params.id as string)
 
 const Price = computed(() => {
-    if (ServiceToOrder.value.length>0) {
+    if (ServiceToOrder.value.length > 0) {
         return ServiceToOrder.value.reduce(
             (total, item) => item.Price + total,
             0
@@ -276,8 +276,8 @@ const Price = computed(() => {
 
 
 const onSubmit = (values: { OrderPrice: number }) => {
-
-    orderToCookie(values)
+    const OrderPrice: number = values.OrderPrice
+    orderToCookie(OrderPrice)
 }
 
 const slider = useState<null>();
@@ -300,6 +300,10 @@ let thumbsProperty = useState<null>();
 const setThumbsProperty = (swiper: any) => {
     thumbsProperty.value = swiper;
 }
+
+onBeforeUnmount(() => {
+    clearDeals()
+})
 
 </script>
 

@@ -9,34 +9,16 @@
                             <div class="cart-header-item">Товар</div>
                             <div class="cart-header-item">Количество</div>
                             <div class="cart-header-item">Сумма</div>
-                            <div class="cart-header-item delete-all">Удалить все</div>
+                            <div class="cart-header-item delete-all" @click.stop="clearAll()">Удалить все</div>
                         </div>
                         <div class="cart-orders">
-                            <div class="cart-orders-item" v-for="item in Cart.data" :key="item.id">
-                                <div class="order-info">
-                                    <div class="order-info-img">
-                                        <NuxtImg
-                                                provider="cloudinary"
-                                                :src="item.attributes.images.data[0].attributes.url"
-                                        ></NuxtImg>
-                                    </div>
-                                    <div class="order-info-text">
-                                        <h5>{{ item.attributes.Title }}</h5>
-                                        <Available></Available>
-                                    </div>
-                                </div>
-                                <Counter></Counter>
-                                <div class="order-price">{{ item.attributes.Price }} ₽</div>
-                                <div class="order-delete">
-                                    <Icon name="ph:trash-simple-bold" class="icon"
-                                    />
-                                </div>
-                            </div>
+                            <transition-group name="fade">
+                                <OrderItem :item="item" v-for="item in Cart.data" :key="item.id"></OrderItem>
+                            </transition-group>
                         </div>
                     </div>
                     <div class="cart-result">
                         <div class="cart-result-title">Итого</div>
-
                     </div>
                 </template>
                 <div v-else class="cart-wrapper-empty">
@@ -53,9 +35,18 @@
 <script setup lang="ts">
 
 const {Cart} = storeToRefs(useCatalog())
-const {cartOrders, clearDeals} = useCatalog()
+const {cartOrders, clearDeals,clearCart} = useCatalog()
 await cartOrders()
 
+const clearAll = () => {
+    Confirm(
+        "Очистить корзину?",
+    ).then((result: any) => {
+        if (result.isConfirmed) {
+            clearCart()
+        }
+    });
+}
 
 onBeforeMount(() => {
     clearDeals()
@@ -200,60 +191,6 @@ onBeforeMount(() => {
   &-orders {
     display: flex;
     flex-direction: column;
-
-    &-item {
-      display: flex;
-      align-items: center;
-      border-bottom: 1px solid @gray;
-      padding: 0 0 40px 0;
-      margin: 40px 0 0 0;
-
-      .order-price {
-        font-weight: 500;
-        font-size: 20px;
-        line-height: 24px;
-        color: @black;
-      }
-
-      .order-delete {
-        text-align: center;
-        cursor: pointer;
-        font-size: 1.2em;
-      }
-
-      .order-info {
-        display: flex;
-        align-items: center;
-
-
-        &-text {
-          margin: 0 0 0 20px;
-
-          h5 {
-            font-weight: 500;
-            font-size: 20px;
-            line-height: 24px;
-            color: @black;
-            margin: 0 0 10px 0;
-          }
-        }
-
-        &-img {
-          width: 75px;
-          height: 75px;
-          min-width: 75px;
-          min-height: 75px;
-          .br(10px);
-          overflow: hidden;
-
-          img {
-            width: 100%;
-            height: 100%;
-            object-fit: scale-down;
-          }
-        }
-      }
-    }
 
 
   }

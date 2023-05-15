@@ -10,7 +10,7 @@ import {
     AdditionalType,
     cookieOrderType,
 } from "~/types/catalog.types";
-import {errorMessage} from "~/composables/useAlert";
+import {AddedToBasket, errorMessage} from "~/composables/useAlert";
 import {checkQueryPrice} from "~/composables/mixins";
 
 const populate = (): string => {
@@ -182,7 +182,8 @@ export const useCatalog = defineStore("catalog", {
             this.Detail = {}
             this.Deals = {}
         },
-        async orderToCookie(values: { OrderPrice: number }) {
+        //Добавление заказа в куки
+        async orderToCookie(OrderPrice: number, id?: number) {
 
             const cookie = useCookie<cookieOrderType[]>("order");
             let order = [...(cookie.value ?? "")] as cookieOrderType[];
@@ -190,7 +191,7 @@ export const useCatalog = defineStore("catalog", {
                 order.map(p => {
                     if (p.id === this.Detail.id) {
 
-                        p.OrderPrice = values.OrderPrice
+                        p.OrderPrice = OrderPrice
                         p.OrderService = this.ServiceToOrder
                     }
                 })
@@ -199,22 +200,27 @@ export const useCatalog = defineStore("catalog", {
             } else {
 
                 order.push({
-                        id: this.Detail.id,
-                        OrderPrice: values.OrderPrice,
-                        OrderService: this.ServiceToOrder
+                        id: this.Detail.id ?? id,
+                        ...(OrderPrice && {
+                            OrderPrice: OrderPrice
+                        }),
+                        ...(this.ServiceToOrder.length > 0 && {
+                            OrderService: this.ServiceToOrder
+                        }),
                     }
                 )
                 cookie.value = order
-
             }
+            AddedToBasket()
         },
+        // Подготовка элементов корзины
         async cartOrders() {
             const cookie = useCookie<cookieOrderType[]>("order");
             let order = [...(cookie.value ?? "")] as cookieOrderType[];
             const searchedItems: [number] = []
             if (order) {
                 order.map(p => searchedItems.push(p.id))
-                if (searchedItems.length>0) {
+                if (searchedItems.length > 0) {
                     setLoading(true)
                     let {data, error} = await useFetch(
                         `${useRuntimeConfig().public.strapi.url}/api/catalog-items?${filterDeal(searchedItems)}`,
@@ -244,6 +250,17 @@ export const useCatalog = defineStore("catalog", {
 
             }
 
+        },
+        async deleteFromCookie(id: number) {
+            const cookie = useCookie<cookieOrderType[]>("order");
+            let order = [...(cookie.value ?? "")] as cookieOrderType[];
+            cookie.value = order.filter(p => p.id !== id)
+
+        },
+        async clearCart() {
+            const cookie = useCookie<cookieOrderType[]>("order");
+            cookie.value = []
+            this.Cart = []
         },
         // Проверка на существование категории
         async getFilters() {
