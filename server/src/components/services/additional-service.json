@@ -21,6 +21,12 @@
       "unique": false,
       "required": true,
       "type": "integer"
+    },
+    "Name": {
+      "type": "string",
+      "required": true,
+      "default": "Services",
+      "unique": false
     }
   }
 }

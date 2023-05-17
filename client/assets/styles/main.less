@@ -168,6 +168,55 @@ h3 {
     margin: 0 0 50px 0;
   }
 }
+.checkbox {
+  input:checked + .icon {
+    background: url("/checkbox-checked.png");
+    .trs(0.3s);
+  }
+
+  .icon {
+    background: url("/checkbox.png");
+  }
+}
+
+.radio {
+  input:checked + .icon {
+    background: url("/radio-checkbox-checked.png");
+    .trs(0.3s);
+  }
+
+  .icon {
+    .br(10px);
+    background: url("/radio-checkbox.png");
+  }
+}
+.checkbox, .radio {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  input {
+    width: 0;
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .icon {
+    height: 16px;
+    width: 16px;
+    min-width: 16px;
+    min-height: 16px;
+    .trs(0.3s);
+    background-repeat: no-repeat;
+  }
+
+  .text {
+    margin: 0 0 0 10px;
+  }
+}
+
+
 
 .select {
   min-width: 220px;

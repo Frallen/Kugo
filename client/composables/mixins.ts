@@ -1,3 +1,8 @@
+import {useSessionStorage} from "@vueuse/core";
+import {sessionType} from "~/types/catalog.types";
+import {useMain} from "~/store/main";
+
+
 export const overFlow = (state: boolean): void => {
     if (process.client) {
         if (state) {
@@ -5,6 +10,10 @@ export const overFlow = (state: boolean): void => {
         } else document.body.style.overflowY = "visible";
     }
 };
+export const setLoading = (loading: boolean): void => {
+    useMain().isLoading = loading;
+    overFlow(loading)
+}
 
 export const scrollTop = (): void => {
     if (process.client) {
@@ -13,6 +22,15 @@ export const scrollTop = (): void => {
             behavior: "smooth",
         });
     }
+}
+
+export const clearSessionCart = (id: number) => {
+    const sessionCart = useSessionStorage("cart", [] as sessionType[])
+    sessionCart.value = sessionCart.value.filter(p => p.id !== id)
+}
+export const clearSessionDiscount = (id: number) => {
+    const sessionDiscount = useSessionStorage("discount", [] as sessionType[])
+    sessionDiscount.value = sessionDiscount.value.filter(p => p.id !== id)
 }
 
 
@@ -40,6 +58,6 @@ export const sluggedCatalog = (): string => {
     }
 }
 
-export const checkQueryPrice = (value:string): [number, number] => {
+export const checkQueryPrice = (value: string): [number, number] => {
     return [parseInt(value.split('-')[0]), parseInt(value.split('-')[1])]
 }

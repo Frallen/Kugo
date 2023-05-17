@@ -1,13 +1,13 @@
 <template>
     <div class="product-deals-wrapper">
         <template v-if="settings.attributes.PackageColor">
-            <InputRadio v-for="item in settings.attributes.PackageColor" :item="item" :name="'PackageColor'" :key="item.id"></InputRadio>
+            <InputRadio v-for="item in settings.attributes.PackageColor" :item="item" :key="item.id"></InputRadio>
         </template>
         <template v-if="settings.attributes.Warranty">
-            <InputRadio v-for="item in settings.attributes.Warranty" :item="item" :name="'Warranty'" :key="item.id"></InputRadio>
+            <InputRadio v-for="item in settings.attributes.Warranty" :item="item" :key="item.id"></InputRadio>
         </template>
         <template v-if="settings.attributes.AdditionalService">
-            <InputRadio v-for="item in settings.attributes.AdditionalService" :item="item" :name="'Service'" :key="item.id"></InputRadio>
+            <InputRadio v-for="item in settings.attributes.AdditionalService" :item="item" :key="item.id"></InputRadio>
         </template>
 
     </div>
@@ -37,7 +37,6 @@ const emit = defineEmits<{ (e: "addPrice", value: number): void }>()
     padding: 0 0 40px 0;
     border-bottom: 1px solid @gray;
   }
-
 
 
   &-active {

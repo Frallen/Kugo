@@ -43,8 +43,8 @@ export interface DealType {
     category: {
         data: categoryItemType
     }
-    OrderCount?: number
-    OrderPrice?: number
+    //OrderCount?: number
+    OrderPrice: number | undefined
     OrderService?: AdditionalType[]
 }
 
@@ -60,6 +60,11 @@ type categoryItemType = {
         Image: imageType,
     } & datesType,
     id: number,
+}
+
+export interface sessionType {
+    id: number,
+    Price: number,
 }
 
 export interface filterType {
@@ -108,6 +113,7 @@ export interface ServicesItemType {
 
 export interface AdditionalType {
     Title: string
+    Name: string
     Price: number
     id: number
     Uid: string

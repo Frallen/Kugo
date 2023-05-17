@@ -264,7 +264,7 @@ watch(mobileModal, () => {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 18px 0;
+      padding: 18px 0 10px;
 
       &-actions {
         a,

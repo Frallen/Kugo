@@ -2,7 +2,7 @@
     <label class="product-deals-item" @click="setPrice()"
     >
         <span class="color" :style="{background:item.Color}" v-if="item.Color"></span>
-        <input type="radio" :name="name" :checked="item.Default"
+        <input type="radio" :name="item.Name" :checked="item.Default"
                :value="{
                    Name:item.Title,
                    Price:item.Price
@@ -22,11 +22,10 @@ const {setServiceData} = useCatalog()
 
 interface propsType {
     item: AdditionalType
-    name: string
 }
 
 
-let {item, name} = defineProps<propsType>()
+let {item} = defineProps<propsType>()
 
 const setPrice = () => {
     setServiceData(item)

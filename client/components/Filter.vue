@@ -87,7 +87,6 @@ formValues.value = {
 const submitButton = useState<HTMLButtonElement>()
 
 
-
 const onSubmit = (values: responseFilterType) => {
     emit("filters", values);
 }
@@ -125,58 +124,6 @@ const onSubmit = (values: responseFilterType) => {
       li {
         list-style-type: none;
         margin: 10px 0 0 0;
-
-        label {
-          position: relative;
-          display: flex;
-          align-items: center;
-          cursor: pointer;
-
-          input {
-            width: 0;
-            visibility: hidden;
-            opacity: 0;
-          }
-
-          .text {
-            margin: 0 0 0 10px;
-          }
-        }
-
-        .checkbox {
-          input:checked + .icon {
-            background: url("/checkbox-checked.png");
-            .trs(0.3s);
-          }
-
-          .icon {
-            background: url("/checkbox.png");
-            background-repeat: no-repeat;
-            .trs(0.3s);
-          }
-        }
-
-        .radio {
-          input:checked + .icon {
-            background: url("/radio-checkbox-checked.png");
-            .trs(0.3s);
-          }
-
-          .icon {
-            .br(10px);
-            .trs(0.3s);
-            background: url("/radio-checkbox.png");
-            background-repeat: no-repeat;
-          }
-        }
-
-        .icon {
-          height: 16px;
-          width: 16px;
-          min-width: 16px;
-          min-height: 16px;
-        }
-
       }
 
       li:first-child {

@@ -136,6 +136,7 @@ const mouseHovered = useState<boolean>()
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  cursor: pointer;
 
   &-badges, &-compare {
     position: absolute;

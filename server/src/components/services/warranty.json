@@ -26,6 +26,11 @@
       "type": "integer",
       "unique": false,
       "required": true
+    },
+    "Name": {
+      "type": "string",
+      "required": true,
+      "default": "Warranty"
     }
   }
 }
