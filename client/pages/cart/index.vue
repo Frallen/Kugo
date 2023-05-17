@@ -15,19 +15,17 @@
               <transition-group name="fade">
                 <OrderItem :item="item" v-for="item in Cart.data"
                            :key="item.id"
-                           @localSum="fillCartStorage"
-                           @localDiscount="fillDiscountStorage"
                 ></OrderItem>
               </transition-group>
             </div>
           </div>
           <div class="cart-result">
             <div class="cart-result-title">Итого:</div>
-            <div class="cart-result-price">{{ Sum }} ₽</div>
+            <div class="cart-result-price">{{ cart.calculatedCart }} ₽</div>
             <div class="cart-result-total">
-              <!-- <div class="total-item">{{ Discount }}₽</div>-->
-              <div class="total-item" v-if="Discount>0">Сумма скидки <span>{{ Discount }} ₽</span></div>
-              <div class="total-item">Итого без учета доставки <span>{{ Sum }} ₽</span></div>
+              <!-- <div class="total-item">{{ calculatedDiscount }}₽</div>-->
+              <div class="total-item" v-if="cart.calculatedDiscount>0">Сумма скидки <span>{{ cart.calculatedDiscount }} ₽</span></div>
+              <div class="total-item">Итого без учета доставки <span>{{ cart.calculatedCart }} ₽</span></div>
             </div>
             <button type="submit" class="button button-primary">Оформить заказ</button>
             <label class="checkbox">
@@ -52,12 +50,12 @@
 </template>
 
 <script setup lang="ts">
-import {useSessionStorage} from "@vueuse/core";
 import {Field, Form} from "vee-validate";
-import {sessionType} from "~/types/catalog.types";
 
 const {Cart} = storeToRefs(useCart())
 const {cartOrders, clearCart} = useCart()
+const cart=useCart()
+
 const {clearDeals} = useCatalog()
 await cartOrders()
 
@@ -67,65 +65,6 @@ formValues.value = {
 }
 
 
-const sessionCart = useSessionStorage("cart", [] as sessionType[])
-const sessionDiscount = useSessionStorage("discount", [] as sessionType[])
-const Sum = ref<number>(sessionCart.value.reduce(
-    (total, item) => item.Price + total,
-    0
-))
-
-watch(sessionCart, () => {
-  Sum.value = sessionCart.value.reduce(
-      (total, item) => item.Price + total,
-      0
-  )
-})
-
-const Discount = ref<number>(sessionDiscount.value.reduce(
-    (total, item) => item.Price + total,
-    0
-))
-watch(sessionDiscount, () => {
-  Discount.value = sessionDiscount.value.reduce(
-      (total, item) => item.Price + total,
-      0
-  )
-})
-
-const fillCartStorage = (data: sessionType) => {
-  if (sessionCart.value.some(p => p.id === data.id)) {
-    sessionCart.value.map(p => {
-      if (p.id === data.id) {
-        p.Price = data.Price
-      }
-    })
-
-  } else {
-    sessionCart.value.push({
-      id: data.id,
-      Price: data.Price
-    })
-  }
-}
-
-
-const fillDiscountStorage = (data: sessionType) => {
-  if (sessionDiscount.value.some(p => p.id === data.id)) {
-
-    sessionDiscount.value.map(p => {
-      if (p.id === data.id) {
-        p.Price = data.Price
-      }
-    })
-  } else {
-    sessionDiscount.value.push({
-      id: data.id,
-      Price: data.Price
-    })
-
-  }
-
-}
 const clearAll = () => {
   Confirm(
       "Очистить корзину?",

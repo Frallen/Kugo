@@ -1,118 +1,128 @@
 <template>
-    <div class="cart-orders-item">
-        <div class="order-info">
-            <div class="order-info-img">
-                <NuxtImg
-                        provider="cloudinary"
-                        :src="item.attributes.images.data[0].attributes.url"
-                ></NuxtImg>
-            </div>
-            <div class="order-info-text">
-                <NuxtLink :to="`/catalog/${item.attributes.category.data.attributes.Slug}/${item.id}`">
-                    {{ item.attributes.Title }}
-                </NuxtLink>
-                <AvailableIcon></AvailableIcon>
-            </div>
-        </div>
-        <div class="counter">
-            <div class="counter-minus counter-button" @click.prevent="count>1&&count--">
-                <Icon
-                        name="ic:sharp-minus"
-                        class="icon"
-                />
-            </div>
-            <input name="count" type="number" v-model="count"/>
-            <div class="counter-plus counter-button" @click.prevent="count++">
-                <Icon
-                        name="ic:sharp-plus"
-                        class="icon"
-                />
-            </div>
-        </div>
-        <div class="order-price">{{ item.attributes.OrderPrice }} ₽</div>
-        <div class="order-delete" @click.stop.prevent="Delete">
-            <Icon name="ph:trash-simple-bold" class="icon"
-            />
-        </div>
-        <div class="order-service" v-if="item.attributes.OrderService">
-            <div class="order-service-item" v-for="p in item.attributes.OrderService"
-                 @click="removeService(p.Name)">
-                <span>{{ p.Name }}:</span>
-                {{ p.Title }}
-            </div>
-        </div>
+  <div class="cart-orders-item">
+    <div class="order-info">
+      <div class="order-info-img">
+        <NuxtImg
+            provider="cloudinary"
+            :src="item.attributes.images.data[0].attributes.url"
+        ></NuxtImg>
+      </div>
+      <div class="order-info-text">
+        <NuxtLink :to="`/catalog/${item.attributes.category.data.attributes.Slug}/${item.id}`">
+          {{ item.attributes.Title }}
+        </NuxtLink>
+        <AvailableIcon></AvailableIcon>
+      </div>
     </div>
+    <div class="counter">
+      <div class="counter-minus counter-button" @click.prevent="count>1&&count--">
+        <Icon
+            name="ic:sharp-minus"
+            class="icon"
+        />
+      </div>
+      <input name="count" type="number" v-model="count"/>
+      <div class="counter-plus counter-button" @click.prevent="count++">
+        <Icon
+            name="ic:sharp-plus"
+            class="icon"
+        />
+      </div>
+    </div>
+    <div class="order-price">{{ item.attributes.OrderPrice }} ₽</div>
+    <div class="order-delete" @click.stop.prevent="Delete">
+      <Icon name="ph:trash-simple-bold" class="icon"
+      />
+    </div>
+    <div class="order-service" v-if="item.attributes.OrderService">
+      <div class="order-service-item" v-for="p in item.attributes.OrderService"
+           @click="removeService(p.Name)">
+        <span>{{ p.Name }}:</span>
+        {{ p.Title }}
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import {Field} from "vee-validate"
-import {DetailItemType, sessionType} from "~/types/catalog.types";
+import {DetailItemType} from "~/types/catalog.types";
 import AvailableIcon from "~/components/AvailableIcon.vue";
-import {clearSessionCart, clearSessionDiscount} from "~/composables/mixins";
 
-const {deleteFromCookie, cartOrders, DeleteService} = useCart()
+const {
+  deleteFromCookie,
+  cartOrders,
+  DeleteService,
+  fillCartStorage,
+  fillDiscountStorage,
+  clearSessionCart,
+  clearSessionDiscount, clearCart
+} = useCart()
 
+const {Cart} = storeToRefs(useCart())
 
 interface propsType {
-    item: DetailItemType
+  item: DetailItemType
 }
 
 const {item} = defineProps<propsType>()
 const count = ref<number>(1)
 
-const Sum = ref<number>(item.attributes.OrderPrice ?? item.attributes.Price)
-
-const emit = defineEmits<{
-    (e: "localSum", localSum: sessionType): void,
-    (e: "localDiscount", localDiscount: sessionType): void
-}>()
 
 watch(count, () => {
-    pullUp()
+  pullUp()
 })
-const calculatedService = computed<number>(() => {
-    if (item.attributes.OrderService) {
-        return item.attributes.OrderService.reduce(
-            (total, item) => item.Price + total,
-            0
-        )
-    } else return 0;
-})
+const calculatedService = ref<number>(
+   item.attributes.OrderService.length > 0 ? item.attributes.OrderService.reduce(
+      (total, item) => item.Price + total,
+      0
+  ) : 0
 
-const pullUp = () => {
-    emit("localSum", {id: item.id, Price: Sum.value * count.value + calculatedService.value})
-    item.attributes.oldPrice && emit("localDiscount", {
-        id: item.id,
-        Price: item.attributes.oldPrice - item.attributes.Price
+)
+
+const pullUp = async () => {
+
+ await fillCartStorage({id: item.id, Price: item.attributes.Price * count.value + calculatedService.value})
+  if (item.attributes.oldPrice) {
+   await fillDiscountStorage({
+      id: item.id,
+      Price: item.attributes.oldPrice - item.attributes.Price
     })
+  }
 
 }
 pullUp()
 
 const Delete = () => {
-    Confirm(
-        "Удалить товар из корзины?",
-    ).then(async (result: any) => {
-        if (result.isConfirmed) {
+  Confirm(
+      "Удалить товар из корзины?",
+  ).then(async (result: any) => {
+    if (result.isConfirmed) {
 
-            await deleteFromCookie(item.id).then(async () => {
-                await cartOrders()
-            })
-            clearSessionCart(item.id)
-            pullUp()
-        }
-    });
+      await deleteFromCookie(item.id)
+      await clearSessionCart(item.id)
+      await clearSessionDiscount(item.id)
+      if (Cart.value.data.length > 0) {
+        await cartOrders()
+      } else {
+        await clearCart()
+      }
+
+    }
+  });
 }
 const removeService = (Name: string) => {
-    Confirm(
-        "Удалить данную услугу?",
-    ).then(async (result: any) => {
-        if (result.isConfirmed) {
-            await DeleteService(item.id, item.attributes.Price, Name).then(async () => await cartOrders())
-            clearSessionDiscount(item.id)
-            pullUp()
-        }
-    });
+  Confirm(
+      "Удалить данную услугу?",
+  ).then(async (result: any) => {
+    if (result.isConfirmed) {
+      await DeleteService(item.id, item.attributes.Price, Name)
+
+      await cartOrders()
+
+
+     await pullUp()
+    }
+  });
 }
 </script>
 

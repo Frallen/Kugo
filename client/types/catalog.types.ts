@@ -43,9 +43,8 @@ export interface DealType {
     category: {
         data: categoryItemType
     }
-    //OrderCount?: number
     OrderPrice: number | undefined
-    OrderService?: AdditionalType[]
+    OrderService: AdditionalType[]
 }
 
 // Интерфейс категорий товаров

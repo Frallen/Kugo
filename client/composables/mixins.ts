@@ -24,14 +24,7 @@ export const scrollTop = (): void => {
     }
 }
 
-export const clearSessionCart = (id: number) => {
-    const sessionCart = useSessionStorage("cart", [] as sessionType[])
-    sessionCart.value = sessionCart.value.filter(p => p.id !== id)
-}
-export const clearSessionDiscount = (id: number) => {
-    const sessionDiscount = useSessionStorage("discount", [] as sessionType[])
-    sessionDiscount.value = sessionDiscount.value.filter(p => p.id !== id)
-}
+
 
 
 export const sluggedCatalog = (): string => {
