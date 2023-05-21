@@ -21,11 +21,11 @@
           </div>
           <div class="cart-result">
             <div class="cart-result-title">Итого:</div>
-            <div class="cart-result-price">{{ cart.calculatedCart }} ₽</div>
+            <div class="cart-result-price">{{ calculatedCart }} ₽</div>
             <div class="cart-result-total">
               <!-- <div class="total-item">{{ calculatedDiscount }}₽</div>-->
-              <div class="total-item" v-if="cart.calculatedDiscount>0">Сумма скидки <span>{{ cart.calculatedDiscount }} ₽</span></div>
-              <div class="total-item">Итого без учета доставки <span>{{ cart.calculatedCart }} ₽</span></div>
+              <div class="total-item" v-if="calculatedDiscount>0">Сумма скидки <span>{{ calculatedDiscount }} ₽</span></div>
+              <div class="total-item">Итого без учета доставки <span>{{ calculatedCart }} ₽</span></div>
             </div>
             <button type="submit" class="button button-primary">Оформить заказ</button>
             <label class="checkbox">
@@ -52,9 +52,8 @@
 <script setup lang="ts">
 import {Field, Form} from "vee-validate";
 
-const {Cart} = storeToRefs(useCart())
+const {Cart,calculatedCart,calculatedDiscount} = storeToRefs(useCart())
 const {cartOrders, clearCart} = useCart()
-const cart=useCart()
 
 const {clearDeals} = useCatalog()
 await cartOrders()
@@ -63,7 +62,6 @@ const formValues = useState();
 formValues.value = {
   policy: true
 }
-
 
 const clearAll = () => {
   Confirm(

@@ -1,5 +1,3 @@
-import {useSessionStorage} from "@vueuse/core";
-import {sessionType} from "~/types/catalog.types";
 import {useMain} from "~/store/main";
 
 
@@ -23,8 +21,6 @@ export const scrollTop = (): void => {
         });
     }
 }
-
-
 
 
 export const sluggedCatalog = (): string => {

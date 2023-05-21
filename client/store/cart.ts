@@ -34,6 +34,53 @@ export const useCart = defineStore("cart", {
 
     },
     actions: {
+        async prepareSession(id: number, count: number) {
+
+            this.Cart.data.map(p => {
+                const calculatedService =
+                    p.attributes.OrderService ? p.attributes.OrderService.reduce(
+                        (total, item) => item.Price + total,
+                        0
+                    ) : 0
+                if (this.sessionCart.some(p => p.id === id)) {
+                    this.sessionCart.map(item => {
+                            if (item.id === id) {
+                                item.id = id
+                                item.Price = p.attributes.Price * count + calculatedService
+                            }
+
+                        }
+                    )
+
+                    if (p.attributes.oldPrice) {
+                        this.sessionDiscount.map(item => {
+                                if (item.id === id) {
+                                    item.id = id
+                                    item.Price = p.attributes.oldPrice - p.attributes.Price
+                                }
+
+                            }
+                        )
+                    }
+                } else {
+
+
+                    this.sessionCart.push({
+                        id: p.id,
+                        Price: p.attributes.Price * count + calculatedService
+                    })
+
+                    if (p.attributes.oldPrice) {
+                        this.sessionDiscount.push({
+                            id: p.id,
+                            Price: p.attributes.oldPrice - p.attributes.Price
+                        })
+                    }
+                }
+
+            })
+        },
+
         async clearSessionCart(id: number) {
             this.sessionCart = this.sessionCart.filter(p => p.id !== id)
 
@@ -108,38 +155,6 @@ export const useCart = defineStore("cart", {
             this.sessionCart = {}
             this.sessionDiscount = {}
         },
-        async fillCartStorage(data: sessionType) {
-            if (this.sessionCart.some(p => p.id === data.id)) {
-                this.sessionCart.map(p => {
-                    if (p.id === data.id) {
-                        p.Price = data.Price
-                    }
-                })
-
-            } else {
-                this.sessionCart.push({
-                    id: data.id,
-                    Price: data.Price
-                })
-            }
-        },
-        async fillDiscountStorage(data: sessionType) {
-            if (this.sessionDiscount.some(p => p.id === data.id)) {
-
-                this.sessionDiscount.map(p => {
-                    if (p.id === data.id) {
-                        p.Price = data.Price
-                    }
-                })
-            } else {
-                this.sessionDiscount.push({
-                    id: data.id,
-                    Price: data.Price
-                })
-
-            }
-
-        }
     },
 
 })

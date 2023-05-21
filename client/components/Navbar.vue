@@ -1,216 +1,229 @@
 <template>
-    <div class="nav" :class="{'sticky':!useRoute().path.includes('catalog')}">
-        <div class="container">
-            <div class="nav-mobile" :class="{'visible':mobileModal}">
-                <div class="nav-wrapper">
-                    <NuxtLink class="nav-logo" to="/">Kugoo</NuxtLink>
-                    <div class="nav-wrapper-actions">
-                        <NuxtLink to="tel:+78005055461"
-                        >
-                            <Icon name="material-symbols:call" class="phone icon"
-                            />
-                        </NuxtLink>
-                        <transition name="fade" v-if="mobileModal">
-                            <Icon
-                                    name="ic:twotone-close"
-                                    class="icon hamburger nav-wrapper-modal"
-                                    @click="mobileModal = false"
-                            />
-                        </transition>
-                        <transition name="fade" v-else>
-                            <Icon
-                                    name="cil:hamburger-menu"
-                                    class="icon hamburger nav-wrapper-modal"
-                                    @click="mobileModal = true"
-                            />
-                        </transition>
-                    </div>
-                </div>
-                <Search></Search>
-                <transition name="fade">
-                    <div class="nav-modal" v-show="mobileModal">
-                        <div class="container">
-                            <div class="nav-modal-body">
-                                <NuxtLink class="nav-link" to="">О магазине</NuxtLink>
-                                <NuxtLink class="nav-link" to=""
-                                >Доставка и оплата
-                                    <span class="badge">Доступна рассрочка</span></NuxtLink
-                                >
-                                <NuxtLink class="nav-link" to="">Тест-драйв</NuxtLink>
-                                <NuxtLink class="nav-link" to="">Блог</NuxtLink>
-                                <NuxtLink class="nav-link" to="">Контакты</NuxtLink>
-                                <NuxtLink class="nav-link" to=""
-                                >Акции <span class="badge">%</span></NuxtLink
-                                >
-                            </div>
-                            <div class="nav-modal-footer">
-                                <div class="footer-item">
-                                    <NuxtLink to="/service">Сервис</NuxtLink>
-                                    <NuxtLink to="/service">Сотрудничество</NuxtLink>
-                                    <NuxtLink to="/service"> Заказать звонок</NuxtLink>
-                                </div>
-                                <div class="footer-item">
-                                    <NuxtLink to="/service">
-                                        <Icon name="basil:viber-solid"
-                                        />
-                                    </NuxtLink>
-                                    <NuxtLink to="/service">
-                                        <Icon name="ri:whatsapp-fill"
-                                        />
-                                    </NuxtLink>
-                                    <NuxtLink to="/service">
-                                        <Icon name="mdi:telegram"
-                                        />
-                                    </NuxtLink>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </transition>
-            </div>
-        </div>
-        <div class="nav-default">
-            <transition name="fade">
-                <div class="container" v-if="!isScrolled">
-                    <div class="nav-header">
-                        <div class="nav-header-list">
-                            <NuxtLink to="/service">Сервис</NuxtLink>
-                            <NuxtLink to="/service">Сотрудничество</NuxtLink>
-                            <NuxtLink to="/service"> Заказать звонок</NuxtLink>
-                            <NuxtLink to="/service">
-                                <Icon name="basil:viber-solid"
-                                />
-                            </NuxtLink>
-                            <NuxtLink to="/service">
-                                <Icon name="ri:whatsapp-fill"/>
-                            </NuxtLink>
-                            <NuxtLink to="/service">
-                                <Icon name="mdi:telegram"/>
-                            </NuxtLink>
-                        </div>
-                        <div class="nav-header-phone">
-                            <NuxtLink to="tel:+78005055461">+7 (800) 505-54-61
-                            </NuxtLink
-                            >
-                            <Icon name="material-symbols:add-circle-outline" class="icon"/>
-                        </div>
-                    </div>
-                </div>
-            </transition>
-            <div class="hr"></div>
-            <div class="container">
-                <div class="nav-body">
-                    <NuxtLink class="nav-logo" to="/">Kugoo</NuxtLink>
-                    <div class="nav-body-action">
-                        <div class="nav-body-menu" ref="menuButton">
-                            <Icon name="quill:hamburger" class="icon"/>
-                            Каталог
-                            <transition name="fade">
-                                <div
-                                        v-show="menuButtonHovered || menuHovered"
-                                        ref="menu"
-                                        class="menu"
-                                        @click.stop
+  <div class="nav" :class="{'sticky':!useRoute().path.includes('catalog')}">
+    <div class="container">
+      <div class="nav-mobile" :class="{'visible':mobileModal}">
+        <div class="nav-wrapper">
+          <NuxtLink class="nav-logo" to="/">Kugoo</NuxtLink>
+          <div class="nav-wrapper-actions">
+            <NuxtLink to="tel:+78005055461" class="item"
+            >
+              <Icon name="material-symbols:call" class="phone icon"
+              />
+            </NuxtLink>
+            <NuxtLink to="/user" class="item"
+            >
+              <Icon class="user"
+                  name="mdi:account-outline"
 
-                                >
-                                    <div class="menu-item">
-                                        <NuxtLink to="/catalog/elektrosamokaty" class="menu-item-link"
-                                        >
-                                            <Icon
-                                                    name="material-symbols:electric-scooter-sharp"
-                                                    class="icon"
-                                            />
-                                            Электросамокаты
-                                        </NuxtLink
-                                        >
-                                        <NuxtLink to="/catalog/elektrovelosipedy" class="menu-item-link"
-                                        >
-                                            <nuxt-img src="mountain-bike.svg" class="icon"></nuxt-img>
-                                            Электровелосипеды
-                                        </NuxtLink
-                                        >
-                                        <NuxtLink to="/catalog/robot-pylesosy" class="menu-item-link"
-                                        >
-                                            <nuxt-img src="vacuum-cleaner.svg" class="icon"></nuxt-img>
-                                            Робот-пылесосы
-                                        </NuxtLink
-                                        >
-                                        <NuxtLink to="/catalog/vesy" class="menu-item-link"
-                                        >
-                                            <nuxt-img src="weighing-scale.svg" class="icon"></nuxt-img>
-                                            Весы
-                                        </NuxtLink
-                                        >
-                                    </div>
-                                    <div class="menu-item">
-                                        <h4>Особенности</h4>
-                                        <NuxtLink to="" class="menu-item-link">Внедорожный</NuxtLink>
-                                        <NuxtLink to="" class="menu-item-link">Городской</NuxtLink>
-                                        <NuxtLink to="" class="menu-item-link">Зимний</NuxtLink>
-                                        <NuxtLink to="" class="menu-item-link">С сиденьем
-                                        </NuxtLink
-                                        >
-                                        <NuxtLink to="" class="menu-item-link">Без сиденья</NuxtLink>
-                                    </div>
-                                    <div class="menu-item">
-                                        <h4>Для кого</h4>
-                                        <NuxtLink to="" class="menu-item-link"
-                                        >Для детей и подростков
-                                        </NuxtLink
-                                        >
-                                        <NuxtLink to="" class="menu-item-link">Для взрослых</NuxtLink>
-                                        <NuxtLink to="" class="menu-item-link"
-                                        >Для пенсионеров
-                                        </NuxtLink
-                                        >
-                                    </div>
-                                </div>
-                            </transition>
-                        </div>
-                        <Search></Search>
-                    </div>
-                    <div class="nav-body-links">
-                        <NuxtLink to=""
-                        >
-                            <Icon name="carbon:scales" class="icon"
-                            />
-                        </NuxtLink>
-                        <NuxtLink to=""
-                        >
-                            <Icon name="ph:heart-straight" class="icon"
-                            />
-                        </NuxtLink>
-                        <NuxtLink to="/cart"
-                        >
-                            <Icon
-                                    name="ri:shopping-basket-2-fill"
-                                    class="icon"
-                            />
-                            Корзина
-                        </NuxtLink
-                        >
-                    </div>
-                </div>
-            </div>
-            <div class="nav-footer">
-                <div class="container">
-                    <div class="nav-footer-list">
-                        <NuxtLink class="link" to="">О магазине</NuxtLink>
-                        <NuxtLink class="link" to=""
-                        >Доставка и оплата
-                            <span class="badge">Доступна рассрочка</span></NuxtLink
-                        >
-                        <NuxtLink class="link" to="">Тест-драйв</NuxtLink>
-                        <NuxtLink class="link" to="">Блог</NuxtLink>
-                        <NuxtLink class="link" to="">Контакты</NuxtLink>
-                        <NuxtLink class="link" to=""
-                        >Акции <span class="badge">%</span></NuxtLink
-                        >
-                    </div>
-                </div>
-            </div>
+              />
+            </NuxtLink>
+            <transition name="fade" v-if="mobileModal">
+              <Icon
+                  name="ic:twotone-close"
+                  class="item icon hamburger nav-wrapper-modal"
+                  @click="mobileModal = false"
+              />
+            </transition>
+            <transition name="fade" v-else>
+              <Icon
+                  name="cil:hamburger-menu"
+                  class="item icon hamburger nav-wrapper-modal"
+                  @click="mobileModal = true"
+              />
+            </transition>
+          </div>
         </div>
+        <Search></Search>
+        <transition name="fade">
+          <div class="nav-modal" v-show="mobileModal">
+            <div class="container">
+              <div class="nav-modal-body">
+                <NuxtLink class="nav-link" to="">О магазине</NuxtLink>
+                <NuxtLink class="nav-link" to=""
+                >Доставка и оплата
+                  <span class="badge">Доступна рассрочка</span></NuxtLink
+                >
+                <NuxtLink class="nav-link" to="">Тест-драйв</NuxtLink>
+                <NuxtLink class="nav-link" to="">Блог</NuxtLink>
+                <NuxtLink class="nav-link" to="">Контакты</NuxtLink>
+                <NuxtLink class="nav-link" to=""
+                >Акции <span class="badge">%</span></NuxtLink
+                >
+              </div>
+              <div class="nav-modal-footer">
+                <div class="footer-item">
+                  <NuxtLink to="/service">Сервис</NuxtLink>
+                  <NuxtLink to="/service">Сотрудничество</NuxtLink>
+                  <NuxtLink to="/service"> Заказать звонок</NuxtLink>
+                </div>
+                <div class="footer-item">
+                  <NuxtLink to="/service">
+                    <Icon name="basil:viber-solid"
+                    />
+                  </NuxtLink>
+                  <NuxtLink to="/service">
+                    <Icon name="ri:whatsapp-fill"
+                    />
+                  </NuxtLink>
+                  <NuxtLink to="/service">
+                    <Icon name="mdi:telegram"
+                    />
+                  </NuxtLink>
+                </div>
+              </div>
+            </div>
+          </div>
+        </transition>
+      </div>
     </div>
+    <div class="nav-default">
+      <transition name="fade">
+        <div class="container" v-if="!isScrolled">
+          <div class="nav-header">
+            <div class="nav-header-list">
+              <NuxtLink to="/service">Сервис</NuxtLink>
+              <NuxtLink to="/service">Сотрудничество</NuxtLink>
+              <NuxtLink to="/service"> Заказать звонок</NuxtLink>
+              <NuxtLink to="/service">
+                <Icon name="basil:viber-solid"
+                />
+              </NuxtLink>
+              <NuxtLink to="/service">
+                <Icon name="ri:whatsapp-fill"/>
+              </NuxtLink>
+              <NuxtLink to="/service">
+                <Icon name="mdi:telegram"/>
+              </NuxtLink>
+            </div>
+            <div class="nav-header-phone">
+              <NuxtLink to="tel:+78005055461">+7 (800) 505-54-61
+              </NuxtLink
+              >
+              <Icon name="material-symbols:add-circle-outline" class="icon"/>
+            </div>
+          </div>
+        </div>
+      </transition>
+      <div class="hr"></div>
+      <div class="container">
+        <div class="nav-body">
+          <NuxtLink class="nav-logo" to="/">Kugoo</NuxtLink>
+          <div class="nav-body-action">
+            <div class="nav-body-menu" ref="menuButton">
+              <Icon name="quill:hamburger" class="icon"/>
+              Каталог
+              <transition name="fade">
+                <div
+                    v-show="menuButtonHovered || menuHovered"
+                    ref="menu"
+                    class="menu"
+                    @click.stop
+
+                >
+                  <div class="menu-item">
+                    <NuxtLink to="/catalog/elektrosamokaty" class="menu-item-link"
+                    >
+                      <Icon
+                          name="material-symbols:electric-scooter-sharp"
+                          class="icon"
+                      />
+                      Электросамокаты
+                    </NuxtLink
+                    >
+                    <NuxtLink to="/catalog/elektrovelosipedy" class="menu-item-link"
+                    >
+                      <nuxt-img src="mountain-bike.svg" class="icon"></nuxt-img>
+                      Электровелосипеды
+                    </NuxtLink
+                    >
+                    <NuxtLink to="/catalog/robot-pylesosy" class="menu-item-link"
+                    >
+                      <nuxt-img src="vacuum-cleaner.svg" class="icon"></nuxt-img>
+                      Робот-пылесосы
+                    </NuxtLink
+                    >
+                    <NuxtLink to="/catalog/vesy" class="menu-item-link"
+                    >
+                      <nuxt-img src="weighing-scale.svg" class="icon"></nuxt-img>
+                      Весы
+                    </NuxtLink
+                    >
+                  </div>
+                  <div class="menu-item">
+                    <h4>Особенности</h4>
+                    <NuxtLink to="" class="menu-item-link">Внедорожный</NuxtLink>
+                    <NuxtLink to="" class="menu-item-link">Городской</NuxtLink>
+                    <NuxtLink to="" class="menu-item-link">Зимний</NuxtLink>
+                    <NuxtLink to="" class="menu-item-link">С сиденьем
+                    </NuxtLink
+                    >
+                    <NuxtLink to="" class="menu-item-link">Без сиденья</NuxtLink>
+                  </div>
+                  <div class="menu-item">
+                    <h4>Для кого</h4>
+                    <NuxtLink to="" class="menu-item-link"
+                    >Для детей и подростков
+                    </NuxtLink
+                    >
+                    <NuxtLink to="" class="menu-item-link">Для взрослых</NuxtLink>
+                    <NuxtLink to="" class="menu-item-link"
+                    >Для пенсионеров
+                    </NuxtLink
+                    >
+                  </div>
+                </div>
+              </transition>
+            </div>
+            <Search></Search>
+          </div>
+          <div class="nav-body-links">
+            <NuxtLink to=""
+            >
+              <Icon name="carbon:scales" class="icon"
+              />
+            </NuxtLink>
+            <NuxtLink to=""
+            >
+              <Icon name="ph:heart-straight" class="icon"
+              />
+            </NuxtLink>
+            <NuxtLink to="/cart"
+            >
+              <Icon
+                  name="ri:shopping-basket-2-fill"
+                  class="icon"
+              />
+            </NuxtLink>
+            <NuxtLink to="/me"
+            >
+              <Icon
+                  name="mdi:account-outline"
+                  class="icon"
+              />
+            </NuxtLink>
+
+          </div>
+        </div>
+      </div>
+      <div class="nav-footer">
+        <div class="container">
+          <div class="nav-footer-list">
+            <NuxtLink class="link" to="">О магазине</NuxtLink>
+            <NuxtLink class="link" to=""
+            >Доставка и оплата
+              <span class="badge">Доступна рассрочка</span></NuxtLink
+            >
+            <NuxtLink class="link" to="">Тест-драйв</NuxtLink>
+            <NuxtLink class="link" to="">Блог</NuxtLink>
+            <NuxtLink class="link" to="">Контакты</NuxtLink>
+            <NuxtLink class="link" to=""
+            >Акции <span class="badge">%</span></NuxtLink
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -226,19 +239,19 @@ const menuButtonHovered = useElementHover(menuButton);
 const isScrolled = useState<boolean>()
 const {x, y} = useWindowScroll()
 watch(y, () => {
-    if (y.value === 0) {
-        isScrolled.value = false
-    } else if (y.value > 300) {
-        isScrolled.value = true
-    }
+  if (y.value === 0) {
+    isScrolled.value = false
+  } else if (y.value > 300) {
+    isScrolled.value = true
+  }
 })
 const mobileModal = useState<boolean>(() => false);
 watch(mobileModal, () => {
-    if (mobileModal.value) {
-        overFlow(true)
-    } else {
-        overFlow(false)
-    }
+  if (mobileModal.value) {
+    overFlow(true)
+  } else {
+    overFlow(false)
+  }
 })
 </script>
 
@@ -267,13 +280,20 @@ watch(mobileModal, () => {
       padding: 18px 0 10px;
 
       &-actions {
-        a,
-        .icon {
+        .item {
           text-decoration: none;
           color: @purple;
-
+          margin: 0 0 0 10px;
           outline: none;
           cursor: pointer;
+        }
+
+        .item:first-child {
+          margin: 0;
+        }
+
+        .user {
+          font-size: 1.5em;
         }
 
         .hamburger {
@@ -520,7 +540,6 @@ watch(mobileModal, () => {
 
         a:last-child {
           .icon {
-            margin-right: 10px;
           }
         }
 

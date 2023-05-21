@@ -52,9 +52,7 @@ const {
   deleteFromCookie,
   cartOrders,
   DeleteService,
-  fillCartStorage,
-  fillDiscountStorage,
-  clearSessionCart,
+  clearSessionCart, prepareSession,
   clearSessionDiscount, clearCart
 } = useCart()
 
@@ -71,23 +69,10 @@ const count = ref<number>(1)
 watch(count, () => {
   pullUp()
 })
-const calculatedService = ref<number>(
-   item.attributes.OrderService.length > 0 ? item.attributes.OrderService.reduce(
-      (total, item) => item.Price + total,
-      0
-  ) : 0
-
-)
 
 const pullUp = async () => {
 
- await fillCartStorage({id: item.id, Price: item.attributes.Price * count.value + calculatedService.value})
-  if (item.attributes.oldPrice) {
-   await fillDiscountStorage({
-      id: item.id,
-      Price: item.attributes.oldPrice - item.attributes.Price
-    })
-  }
+  await prepareSession(item.id, count.value)
 
 }
 pullUp()
@@ -116,11 +101,8 @@ const removeService = (Name: string) => {
   ).then(async (result: any) => {
     if (result.isConfirmed) {
       await DeleteService(item.id, item.attributes.Price, Name)
-
       await cartOrders()
-
-
-     await pullUp()
+      pullUp()
     }
   });
 }
