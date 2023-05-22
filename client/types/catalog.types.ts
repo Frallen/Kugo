@@ -1,3 +1,7 @@
+
+import {datesType, metaType} from "~/types/global.types";
+
+
 // Элемент из каталога
 export interface CatalogItemType extends metaType {
     data: DetailItemType[]
@@ -159,22 +163,6 @@ export interface responseFilterType {
     weight?: string
 }
 
-type datesType = {
-    createdAt: string
-    updatedAt: string
-    publishedAt: string
-}
-
-interface metaType {
-    meta: {
-        pagination: {
-            page: number,
-            pageSize: number,
-            pageCount: number,
-            total: number
-        }
-    }
-}
 
 export interface SelectFilterType {
     label: string,

@@ -73,9 +73,7 @@ const clearAll = () => {
   });
 }
 
-onBeforeMount(() => {
-  clearDeals()
-})
+
 </script>
 
 <style scoped lang="less">

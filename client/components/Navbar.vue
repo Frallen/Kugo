@@ -10,13 +10,30 @@
               <Icon name="material-symbols:call" class="phone icon"
               />
             </NuxtLink>
-            <NuxtLink to="/user" class="item"
+            <template v-if="isAuth">
+              <NuxtLink to="/profile" class="item"
+              >
+                <Icon class="user"
+                      name="mdi:account-outline"
+
+                />
+              </NuxtLink>
+              <div class="item" @click="logOut"
+              >
+                <Icon class="user"
+                      name="system-uicons:exit-right"
+
+                />
+              </div>
+
+            </template>
+            <div v-else class="item" @click="AuthModalChanger(true)"
             >
               <Icon class="user"
-                  name="mdi:account-outline"
+                    name="mdi:account-outline"
 
               />
-            </NuxtLink>
+            </div>
             <transition name="fade" v-if="mobileModal">
               <Icon
                   name="ic:twotone-close"
@@ -177,31 +194,47 @@
             <Search></Search>
           </div>
           <div class="nav-body-links">
-            <NuxtLink to=""
+            <NuxtLink to="" class="item"
             >
               <Icon name="carbon:scales" class="icon"
               />
             </NuxtLink>
-            <NuxtLink to=""
+            <NuxtLink to="" class="item"
             >
               <Icon name="ph:heart-straight" class="icon"
               />
             </NuxtLink>
-            <NuxtLink to="/cart"
+            <NuxtLink to="/cart" class="item"
             >
               <Icon
                   name="ri:shopping-basket-2-fill"
                   class="icon"
               />
             </NuxtLink>
-            <NuxtLink to="/me"
-            >
-              <Icon
-                  name="mdi:account-outline"
-                  class="icon"
-              />
-            </NuxtLink>
+            <template v-if="isAuth">
+              <NuxtLink to="/profile" class="item"
+              >
+                <Icon class="user"
+                      name="mdi:account-outline"
 
+                />
+              </NuxtLink>
+              <div class="item" @click="logOut"
+              >
+                <Icon class="user"
+                      name="system-uicons:exit-right"
+
+                />
+              </div>
+
+            </template>
+            <div v-else class="item" @click="AuthModalChanger(true)"
+            >
+              <Icon class="user"
+                    name="mdi:account-outline"
+
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -227,6 +260,9 @@
 </template>
 
 <script lang="ts" setup>
+const {isAuth} = storeToRefs(useUser())
+const {logOut}=useUser()
+const {AuthModalChanger} = useMain()
 //кнопка каталога
 const menuButton = useState<null>();
 //вложенное меню навигацию по каталогу
@@ -280,12 +316,17 @@ watch(mobileModal, () => {
       padding: 18px 0 10px;
 
       &-actions {
+        display: flex;
+
         .item {
           text-decoration: none;
           color: @purple;
           margin: 0 0 0 10px;
           outline: none;
           cursor: pointer;
+          @media @sm{
+            margin: 0 0 0 1em
+          }
         }
 
         .item:first-child {
@@ -525,7 +566,7 @@ watch(mobileModal, () => {
         justify-content: space-between;
         align-items: center;
 
-        a {
+        .item {
           cursor: pointer;
           text-decoration: none;
           display: flex;
@@ -538,12 +579,8 @@ watch(mobileModal, () => {
           }
         }
 
-        a:last-child {
-          .icon {
-          }
-        }
 
-        a:first-child {
+        .item:first-child {
           margin-left: 0;
         }
       }

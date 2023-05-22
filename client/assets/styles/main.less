@@ -64,6 +64,82 @@ h3 {
   }
 }
 
+.form {
+  display: flex;
+  flex-direction: column;
+
+  &-title {
+    display: block;
+    font-size: 2em;
+    color: @black;
+    margin: 0 0 1em 0;
+    text-align: center;
+    font-weight: 700;
+  }
+
+  &-body {
+    display: flex;
+    flex-direction: column;
+
+    &-item {
+      margin: 1em 0 0;
+
+
+      .title {
+        display: block;
+        font-size: 1.4em;
+        font-weight: 500;
+        color: @black;
+        margin: 0 0 13px 0;
+        user-select: none;
+      }
+
+      .password-section {
+        position: relative;
+
+        .password {
+          position: absolute;
+          right: 4%;
+          bottom: 24%;
+          cursor: pointer;
+
+          .icon {
+            font-size: 1.5em;
+          }
+        }
+      }
+
+    }
+
+    &-item:first-child {
+      margin: 0;
+    }
+
+    button[type=submit] {
+      margin: 1em 0 0;
+      width: 100%;
+    }
+
+    .type-form {
+      cursor: pointer;
+      text-align: center;
+      font-size: 1.1em;
+      color: @purple;
+      margin: 1.1em 0 0;
+      user-select: none;
+    }
+  }
+
+  .error {
+    display: block;
+    font-size: 1.2em;
+    font-weight: 500;
+    margin: 10px 0 0 0;
+    color: @red;
+  }
+
+}
+
 .input,
 .connect-input {
   .br(5px);
@@ -87,6 +163,10 @@ h3 {
   color: @black;
   border: 1px solid @purple !important;
   .trs(0.3s);
+}
+
+.input-error {
+  border: 1px solid @red !important;
 }
 
 .connect-input {
@@ -121,6 +201,7 @@ h3 {
   width: fit-content;
   cursor: pointer;
   border: none;
+  outline: none;
 }
 
 .button-primary {
@@ -168,6 +249,7 @@ h3 {
     margin: 0 0 50px 0;
   }
 }
+
 .checkbox {
   input:checked + .icon {
     background: url("/checkbox-checked.png");
@@ -190,6 +272,7 @@ h3 {
     background: url("/radio-checkbox.png");
   }
 }
+
 .checkbox, .radio {
   position: relative;
   display: flex;
@@ -215,7 +298,6 @@ h3 {
     margin: 0 0 0 10px;
   }
 }
-
 
 
 .select {

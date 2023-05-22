@@ -12,6 +12,10 @@ export const setLoading = (loading: boolean): void => {
     useMain().isLoading = loading;
     overFlow(loading)
 }
+export const isProduction = (): boolean => {
+    return typeof useRuntimeConfig().Production === "string";
+}
+
 
 export const scrollTop = (): void => {
     if (process.client) {
