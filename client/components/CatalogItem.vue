@@ -1,102 +1,102 @@
 <template>
-    <div>
-        <div @click.stop="useRouter().push(`/catalog/${item.attributes.category.data.attributes.Slug}/${item.id}`)"
-             class="product"
-             @mouseover="mouseHovered=true"
-             @mouseleave="mouseHovered=false"
-        >
-            <div class="product-badges" v-if="item.attributes.badges">
-                <div class="product-badges-item " v-for="(p,index) in item.attributes.badges" :key="index"
-                     :class="{'product-badges-hit':p==='Хит', 'product-badges-new':p==='Новинка'}">
-                    {{ p }}
-                </div>
-            </div>
-            <div class="product-compare">
-                <Icon name="carbon:scales" class="icon"
-                />
-            </div>
-            <div class="product-img">
-                <Swiper
-                        :modules="modules"
-                        :slides-per-view="1"
-                        :space-between="20"
-                        :autoplay="{
+  <div>
+    <div @click.stop="useRouter().push(`/catalog/${item.attributes.category.data.attributes.Slug}/${item.id}`)"
+         class="product"
+         @mouseover="mouseHovered=true"
+         @mouseleave="mouseHovered=false"
+    >
+      <div class="product-badges" v-if="item.attributes.badges">
+        <div class="product-badges-item " v-for="(p,index) in item.attributes.badges" :key="index"
+             :class="{'product-badges-hit':p==='Хит', 'product-badges-new':p==='Новинка'}">
+          {{ p }}
+        </div>
+      </div>
+      <div class="product-compare">
+        <Icon name="carbon:scales" class="icon"
+        />
+      </div>
+      <div class="product-img">
+        <Swiper
+            :modules="modules"
+            :slides-per-view="1"
+            :space-between="20"
+            :autoplay="{
                           delay: 3000,
                         }"
-                        class="slider"
-                        @swiper="onSwiper"
-                >
-                    <Swiper-slide class="slider-item" v-for="item in item.attributes.images.data"
-                    >
-                        <NuxtImg
-                                provider="cloudinary"
-                                :src="item.attributes.url"
-                        ></NuxtImg>
-                    </Swiper-slide>
-                    <transition name="fade">
-                        <div class="slider-nav" v-show="mouseHovered">
-                            <div class="slider-nav-item slider-nav-prev" @click.stop.prevent="slider.slidePrev()">
-                                <Icon name="ph:caret-left" class="icon"
-                                />
-                            </div>
-                            <div class="slider-nav-item slider-nav-next" @click.stop.prevent="slider.slideNext()">
-                                <Icon name="ph:caret-right" class="icon"
-                                />
-                            </div>
-                        </div>
-                    </transition>
-                </Swiper>
+            class="slider"
+            @swiper="onSwiper"
+        >
+          <Swiper-slide class="slider-item" v-for="item in item.attributes.images.data"
+          >
+            <NuxtImg
+                provider="cloudinary"
+                :src="item.attributes.url"
+            ></NuxtImg>
+          </Swiper-slide>
+          <transition name="fade">
+            <div class="slider-nav" v-show="mouseHovered">
+              <div class="slider-nav-item slider-nav-prev" @click.stop.prevent="slider.slidePrev()">
+                <Icon name="ph:caret-left" class="icon"
+                />
+              </div>
+              <div class="slider-nav-item slider-nav-next" @click.stop.prevent="slider.slideNext()">
+                <Icon name="ph:caret-right" class="icon"
+                />
+              </div>
             </div>
-            <div class="product-content">
-                <h4 class="product-title">
-                    {{ item.attributes.Title }}
-                </h4>
-                <div class="product-features">
-                    <div class="product-features-item">
-                        <Icon name="material-symbols:battery-charging-20-rounded" class="icon"
-                        />
-                        {{ item.attributes.Scooter.power }} W
-                    </div>
-                    <div class="product-features-item">
-                        <Icon name="material-symbols:weight-outline" class="icon"
-                        />
-                        {{ item.attributes.Weight }} кг
-                    </div>
-                    <div class="product-features-item">
-                        <Icon name="icon-park-outline:speed-one" class="icon"
-                        />
-                        {{ item.attributes.Scooter.max_speed }} км/ч
-                    </div>
-                    <div class="product-features-item">
+          </transition>
+        </Swiper>
+      </div>
+      <div class="product-content">
+        <h4 class="product-title">
+          {{ item.attributes.Title }}
+        </h4>
+        <div class="product-features">
+          <div class="product-features-item">
+            <Icon name="material-symbols:battery-charging-20-rounded" class="icon"
+            />
+            {{ item.attributes.Scooter.power }} W
+          </div>
+          <div class="product-features-item">
+            <Icon name="material-symbols:weight-outline" class="icon"
+            />
+            {{ item.attributes.Weight }} кг
+          </div>
+          <div class="product-features-item">
+            <Icon name="icon-park-outline:speed-one" class="icon"
+            />
+            {{ item.attributes.Scooter.max_speed }} км/ч
+          </div>
+          <div class="product-features-item">
 
-                        <Icon name="ion:ios-flash" class="icon"
-                        />
-                        {{ item.attributes.Scooter.battery_capacity }} mAh
-                    </div>
-                </div>
-                <div class="product-body">
-                    <div class="product-body-price">
-                        <h5 v-if="item.attributes.oldPrice">
-                            <span>{{ item.attributes.oldPrice }} ₽</span>
-                            {{ item.attributes.Price }} ₽
-                        </h5>
-                        <h5 v-else>
-                            {{ item.attributes.Price }} ₽
-                        </h5>
-                        <div class="product-actions">
-                            <div class="product-actions-item">
-                                <Favorite :isFavorite="false"></Favorite>
-                            </div>
-                            <div class="product-actions-item">
-                                <BasketButton
-                                        @click.stop="orderToCookie(item.attributes.Price,item.id)"></BasketButton>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Icon name="ion:ios-flash" class="icon"
+            />
+            {{ item.attributes.Scooter.battery_capacity }} mAh
+          </div>
         </div>
+        <div class="product-body">
+          <div class="product-body-price">
+            <h5 v-if="item.attributes.oldPrice">
+              <span>{{ item.attributes.oldPrice }} ₽</span>
+              {{ item.attributes.Price }} ₽
+            </h5>
+            <h5 v-else>
+              {{ item.attributes.Price }} ₽
+            </h5>
+            <div class="product-actions">
+              <div class="product-actions-item">
+                <Favorite :isFavorite="isFavorite" :id="item.id" @click.stop=""></Favorite>
+              </div>
+              <div class="product-actions-item">
+                <BasketButton
+                    @click.stop="orderToCookie(item.attributes.Price,item.id)"></BasketButton>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -106,16 +106,20 @@ import {Swiper, SwiperSlide} from "swiper/vue";
 
 const modules = [Navigation];
 const {orderToCookie} = useCatalog()
+const {user} = storeToRefs(useUser())
 
+const isFavorite = computed(() => {
+  return user.value.Favorites ? user.value.Favorites.some(p => p.id === item.id) : false
+})
 
 const slider = useState<null>();
 
 const onSwiper = (swiper: any) => {
-    slider.value = swiper;
+  slider.value = swiper;
 };
 
 interface propsType {
-    item: DetailItemType
+  item: DetailItemType
 }
 
 

@@ -1,20 +1,21 @@
 <template>
-    <div class="favorite" @click.stop="">
-        <Icon name="ph:heart-straight-fill" class="icon" v-if="isFavorite"
-        />
-        <Icon name="ph:heart-straight" class="icon" v-else
-        />
-    </div>
+  <div class="favorite">
+    <Icon name="ph:heart-straight-fill" class="icon" v-if="isFavorite" @click.stop="userFavorites(id,false)"
+    />
+    <Icon name="ph:heart-straight" class="icon" v-else @click.stop="userFavorites(id,true)"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
+const {userFavorites} = useUser()
+
 interface propsType {
-    isFavorite: boolean;
+  id: number,
+  isFavorite: boolean;
 }
 
-let {isFavorite} = withDefaults(defineProps<propsType>(), {
-    isFavorite: false
-})
+let {isFavorite, id} = defineProps<propsType>()
 </script>
 
 <style scoped lang="less">

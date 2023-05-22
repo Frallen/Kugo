@@ -1,4 +1,5 @@
 import {datesType, metaType} from "~/types/global.types";
+import {DetailItemType} from "~/types/catalog.types";
 
 export interface userType extends datesType {
     id: number
@@ -7,11 +8,12 @@ export interface userType extends datesType {
     provider: string
     confirmed: boolean
     blocked: boolean
+    Favorites: DetailItemType[]
 }
 
-export interface userResponseType{
-    data:successUserType
-    error:errorUserType
+export interface userResponseType {
+    data: successUserType
+    error: errorUserType
 }
 
 export interface successUserType {

@@ -1,57 +1,34 @@
 <template>
-    <StockBlock></StockBlock>
-    <div class="container-catalog">
-        <div class="catalog">
-            <div class="catalog-filter" :class="{'visible':filterStatus}">
-                <div class="catalog-filter-close">
-                    <Icon
-                            name="ic:twotone-close"
-                            class="icon nav-wrapper-modal"
-                            @click="filterStatus = false , overFlow(false)"
-                    />
-                </div>
-                <Filter @filters="e=>Filters=e"></Filter>
-            </div>
-            <div class="catalog-body">
-                <div class="catalog-body-filters">
-                    <button class="button button-outlined call-filter" @click="filterStatus=true , overFlow(true)">
-                        Фильтры
-                    </button>
-                    <div class="catalog-body-selects">
-                        <Select :options="SortOptions" :placeholder="'Фильтр'" @selectValue="e=>Sort=e"></Select>
-                    </div>
-                </div>
-                <template v-if="Deals.data">
-                    <Offers :offerType="Deals" :isCatalog="true"></Offers>
-                    <div class="pagination">
-                        <div class="pagination-wrapper">
-                            <div class="pagination-item pagination-item-first button button-outlined"
-                                 v-show="currentPage>1"
-                                 @click="currentPage--">
-                                <Icon
-                                        name="ic:outline-keyboard-arrow-left"
-                                />
-                            </div>
-                            <div class="pagination-item button button-outlined"
-                                 :class="{'button-primary-current':item===currentPage}"
-                                 v-for="item in Deals.meta.pagination.pageCount"
-                                 :key="item"
-                                 @click="currentPage=item">
-                                {{ item }}
-                            </div>
-                            <div class="pagination-item pagination-item-first button button-outlined"
-                                 v-show="currentPage<Deals.meta.pagination.pageCount" @click="currentPage++">
-                                <Icon
-                                        name="ic:outline-keyboard-arrow-right"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </template>
-                <div v-else class="catalog-body-empty"><h4>Элементов не найдено</h4></div>
-            </div>
+  <StockBlock></StockBlock>
+  <div class="container-catalog">
+    <div class="catalog">
+      <div class="catalog-filter" :class="{'visible':filterStatus}">
+        <div class="catalog-filter-close">
+          <Icon
+              name="ic:twotone-close"
+              class="icon nav-wrapper-modal"
+              @click="filterStatus = false , overFlow(false)"
+          />
         </div>
+        <Filter @filters="e=>Filters=e"></Filter>
+      </div>
+      <div class="catalog-body">
+        <div class="catalog-body-filters">
+          <button class="button button-outlined call-filter" @click="filterStatus=true , overFlow(true)">
+            Фильтры
+          </button>
+          <div class="catalog-body-selects">
+            <Select :options="SortOptions" :placeholder="'Фильтр'" @selectValue="e=>Sort=e"></Select>
+          </div>
+        </div>
+        <template v-if="Deals.data">
+          <Offers :offerType="Deals" :isCatalog="true"></Offers>
+          <Pagination :page-count="Deals.meta.pagination.pageCount" @currentPage="e=> currentPage=e"></Pagination>
+        </template>
+        <div v-else class="catalog-body-empty"><h4>Элементов не найдено</h4></div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -62,7 +39,7 @@ const {params, path, query} = useRoute()
 const router = useRouter();
 const {Deals, SortOptions} = storeToRefs(useCatalog())
 definePageMeta({
-    middleware: "catalog"
+  middleware: "catalog"
 })
 await getFilter(params.slug as string)
 
@@ -70,37 +47,37 @@ const Filters = ref<responseFilterType>()
 const Sort = ref<string>()
 Sort.value = query.sort as string
 Filters.value = {
-    price: query.price as string,
-    type_product: query.type_product as [string],
-    user_type: query.user_type as [string],
-    weight: query.weight as string,
+  price: query.price as string,
+  type_product: query.type_product as [string],
+  user_type: query.user_type as [string],
+  weight: query.weight as string,
 }
 
 // блок с фильтрами
 watch(Filters, async () => {
-    await router.replace({
-        path: path,
-        query: {
-            page: currentPage.value,
-            ...(Filters.value && Filters.value),
-            sort: Sort.value,
-        }
-    });
-    await getDeals(sluggedCatalog(), currentPage.value.toString(), Filters.value, Sort.value && Sort.value)
+  await router.replace({
+    path: path,
+    query: {
+      page: currentPage.value,
+      ...(Filters.value && Filters.value),
+      sort: Sort.value,
+    }
+  });
+  await getDeals(sluggedCatalog(), currentPage.value.toString(), Filters.value, Sort.value && Sort.value)
 })
 
 // блок с сортировки
 watch(Sort, async () => {
-    await router.replace({
-        path: path,
-        query: {
-            page: currentPage.value,
-            ...(Filters.value && Filters.value),
-            sort: Sort.value,
-        }
-    });
-    //add sort
-    await getDeals(sluggedCatalog(), "1", Filters.value && Filters.value, Sort.value && Sort.value)
+  await router.replace({
+    path: path,
+    query: {
+      page: currentPage.value,
+      ...(Filters.value && Filters.value),
+      sort: Sort.value,
+    }
+  });
+  //add sort
+  await getDeals(sluggedCatalog(), "1", Filters.value && Filters.value, Sort.value && Sort.value)
 })
 
 // показ мобильной версии фильтра
@@ -108,27 +85,27 @@ const filterStatus = useState<boolean>(() => false)
 // начальная страница пагинации
 const currentPage = useState<number>(() => 1)
 // проверка url на наличие страницы
-if (query.page) currentPage.value = parseInt(query.page)
+if (query.page) currentPage.value = parseInt(query.page as string)
 const prepare = async (): Promise<void> => {
 
-    await router.replace({
-        path: path,
-        query: {
-            page: currentPage.value,
-            ...(Filters.value && Filters.value),
-            sort: Sort.value,
-        }
-    });
-
-
-    if (sluggedCatalog() && currentPage.value) {
-        await getDeals(sluggedCatalog(), currentPage.value.toString(), Filters.value && Filters.value, Sort.value && Sort.value);
-
+  await router.replace({
+    path: path,
+    query: {
+      page: currentPage.value,
+      ...(Filters.value && Filters.value),
+      sort: Sort.value,
     }
+  });
+
+
+  if (sluggedCatalog() && currentPage.value) {
+    await getDeals(sluggedCatalog(), currentPage.value.toString(), Filters.value && Filters.value, Sort.value && Sort.value);
+
+  }
 }
 // немедленный запуск вотчера для получения данных
 watch(currentPage, () => {
-    prepare()
+  prepare()
 
 }, {immediate: true})
 
@@ -226,23 +203,6 @@ watch(currentPage, () => {
   }
 }
 
-.pagination {
-  margin: 1.5em 0 1em;
-
-  &-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: -10px 0 0 -10px;
-  }
-
-  &-item {
-    font-size: 1em;
-    margin: 10px 0 0 10px;
-    user-select: none;
-  }
-}
-
 .visible {
   height: 100%;
   z-index: 5;
@@ -260,8 +220,5 @@ watch(currentPage, () => {
   }
 }
 
-.button-primary-current {
-  background: @purple;
-  color: #fff;
-}
+
 </style>

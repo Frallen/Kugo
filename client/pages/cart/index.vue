@@ -24,7 +24,8 @@
             <div class="cart-result-price">{{ calculatedCart }} ₽</div>
             <div class="cart-result-total">
               <!-- <div class="total-item">{{ calculatedDiscount }}₽</div>-->
-              <div class="total-item" v-if="calculatedDiscount>0">Сумма скидки <span>{{ calculatedDiscount }} ₽</span></div>
+              <div class="total-item" v-if="calculatedDiscount>0">Сумма скидки <span>{{ calculatedDiscount }} ₽</span>
+              </div>
               <div class="total-item">Итого без учета доставки <span>{{ calculatedCart }} ₽</span></div>
             </div>
             <button type="submit" class="button button-primary">Оформить заказ</button>
@@ -38,12 +39,7 @@
             </label>
           </div>
         </template>
-        <div v-else class="cart-wrapper-empty">
-          <NuxtImg src="empty.png"></NuxtImg>
-          <h5>Ваша корзина пуста</h5>
-          <p>Добавьте в нее товары из каталога</p>
-          <NuxtLink to="/catalog" class="button button-primary">Перейти в каталог</NuxtLink>
-        </div>
+        <Empty v-else :title="'Ваша корзина пуста'" :text="'Добавьте в нее товары из каталог'"></Empty>
       </div>
     </Form>
   </div>
@@ -52,7 +48,7 @@
 <script setup lang="ts">
 import {Field, Form} from "vee-validate";
 
-const {Cart,calculatedCart,calculatedDiscount} = storeToRefs(useCart())
+const {Cart, calculatedCart, calculatedDiscount} = storeToRefs(useCart())
 const {cartOrders, clearCart} = useCart()
 
 const {clearDeals} = useCatalog()
@@ -108,39 +104,7 @@ const clearAll = () => {
       flex-direction: column;
     }
 
-    &-empty {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      background: #F4F7FB;
-      .br(10px);
-      width: 100%;
-      padding: 45px 0;
 
-      .button {
-        margin: 25px 0 0 0;
-      }
-
-      h5 {
-        font-weight: 600;
-        font-size: 25px;
-        line-height: 36px;
-        text-transform: uppercase;
-        color: @black;
-        margin: 25px 0 10px 0;
-      }
-
-      p {
-        font-weight: 400;
-        font-size: 14px;
-        color: @black;
-        line-height: 20px;
-        padding: 0;
-        margin: 0;
-      }
-    }
   }
 
 

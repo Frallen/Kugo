@@ -10,6 +10,11 @@
               <Icon name="material-symbols:call" class="phone icon"
               />
             </NuxtLink>
+            <NuxtLink to="/favorites" class="item"
+            >
+              <Icon name="ph:heart-straight" class="icon"
+              />
+            </NuxtLink>
             <template v-if="isAuth">
               <NuxtLink to="/profile" class="item"
               >
@@ -199,7 +204,7 @@
               <Icon name="carbon:scales" class="icon"
               />
             </NuxtLink>
-            <NuxtLink to="" class="item"
+            <NuxtLink to="/favorites" class="item"
             >
               <Icon name="ph:heart-straight" class="icon"
               />
@@ -261,7 +266,7 @@
 
 <script lang="ts" setup>
 const {isAuth} = storeToRefs(useUser())
-const {logOut}=useUser()
+const {logOut} = useUser()
 const {AuthModalChanger} = useMain()
 //кнопка каталога
 const menuButton = useState<null>();
@@ -324,7 +329,7 @@ watch(mobileModal, () => {
           margin: 0 0 0 10px;
           outline: none;
           cursor: pointer;
-          @media @sm{
+          @media @sm {
             margin: 0 0 0 1em
           }
         }

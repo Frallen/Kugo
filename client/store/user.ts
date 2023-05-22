@@ -4,10 +4,9 @@ import {errorMessage} from "~/composables/useAlert";
 import {useMain} from "~/store/main";
 
 
-
 interface stateType {
     isAuth: boolean
-    user: userType | {}
+    user: userType
 }
 
 export const useUser = defineStore("user", {
@@ -99,6 +98,69 @@ export const useUser = defineStore("user", {
             }
             setLoading(false)
         },
+        async userFavorites(id: number, status: boolean) {
+            setLoading(true)
+            let cookie = useCookie<string>("user", {
+                //secure:true,
+
+                ...(isProduction() && {
+                    sameSite: "strict"
+                }),
+                maxAge: 3600,
+            });
+            if (status) {
+                const items = []
+                if (this.user.Favorites) {
+                    this.user.Favorites.map((p) => items.push(p.id))
+                }
+                items.push(id)
+
+                let {data, error} = await useFetch(
+                    `${useRuntimeConfig().public.strapi.url}/api/users/${this.user.id}`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            Authorization: `Bearer ${cookie.value}`,
+                            "Content-Type": "application/json",
+                        },
+                        body: {
+                            Favorites: items,
+                        },
+                    }
+                );
+                if (error.value) {
+                    // console.log(error.value.data.error.message);
+                    switch (error.value.data.error.message) {
+                        default:
+                            Error("Повторите попытку позже");
+                    }
+                }
+            } else {
+                let {data, error} = await useFetch(
+                    `${useRuntimeConfig().public.strapi.url}/api/users/${this.user.id}`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            Authorization: `Bearer ${cookie.value}`,
+                            "Content-Type": "application/json",
+                        },
+                        body: {
+                            Favorites: this.user.Favorites.filter(p => p.id !== id),
+                        },
+                    }
+                );
+                if (error.value) {
+                    // console.log(error.value.data.error.message);
+                    switch (error.value.data.error.message) {
+                        default:
+                            Error("Повторите попытку позже");
+                    }
+                }
+            }
+            await this.userStatus()
+
+            setLoading(false)
+        },
         async userStatus() {
             setLoading(true)
 
@@ -133,7 +195,7 @@ export const useUser = defineStore("user", {
                 } else {
                     this.isAuth = true
                     this.user = data.value as successUserType
-                   // cookie.value = (data.value as successUserType).jwt;
+                    // cookie.value = (data.value as successUserType).jwt;
                 }
             } else {
                 this.isAuth = false
