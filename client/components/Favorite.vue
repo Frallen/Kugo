@@ -1,14 +1,20 @@
 <template>
   <div class="favorite">
-    <Icon name="ph:heart-straight-fill" class="icon" v-if="isFavorite" @click.stop="userFavorites(id,false)"
-    />
-    <Icon name="ph:heart-straight" class="icon" v-else @click.stop="userFavorites(id,true)"
+    <template v-if="isAuth">
+      <Icon name="ph:heart-straight-fill" class="icon" v-if="isFavorite" @click.stop="updateFavorites(id,false)"
+      />
+      <Icon name="ph:heart-straight" class="icon" v-else @click.stop="updateFavorites(id,true)"
+      />
+    </template>
+    <Icon v-else name="ph:heart-straight" class="icon" @click.stop="AuthModalChanger(true)"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-const {userFavorites} = useUser()
+const {isAuth} = storeToRefs(useUser())
+const {AuthModalChanger} = useMain()
+const {updateFavorites} = useUser()
 
 interface propsType {
   id: number,

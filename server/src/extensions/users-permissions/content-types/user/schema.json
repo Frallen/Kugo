@@ -66,10 +66,10 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "Favorites": {
+    "user_Favorites": {
       "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::catalog-item.catalog-item"
+      "relation": "oneToOne",
+      "target": "api::favorite.favorite"
     }
   }
 }

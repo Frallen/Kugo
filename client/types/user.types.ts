@@ -8,7 +8,9 @@ export interface userType extends datesType {
     provider: string
     confirmed: boolean
     blocked: boolean
-    Favorites: DetailItemType[]
+    user_Favorites: {
+        id: number
+    }
 }
 
 export interface userResponseType {

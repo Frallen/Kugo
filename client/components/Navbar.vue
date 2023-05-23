@@ -10,7 +10,7 @@
               <Icon name="material-symbols:call" class="phone icon"
               />
             </NuxtLink>
-            <NuxtLink to="/favorites" class="item"
+            <NuxtLink to="/favorites" class="item" v-if="isAuth"
             >
               <Icon name="ph:heart-straight" class="icon"
               />
@@ -204,7 +204,7 @@
               <Icon name="carbon:scales" class="icon"
               />
             </NuxtLink>
-            <NuxtLink to="/favorites" class="item"
+            <NuxtLink to="/favorites" class="item" v-if="isAuth"
             >
               <Icon name="ph:heart-straight" class="icon"
               />

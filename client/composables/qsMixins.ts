@@ -17,6 +17,38 @@ export const filterDeal = (value: string | [number]): string => {
     });
 }
 
+// избранное для конкретного пользователя
+export const filterFavorites = (value: number): string => {
+    return qs.stringify({
+        populate: "deep",
+        filters: {
+            User: {
+                ID: {
+                    $eq: value,
+                }
+
+            },
+        },
+    }, {
+        encodeValuesOnly: true, // prettify URL
+    });
+}
+// избранное для конкретного пользователя
+export const putFavorites = (value: number): string => {
+    return qs.stringify({
+        filters: {
+            User: {
+                ID: {
+                    $eq: value,
+                }
+
+            },
+        },
+    }, {
+        encodeValuesOnly: true, // prettify URL
+    });
+}
+
 // пагинация 10 элементов на странице
 export const pagination = (page: string): string => {
     return qs.stringify({
@@ -58,7 +90,6 @@ export const chooseFilter = (value: string): string => {
         encodeValuesOnly: true, // prettify URL
     });
 }
-
 
 
 // фильтрация каталога
