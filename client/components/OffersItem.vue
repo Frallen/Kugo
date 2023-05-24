@@ -89,7 +89,7 @@
               </div>
               <div class="product-actions-item">
                 <BasketButton
-                    @click.stop="orderToCookie(item.attributes.Price,item.id,item.id)"></BasketButton>
+                    @click.stop="orderToCookie(item.attributes.Price, item.id)"></BasketButton>
               </div>
             </div>
           </div>
