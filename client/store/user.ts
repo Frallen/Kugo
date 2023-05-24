@@ -143,7 +143,7 @@ export const useUser = defineStore("user", {
                 }
             } else {
                 cookie.value = (data.value as successUserType).jwt;
-                await this.userStatus()
+                this.userStatus((data.value as successUserType).jwt)
             }
             setLoading(false)
         },
@@ -264,7 +264,7 @@ export const useUser = defineStore("user", {
         },
 
         //Подгружаю данные пользователя
-        async userStatus() {
+        async userStatus(key?: string) {
             setLoading(true)
 
             let cookie = useCookie<string>("user", {
@@ -275,16 +275,15 @@ export const useUser = defineStore("user", {
                 }),
                 maxAge: 3600,
             });
-
-            if (cookie.value) {
-
+            const jwt = cookie.value || key
+            if (jwt) {
 
                 const {data, error} = await useFetch<userResponseType>(
                     `${useRuntimeConfig().public.strapi.url}/api/users/me/?${populate()}`,
                     {
                         method: "GET",
                         headers: {
-                            Authorization: `Bearer ${cookie.value}`,
+                            Authorization: `Bearer ${jwt}`,
                             "Content-Type": "application/json",
                         },
                     }
