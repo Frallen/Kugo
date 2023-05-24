@@ -8,7 +8,7 @@
   </transition>
   <transition name="fade">
     <Modal :isShow="authModalState" @closeModal="AuthModalChanger(false)">
-      <Form @submit="auth" class="form" :validation-schema="typeForm?AuthSchema():RegSchema()"
+      <Form @submit="auth" v-slot="{ handleReset }" class="form" :validation-schema="typeForm?AuthSchema():RegSchema()"
             @click.stop>
         <div class="form-title">{{
             typeForm ? "Авторизация" : "Регистрация"
@@ -70,7 +70,7 @@
               typeForm ? "Авторизоваться" : "Зарегистрироваться"
             }}
           </button>
-          <div class="type-form" @click.stop="typeForm?typeForm=false:typeForm=true">
+          <div class="type-form" @click.stop="typeForm?typeForm=false:typeForm=true;handleReset()">
             {{ typeForm ? "Нет аккаунта?" : "Уже есть аккаунт?" }}
           </div>
         </div>
@@ -95,11 +95,10 @@ await getFilters()
 await userStatus()
 
 
-
 const auth = (data: { email: string, password: string }) => {
-  if(typeForm.value){
+  if (typeForm.value) {
     authUser(data.email, data.password)
-  }else{
+  } else {
     createUser(data.email, data.password)
   }
 }

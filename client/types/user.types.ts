@@ -1,5 +1,4 @@
 import {datesType, metaType} from "~/types/global.types";
-import {DetailItemType} from "~/types/catalog.types";
 
 export interface userType extends datesType {
     id: number

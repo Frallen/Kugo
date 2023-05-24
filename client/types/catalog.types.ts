@@ -23,7 +23,7 @@ export interface DealType {
     id: number
     oldPrice: number
     Services?: ServicesType
-    Scooter?: {
+    Scooter: {
         max_speed: number,
         power: number,
         max_range: string,

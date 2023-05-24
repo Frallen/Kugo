@@ -5,7 +5,7 @@
         <div class="product-body-wrapper">
             <Swiper
                 class="slider"
-                @swiper="onSwiper"
+                @swiper="e=>slider=e"
                 :modules="modules"
                 :slides-per-view="1"
                 :space-between="20"
@@ -19,9 +19,10 @@
                 ></NuxtImg>
               </Swiper-slide>
             </Swiper>
+
             <Swiper
                 class="slider-thumbs"
-                @swiper="setThumbsSwiper"
+                @swiper="e=>thumbsSwiper=e"
                 :modules="modules"
                 :slides-per-view="5"
                 :watchSlidesProgress="true"
@@ -39,9 +40,9 @@
         <Form @submit="onSubmit" class="product-body-info">
           <h1 class="product-title">{{ Detail.attributes.Title }}</h1>
           <div class="product-short">
-            <div>В наличии</div>
-            <div>Сравнить</div>
-            <div>Поделиться</div>
+            <AvailableIcon/>
+            <CompareIcon/>
+            <ShareIcon/>
           </div>
           <div class="product-price">
             <h5 class="product-price-title" v-if="Detail.attributes.oldPrice">
@@ -61,7 +62,7 @@
             <div class="product-result-price">
               <h6>{{ Price }} руб.</h6>
               <div class="product-actions-item">
-                <Favorite :isFavorite="false"></Favorite>
+                <Favorite :isFavorite="isFavorite" :id="Detail.id"></Favorite>
               </div>
             </div>
             <div class="product-result-delivery">
@@ -77,15 +78,14 @@
         </Form>
       </div>
       <div class="product-footer">
-
-          <Swiper
-              class="slider-thumbs"
-              @swiper="setThumbsProperty"
-              :modules="modules"
-              :slides-per-view="4"
-              :watchSlidesProgress="true"
-              :space-between="10"
-              :breakpoints="{
+        <Swiper
+            class="slider-thumbs"
+            @swiper="e=>thumbsProperty=e"
+            :modules="modules"
+            :slides-per-view="4"
+            :watchSlidesProgress="true"
+            :space-between="10"
+            :breakpoints="{
                              320: {
                               slidesPerView: 1,
                             },
@@ -96,108 +96,110 @@
                               slidesPerView: 4,
                             }
                         }"
+        >
+          <Swiper-slide class="slider-thumbs-item"
           >
-            <Swiper-slide class="slider-thumbs-item"
-            >
-              О товаре
-            </Swiper-slide>
-            <Swiper-slide class="slider-thumbs-item"
-            >
-              Характеристики
-            </Swiper-slide>
-            <Swiper-slide class="slider-thumbs-item"
-            >
-              Доставка и оплата
-            </Swiper-slide>
-            <Swiper-slide class="slider-thumbs-item"
-            >
-              Гарантии
-            </Swiper-slide>
-          </Swiper>
-          <Swiper
-              class="slider"
-              @swiper="onProperty"
-              :modules="modules"
-              :slides-per-view="1"
-              :space-between="20"
-              :thumbs="{ swiper: thumbsProperty }"
-              effect="fade"
-              :fadeEffect="{ crossFade: true }"
-              :auto-height="true"
+            О товаре
+          </Swiper-slide>
+          <Swiper-slide class="slider-thumbs-item"
           >
-            <Swiper-slide class="slider-item">
-              <div class="about">
-                <div class="about-item">
-                  <h5>{{ Detail.attributes.Title }}</h5>
-                  <p v-if="Detail.attributes.About">{{ Detail.attributes.About }}</p>
+            Характеристики
+          </Swiper-slide>
+          <Swiper-slide class="slider-thumbs-item"
+          >
+            Доставка и оплата
+          </Swiper-slide>
+          <Swiper-slide class="slider-thumbs-item"
+          >
+            Гарантии
+          </Swiper-slide>
+        </Swiper>
+        <Swiper
+            class="slider"
+            @swiper="e=>Property=e"
+            :modules="modules"
+            :slides-per-view="1"
+            :space-between="20"
+            :thumbs="{ swiper: thumbsProperty }"
+            effect="fade"
+            :fadeEffect="{ crossFade: true }"
+            :auto-height="true"
+            :allow-touch-move="false"
+        >
+          <Swiper-slide class="slider-item">
+            <div class="about">
+              <div class="about-item">
+                <h5>{{ Detail.attributes.Title }}</h5>
+                <p v-if="Detail.attributes.About">{{ Detail.attributes.About }}</p>
+              </div>
+              <div class="about-item">
+                <div class="about-item-equipment">
+                  <h6>{{ Detail.attributes.Title }}</h6>
+                  <p v-if="Detail.attributes.Scooter">
+                    {{ Detail.attributes.Scooter.equipment }}
+                  </p>
                 </div>
-                <div class="about-item">
-                  <div class="about-item-equipment">
-                    <h6>{{ Detail.attributes.Title }}</h6>
-                    <p v-if="Detail.attributes.Scooter">
-                      {{ Detail.attributes.Scooter.equipment }}
-                    </p>
-                  </div>
-                  <div class="about-item-features">
-                    <h6>Ключевые особенности {{ Detail.attributes.Title }}</h6>
-                    <div class="feature">
-                      <div v-if="Detail.attributes.Scooter.type_product" class="feature-item">
-                        {{ Detail.attributes.Scooter.type_product.data.attributes.Title }}
-                      </div>
-                      <div class="feature-item">{{
-                          Detail.attributes.Scooter.user_type.data.attributes.Title
-                        }}
-                      </div>
-                      <div class="feature-item">До {{ Detail.attributes.Scooter.max_speed }}
-                        км/ч
-                      </div>
+                <div class="about-item-features">
+                  <h6>Ключевые особенности {{ Detail.attributes.Title }}</h6>
+                  <div class="feature">
+                    <div v-if="Detail.attributes.Scooter.type_product" class="feature-item">
+                      {{ Detail.attributes.Scooter.type_product.data.attributes.Title }}
+                    </div>
+                    <div class="feature-item">{{
+                        Detail.attributes.Scooter.user_type.data.attributes.Title
+                      }}
+                    </div>
+                    <div class="feature-item">До {{ Detail.attributes.Scooter.max_speed }}
+                      км/ч
                     </div>
                   </div>
                 </div>
               </div>
-            </Swiper-slide>
-            <Swiper-slide class="slider-item">
-              <div class="property">
-                <div class="column" v-if="Detail.attributes.Scooter">
-                  <div class="property-item" v-if="Detail.attributes.Weight">Масса нетто
+            </div>
+          </Swiper-slide>
+          <Swiper-slide class="slider-item">
+            <div class="property">
+              <template v-if="Detail.attributes.Scooter">
+                <div class="column">
+                  <div class="property-item">Масса нетто
                     <span>{{ Detail.attributes.Weight }} кг</span></div>
-                  <div class="property-item" v-if="Detail.attributes.Scooter?.power">Мощность
+                  <div class="property-item">Мощность
                     <span>{{ Detail.attributes.Scooter.power }} W</span></div>
-                  <div class="property-item" v-if="Detail.attributes.Scooter.battery_capacity">
+                  <div class="property-item">
                     Аккумулятор
                     <span>{{ Detail.attributes.Scooter.battery_capacity }} mAh</span></div>
-                  <div class="property-item" v-if="Detail.attributes.Scooter.max_speed">Максимальная
+                  <div class="property-item">Максимальная
                     скорость
                     <span>До {{
                         Detail.attributes.Scooter.max_speed
                       }} км/ч*</span></div>
-                  <div class="property-item" v-if="Detail.attributes.Scooter.max_range">Максимальный
+                  <div class="property-item">Максимальный
                     пробег
                     <span>До {{ Detail.attributes.Scooter.max_range }}км/ч*</span></div>
-                  <div class="property-item" v-if="Detail.attributes.Scooter.charge_time">Время полной
+                  <div class="property-item">Время полной
                     зарядки
                     <span>{{ Detail.attributes.Scooter.charge_time }}</span></div>
-                  <div class="property-item" v-if="Detail.attributes.Scooter.maximum_load">
+                  <div class="property-item">
                     Максимальная
                     нагрузка
                     <span>{{ Detail.attributes.Scooter.maximum_load }} кг</span></div>
-                  <div class="property-item" v-if="Detail.attributes.Scooter.wheel_size">Размер колес
+                  <div class="property-item">Размер колес
                     <span>{{ Detail.attributes.Scooter.wheel_size }}</span></div>
                 </div>
                 <div class="column">
-                  <div class="property-item" v-if="Detail.attributes.Scooter.type_wheels">Тип колес
+                  <div class="property-item">Тип колес
                     <span>{{ Detail.attributes.Scooter.type_wheels }}</span></div>
-                  <div class="property-item" v-if="Detail.attributes.gabarits">Габариты (ДВШ), см
+                  <div class="property-item">Габариты (ДВШ), см
                     <span>{{ Detail.attributes.Scooter.gabarits }}</span></div>
-                  <div class="property-item" v-if="Detail.attributes.Scooter.lighting">Подсветка
+                  <div class="property-item">Подсветка
                     <span>{{ Detail.attributes.Scooter.lighting }}</span></div>
-                  <div class="property-item" v-if="Detail.attributes.Scooter.privod">Привод
+                  <div class="property-item">Привод
                     <span>{{ Detail.attributes.Scooter.privod }}</span></div>
-                  <div class="property-item" v-if="Detail.attributes.stop_system">Тормозная система
+                  <div class="property-item">Тормозная система
                     <span>{{ Detail.attributes.Scooter.stop_system }}</span></div>
-                  <div class="property-item" v-if="Detail.attributes.Scooter.equipment">Комплектация
+                  <div class="property-item">Комплектация
                     <span>{{ Detail.attributes.Scooter.equipment }}</span></div>
-                  <div class="property-item" v-if="Detail.attributes.Scooter.guarantee">Гарантия
+                  <div class="property-item">Гарантия
                     <span>{{ Detail.attributes.Scooter.guarantee }}</span></div>
                   <div class="property-item special"
                        v-if="Detail.attributes.Scooter.max_range||Detail.attributes.Scooter.max_speed">
@@ -206,35 +208,36 @@
                     местности, погодных условий и температуры окружающей среды
                   </div>
                 </div>
-              </div>
+              </template>
+            </div>
 
-            </Swiper-slide>
-            <Swiper-slide class="slider-item">
-              <div class="pay">
-                <div class="pay-item">
-                  <h5>5 способов оплаты</h5>
-                  <ul>
-                    <li>наличными</li>
-                    <li>картой</li>
-                    <li>онлайн на сайте через корзину</li>
-                    <li>через интернет-банкинг по счету</li>
-                    <li>в кредит от «Сбербанка»</li>
-                  </ul>
-                </div>
-                <div class="pay-item">
-                  <h5>Доставка по всей России</h5>
-                  <ul>
-                    <li>Отправляем заказы по всей России день в день службой доставки товаров CDEK
-                    </li>
-                    <li>Самовывоз из магазинов в Москве, Санкт-Петербурге и Краснодаре</li>
-                  </ul>
-                </div>
+          </Swiper-slide>
+          <Swiper-slide class="slider-item">
+            <div class="pay">
+              <div class="pay-item">
+                <h5>5 способов оплаты</h5>
+                <ul>
+                  <li>наличными</li>
+                  <li>картой</li>
+                  <li>онлайн на сайте через корзину</li>
+                  <li>через интернет-банкинг по счету</li>
+                  <li>в кредит от «Сбербанка»</li>
+                </ul>
               </div>
-            </Swiper-slide>
-            <Swiper-slide class="slider-item">
-              <Gurantee></Gurantee>
-            </Swiper-slide>
-          </Swiper>
+              <div class="pay-item">
+                <h5>Доставка по всей России</h5>
+                <ul>
+                  <li>Отправляем заказы по всей России день в день службой доставки товаров CDEK
+                  </li>
+                  <li>Самовывоз из магазинов в Москве, Санкт-Петербурге и Краснодаре</li>
+                </ul>
+              </div>
+            </div>
+          </Swiper-slide>
+          <Swiper-slide class="slider-item">
+            <Gurantee></Gurantee>
+          </Swiper-slide>
+        </Swiper>
       </div>
     </div>
   </div>
@@ -244,10 +247,18 @@
 import {Navigation, Thumbs, EffectFade} from "swiper";
 import {Swiper, SwiperSlide} from "swiper/vue";
 import {Form} from "vee-validate"
+// Нужно типизировать
+//import {Swiper as SwiperType} from "swiper/vue/swiper-vue"
+//import {ThumbsOptions} from "swiper/types/modules/thumbs"
+const {Favorites} = storeToRefs(useUser())
+
+const isFavorite = computed(() => {
+  return Favorites.value.data ? Favorites.value.data.some(p => p.id === Detail.value.id) : false
+})
 
 const modules = [Navigation, Thumbs, EffectFade];
 const {
-  filteredDeal, orderToCookie, clearDeals
+  filteredDeal, orderToCookie
 } = useCatalog()
 const {
   Detail, ServiceToOrder
@@ -270,26 +281,10 @@ const onSubmit = () => {
   orderToCookie(OrderPrice)
 }
 
-const slider = useState<null>();
-const onSwiper = (swiper: any) => {
-  slider.value = swiper;
-};
-let thumbsSwiper = useState<null>();
-
-
-const setThumbsSwiper = (swiper: any) => {
-  thumbsSwiper.value = swiper;
-}
-const Property = useState<null>();
-const onProperty = (swiper: any) => {
-  Property.value = swiper;
-};
-let thumbsProperty = useState<null>();
-
-
-const setThumbsProperty = (swiper: any) => {
-  thumbsProperty.value = swiper;
-}
+const slider = ref<null>();
+let thumbsSwiper = ref<null>();
+const Property = ref<null>();
+let thumbsProperty = ref<null>();
 
 
 </script>
@@ -334,9 +329,6 @@ const setThumbsProperty = (swiper: any) => {
         height: 90px;
         margin: 1em 0;
 
-        .active-slide {
-          border: 1px solid @purple;
-        }
 
         &-item {
           cursor: pointer;
@@ -345,11 +337,16 @@ const setThumbsProperty = (swiper: any) => {
           overflow: hidden;
           .trs(0.5s);
 
+
           img {
             height: 100%;
             width: 100%;
             object-fit: scale-down;
           }
+        }
+
+        .swiper-slide-thumb-active {
+          border: 1px solid @purple;
         }
 
         &-item:hover {

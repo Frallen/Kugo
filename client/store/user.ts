@@ -1,8 +1,7 @@
 import {isProduction, setLoading} from "~/composables/mixins";
-import {successUserType, userResponseType, userType} from "~/types/user.types";
+import {errorUserType, successUserType, userResponseType, userType} from "~/types/user.types";
 import {errorMessage} from "~/composables/useAlert";
 import {useMain} from "~/store/main";
-import {chooseFilter, filterFavorites, putFavorites} from "~/composables/qsMixins";
 import {CatalogItemType, DealType, DetailItemType} from "~/types/catalog.types";
 import {metaType} from "~/types/global.types";
 
