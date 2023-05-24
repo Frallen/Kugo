@@ -1,5 +1,5 @@
 import {isProduction, setLoading} from "~/composables/mixins";
-import {errorUserType, successUserType, userResponseType, userType} from "~/types/user.types";
+import {errorUserType, successUserType} from "~/types/user.types";
 import {errorMessage} from "~/composables/useAlert";
 import {useMain} from "~/store/main";
 import {CatalogItemType, DealType, DetailItemType} from "~/types/catalog.types";
@@ -8,7 +8,7 @@ import {metaType} from "~/types/global.types";
 
 interface stateType {
     isAuth: boolean
-    user: userType
+    user: successUserType
     Favorites: CatalogItemType
 }
 
@@ -30,7 +30,7 @@ export const useUser = defineStore("user", {
                 }),
                 maxAge: 3600,
             });
-            const {data, error} = await useFetch<userResponseType>(
+            const {data, error} = await useFetch(
                 `${useRuntimeConfig().public.strapi.url}/api/auth/local/register`,
                 {
                     method: "POST",
@@ -91,7 +91,7 @@ export const useUser = defineStore("user", {
             // для PUT запроса к избранному добавляю id
             // Далее этот id я буду использовать для поиска конретной записи в таблице
             // для PUT запроса небходим котретный id
-            const user = await useFetch<userResponseType>(
+            const user = await useFetch(
                 `${useRuntimeConfig().public.strapi.url}/api/users/${id}`,
                 {
                     method: "PUT",
@@ -118,7 +118,7 @@ export const useUser = defineStore("user", {
                 maxAge: 3600,
             });
 
-            const {data, error} = await useFetch<userResponseType>(
+            const {data, error} = await useFetch(
                 `${useRuntimeConfig().public.strapi.url}/api/auth/local`,
                 {
                     method: "POST",
@@ -169,7 +169,7 @@ export const useUser = defineStore("user", {
                 maxAge: 3600,
             });
             // Беру конретный id избранного и ищу такую запись
-            let {data, error} = await useFetch<responseType>(
+            let {data, error} = await useFetch(
                 `${useRuntimeConfig().public.strapi.url}/api/favorites/${this.user.user_Favorites.id}?${populate()}`,
                 {
                     method: "GET",
@@ -259,7 +259,9 @@ export const useUser = defineStore("user", {
                 }
             }
             await this.userStatus()
-
+            if (this.isAuth) {
+                this.getFavorites()
+            }
             setLoading(false)
         },
 
@@ -278,7 +280,7 @@ export const useUser = defineStore("user", {
             const jwt = cookie.value || key
             if (jwt) {
 
-                const {data, error} = await useFetch<userResponseType>(
+                const {data, error} = await useFetch(
                     `${useRuntimeConfig().public.strapi.url}/api/users/me/?${populate()}`,
                     {
                         method: "GET",
@@ -299,7 +301,7 @@ export const useUser = defineStore("user", {
                     this.isAuth = true
                     this.user = data.value as successUserType
                     await useMain().hideAllModals()
-                    this.getFavorites()
+
                 }
             } else {
                 this.isAuth = false

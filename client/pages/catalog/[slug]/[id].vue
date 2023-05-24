@@ -278,7 +278,7 @@ const Price = computed<number>(() => {
 
 const onSubmit = () => {
   const OrderPrice: number = Price.value
-  orderToCookie(OrderPrice)
+  orderToCookie(OrderPrice,Detail.value.id)
 }
 
 const slider = ref<null>();

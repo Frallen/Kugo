@@ -10,8 +10,7 @@ import {
 } from "~/types/catalog.types";
 import {AddedToBasket, errorMessage} from "~/composables/useAlert";
 import {setLoading} from "~/composables/mixins";
-import {filterDeal, pagination,populate,filterCatalog,chooseFilter} from "~/composables/qsMixins";
-
+import {filterDeal, pagination, populate, filterCatalog, chooseFilter} from "~/composables/qsMixins";
 
 
 // интерфейс для катлога pinia
@@ -63,13 +62,13 @@ export const useCatalog = defineStore("catalog", {
             this.Deals = {}
         },
         //Добавление заказа в куки
-        async orderToCookie(OrderPrice: number, id?: number) {
+        async orderToCookie(OrderPrice: number, id: number) {
 
             const cookie = useCookie<cookieOrderType[]>("order");
             let order = [...(cookie.value ?? "")] as cookieOrderType[];
-            if (order && order.some(p => p.id === this.Detail.id)) {
+            if (order && order.some(p => p.id === id)) {
                 order.map(p => {
-                    if (p.id === this.Detail.id) {
+                    if (p.id === id) {
 
                         p.OrderPrice = OrderPrice
                         p.OrderService = this.ServiceToOrder
@@ -80,7 +79,7 @@ export const useCatalog = defineStore("catalog", {
             } else {
 
                 order.push({
-                        id: this.Detail.id ?? id,
+                        id: id,
                         ...(OrderPrice && {
                             OrderPrice: OrderPrice
                         }),

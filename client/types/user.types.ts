@@ -12,11 +12,6 @@ export interface userType extends datesType {
     }
 }
 
-export interface userResponseType {
-    data: successUserType
-    error: errorUserType
-}
-
 export interface successUserType {
     jwt: string,
     user: userType

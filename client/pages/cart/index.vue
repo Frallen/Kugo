@@ -1,47 +1,52 @@
 <template>
   <div class="container">
-    <Form @submit="" v-slot="{ setFieldValue, setValues }" :initial-values="formValues" class="cart">
-      <h5 class="cart-title">Моя корзина <span>2 товара</span></h5>
-      <div class="cart-wrapper">
-        <template v-if="Cart.data">
-          <div class="cart-table">
-            <div class="cart-header">
-              <div class="cart-header-item">Товар</div>
-              <div class="cart-header-item">Количество</div>
-              <div class="cart-header-item">Сумма</div>
-              <div class="cart-header-item delete-all" @click.stop="clearAll()">Удалить все</div>
-            </div>
-            <div class="cart-orders">
-              <transition-group name="fade">
-                <OrderItem :item="item" v-for="item in Cart.data"
-                           :key="item.id"
-                ></OrderItem>
-              </transition-group>
-            </div>
-          </div>
-          <div class="cart-result">
-            <div class="cart-result-title">Итого:</div>
-            <div class="cart-result-price">{{ calculatedCart }} ₽</div>
-            <div class="cart-result-total">
-              <!-- <div class="total-item">{{ calculatedDiscount }}₽</div>-->
-              <div class="total-item" v-if="calculatedDiscount>0">Сумма скидки <span>{{ calculatedDiscount }} ₽</span>
+    <div class="page-wrapper">
+      <h5 class="page-wrapper-title">
+        Моя корзина
+      </h5>
+      <Form @submit="" v-slot="{ setFieldValue, setValues }" :initial-values="formValues" class="cart">
+
+        <div class="cart-wrapper">
+          <template v-if="Cart.data">
+            <div class="cart-table">
+              <div class="cart-header">
+                <div class="cart-header-item">Товар</div>
+                <div class="cart-header-item">Количество</div>
+                <div class="cart-header-item">Сумма</div>
+                <div class="cart-header-item delete-all" @click.stop="clearAll()">Удалить все</div>
               </div>
-              <div class="total-item">Итого без учета доставки <span>{{ calculatedCart }} ₽</span></div>
+              <div class="cart-orders">
+                <transition-group name="fade">
+                  <OrderItem :item="item" v-for="item in Cart.data"
+                             :key="item.id"
+                  ></OrderItem>
+                </transition-group>
+              </div>
             </div>
-            <button type="submit" class="button button-primary">Оформить заказ</button>
-            <label class="checkbox">
-              <Field name="policy"
-                     type="checkbox" checked :value="true">
-              </Field>
-              <span class="icon"></span>
-              <span class="text">Нажимая на кнопку, вы соглашаетесь на обработку персональных данных и
+            <div class="cart-result">
+              <div class="cart-result-title">Итого:</div>
+              <div class="cart-result-price">{{ calculatedCart }} ₽</div>
+              <div class="cart-result-total">
+                <!-- <div class="total-item">{{ calculatedDiscount }}₽</div>-->
+                <div class="total-item" v-if="calculatedDiscount>0">Сумма скидки <span>{{ calculatedDiscount }} ₽</span>
+                </div>
+                <div class="total-item">Итого без учета доставки <span>{{ calculatedCart }} ₽</span></div>
+              </div>
+              <button type="submit" class="button button-primary">Оформить заказ</button>
+              <label class="checkbox">
+                <Field name="policy"
+                       type="checkbox" checked :value="true">
+                </Field>
+                <span class="icon"></span>
+                <span class="text">Нажимая на кнопку, вы соглашаетесь на обработку персональных данных и
                                 <NuxtLink to="/" target="_blank">политикой конфиденциальности</NuxtLink> </span>
-            </label>
-          </div>
-        </template>
-        <Empty v-else :title="'Ваша корзина пуста'" :text="'Добавьте в нее товары из каталог'"></Empty>
-      </div>
-    </Form>
+              </label>
+            </div>
+          </template>
+          <Empty v-else :title="'Ваша корзина пуста'" :text="'Добавьте в нее товары из каталог'"></Empty>
+        </div>
+      </Form>
+    </div>
   </div>
 </template>
 
@@ -69,32 +74,11 @@ const clearAll = () => {
   });
 }
 
-
 </script>
 
 <style scoped lang="less">
 .cart {
-  margin: 80px 0 100px;
-  @media @md {
-    margin: 30px 0 10px;
-  }
 
-  &-title {
-    font-weight: 600;
-    font-size: 35px;
-    line-height: 51px;
-    text-transform: uppercase;
-    color: @black;
-
-    span {
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 20px;
-      color: @gray;
-      display: block;
-      margin: 10px 0 0 0;
-    }
-  }
 
   &-wrapper {
     margin: 41px 0 0 0;

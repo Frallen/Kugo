@@ -89,7 +89,7 @@
               </div>
               <div class="product-actions-item">
                 <BasketButton
-                    @click.stop="orderToCookie(item.attributes.Price,item.id)"></BasketButton>
+                    @click.stop="orderToCookie(item.attributes.Price,item.id,item.id)"></BasketButton>
               </div>
             </div>
           </div>
@@ -100,7 +100,7 @@
 </template>
 
 <script setup lang="ts">
-import {type DetailItemType} from "~/types/catalog.types";
+import {DetailItemType} from "~/types/catalog.types";
 import {Navigation} from "swiper";
 import {Swiper, SwiperSlide} from "swiper/vue";
 

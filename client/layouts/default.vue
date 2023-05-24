@@ -86,13 +86,16 @@ const {getFilters} = useCatalog();
 const {isLoading, authModalState} = storeToRefs(useMain())
 const {AuthModalChanger} = useMain()
 const {isAuth} = storeToRefs(useUser())
-const {createUser, authUser, userStatus} = useUser()
+const {createUser, authUser, userStatus, getFavorites} = useUser()
 
 const passwordState = useState<string>(() => "password")
 const typeForm = useState<boolean>(() => true)
 
 await getFilters()
 await userStatus()
+if (isAuth) {
+  await getFavorites()
+}
 
 
 const auth = (data: { email: string, password: string }) => {

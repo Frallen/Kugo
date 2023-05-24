@@ -1,22 +1,22 @@
 <template>
-    <div class="offers" :class="{'offers-catalog':specialView}">
-        <transition-group name="fade">
-            <OffersItem class="offers-item" :class="{'offers-catalog-item':isCatalog}" v-for="item in offerType.data"
-                         :item="item" :key="item.id"></OffersItem>
-        </transition-group>
-    </div>
+  <div class="offers" :class="{'offers-catalog':specialView}">
+    <transition-group name="fade">
+      <OffersItem class="offers-item" :class="{'offers-catalog-item':isCatalog}" v-for="item in offerType.data"
+                  :item="item" :key="item.id"></OffersItem>
+    </transition-group>
+  </div>
 </template>
 
 <script setup lang="ts">
-import {type CatalogItemType} from "~/types/catalog.types";
+import {CatalogItemType} from "~/types/catalog.types";
 
 interface propsType {
-    offerType: CatalogItemType,
-    isCatalog?: boolean,
+  offerType: CatalogItemType,
+  isCatalog?: boolean,
 }
 
 let {
-    offerType, isCatalog
+  offerType, isCatalog
 } = defineProps<propsType>()
 
 const specialView = useState<boolean>(() => isCatalog ?? false)
@@ -61,12 +61,15 @@ const specialView = useState<boolean>(() => isCatalog ?? false)
 
 .offers-catalog {
   margin: -30px 0 0 -15px;
+  @media @xxl {
+    margin: -15px 0 0 -15px;
+  }
   @media @lg {
     margin: -15px 0 0 -30px;
   }
-    @media @md {
-        margin: -15px 0 0 -15px;
-    }
+  @media @md {
+    margin: -15px 0 0 -15px;
+  }
   @media @xs {
     margin: -15px 0 0 0;
   }
