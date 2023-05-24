@@ -85,7 +85,7 @@ import {Form, Field, ErrorMessage} from "vee-validate"
 const {getFilters} = useCatalog();
 const {isLoading, authModalState} = storeToRefs(useMain())
 const {AuthModalChanger} = useMain()
-const {isAuth} = storeToRefs(useUser())
+const {isAuth,user} = storeToRefs(useUser())
 const {createUser, authUser, userStatus, getFavorites} = useUser()
 
 const passwordState = useState<string>(() => "password")
@@ -93,7 +93,7 @@ const typeForm = useState<boolean>(() => true)
 
 await getFilters()
 await userStatus()
-if (isAuth) {
+if (user.value.jwt) {
   await getFavorites()
 }
 
