@@ -139,6 +139,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    @media @md {
+      flex-direction: column;
+    }
 
     a {
       font-weight: 400;
@@ -162,6 +165,7 @@
     }
 
     &-item:first-child {
+
       a:last-child {
         margin: 0 0 0 40px;
       }
@@ -171,7 +175,9 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-
+      @media @md {
+        margin: 20px 0 0;
+      }
       a {
         margin: 0;
         font-size: 1.2em;
