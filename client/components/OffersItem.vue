@@ -112,7 +112,7 @@ const isFavorite = computed(() => {
   return Favorites.value ? Favorites.value.data.some(p => p.id === item.id) : false
 })
 
-const slider = useState<null>();
+const slider = ref<null>();
 
 const onSwiper = (swiper: any) => {
   slider.value = swiper;
@@ -125,7 +125,7 @@ interface propsType {
 
 let {item} = defineProps<propsType>();
 
-const mouseHovered = useState<boolean>()
+const mouseHovered = ref<boolean>()
 
 </script>
 

@@ -210,7 +210,7 @@ export const useUser = defineStore("user", {
                 items.push(id)
                 // Беру конретный id записи избранного и добавляю туда изменения
                 let {data, error} = await useFetch(
-                    `${useRuntimeConfig().public.strapi.url}/api/favorites/${this.user?.user_Favorites?.id}`,
+                    `${useRuntimeConfig().public.strapi.url}/api/favorites/${this.user?.user_Favorites.id}`,
                     {
                         method: "PUT",
                         headers: {
@@ -270,8 +270,6 @@ export const useUser = defineStore("user", {
             setLoading(true)
 
 
-
-
             if (userCookieChecker()||key) {
 
                 const {data, error} = await useFetch(
@@ -279,7 +277,7 @@ export const useUser = defineStore("user", {
                     {
                         method: "GET",
                         headers: {
-                            Authorization: `Bearer ${userCookieChecker()}`,
+                            Authorization: `Bearer ${userCookieChecker()??key}`,
                             "Content-Type": "application/json",
                         },
                     }
