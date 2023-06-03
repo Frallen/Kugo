@@ -3,6 +3,7 @@
   <div>
     <slot></slot>
   </div>
+  <Footer></Footer>
   <transition name="fade">
     <Preloader v-show="isLoading"></Preloader>
   </transition>
