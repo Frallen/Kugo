@@ -7,7 +7,7 @@
       <Form @submit="" v-slot="{ setFieldValue, setValues }" :initial-values="formValues" class="cart">
 
         <div class="cart-wrapper">
-          <template v-if="Cart.data">
+          <template v-if="Cart">
             <div class="cart-table">
               <div class="cart-header">
                 <div class="cart-header-item">Товар</div>
@@ -25,12 +25,13 @@
             </div>
             <div class="cart-result">
               <div class="cart-result-title">Итого:</div>
-              <div class="cart-result-price">{{ calculatedCart }} ₽</div>
+              <div class="cart-result-price">{{ calcSession(sessionCart) }} ₽</div>
               <div class="cart-result-total">
                 <!-- <div class="total-item">{{ calculatedDiscount }}₽</div>-->
-                <div class="total-item" v-if="calculatedDiscount>0">Сумма скидки <span>{{ calculatedDiscount }} ₽</span>
+                <div class="total-item" v-if="calcSession(sessionDiscount)>0">Сумма скидки
+                  <span>{{ calcSession(sessionDiscount) }} ₽</span>
                 </div>
-                <div class="total-item">Итого без учета доставки <span>{{ calculatedCart }} ₽</span></div>
+                <div class="total-item">Итого без учета доставки <span>{{ calcSession(sessionCart) }} ₽</span></div>
               </div>
               <button type="submit" class="button button-primary">Оформить заказ</button>
               <label class="checkbox">
@@ -53,10 +54,9 @@
 <script setup lang="ts">
 import {Field, Form} from "vee-validate";
 
-const {Cart, calculatedCart, calculatedDiscount} = storeToRefs(useCart())
+const {Cart, sessionDiscount, sessionCart} = storeToRefs(useCart())
 const {cartOrders, clearCart} = useCart()
 
-const {clearDeals} = useCatalog()
 await cartOrders()
 
 const formValues = useState();

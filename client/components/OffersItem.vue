@@ -109,7 +109,7 @@ const {orderToCookie} = useCatalog()
 const {Favorites} = storeToRefs(useUser())
 
 const isFavorite = computed(() => {
-  return Favorites.value.data ? Favorites.value.data.some(p => p.id === item.id) : false
+  return Favorites.value ? Favorites.value.data.some(p => p.id === item.id) : false
 })
 
 const slider = useState<null>();

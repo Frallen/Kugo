@@ -1,4 +1,5 @@
 import {useMain} from "~/store/main";
+import exp from "constants";
 
 
 export const overFlow = (state: boolean): void => {
@@ -24,6 +25,25 @@ export const scrollTop = (): void => {
             behavior: "smooth",
         });
     }
+}
+
+export const calcSession = <T>(data: T): number => {
+    return data.reduce(
+        (total, item) => item.Price + total,
+        0)
+}
+
+
+export const userCookieChecker = (): string | null => {
+    let cookie = useCookie<string>("user", {
+        //secure:true,
+
+        ...(isProduction() && {
+            sameSite: "strict"
+        }),
+        maxAge: 3600,
+    });
+    return cookie.value ?? null
 }
 
 

@@ -4,7 +4,7 @@ import {checkQueryPrice} from "~/composables/mixins";
 
 
 // поиск конкретного элемента
-export const filterDeal = (value: string | [number]): string => {
+export const filterDeal = (value: Array<number>): string => {
     return qs.stringify({
         populate: "deep",
         filters: {

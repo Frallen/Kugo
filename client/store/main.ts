@@ -13,10 +13,6 @@ export const useMain = defineStore("main", {
     }),
     getters: {},
     actions: {
-        // скрыть/показать прелоадер
-        async setLoading(state: boolean) {
-            this.isLoading = state
-        },
         //Закрыть все кастомные модальные окна
         async hideAllModals() {
             this.authModalState = false

@@ -1,22 +1,22 @@
-import {isProduction, setLoading} from "~/composables/mixins";
-import {errorUserType, successUserType} from "~/types/user.types";
+import {isProduction, setLoading, userCookieChecker} from "~/composables/mixins";
+import { successUserType} from "~/types/user.types";
 import {errorMessage} from "~/composables/useAlert";
 import {useMain} from "~/store/main";
-import {CatalogItemType, DealType, DetailItemType} from "~/types/catalog.types";
+import {CatalogItemType, DetailItemType} from "~/types/catalog.types";
 import {metaType} from "~/types/global.types";
 
 
 interface stateType {
     isAuth: boolean
-    user: successUserType
-    Favorites: CatalogItemType
+    user: successUserType | null
+    Favorites: CatalogItemType | null
 }
 
 export const useUser = defineStore("user", {
     state: (): stateType => ({
         isAuth: false,
-        user: {},
-        Favorites: {}
+        user: null,
+        Favorites: {} as CatalogItemType
     }),
     getters: {},
     actions: {
@@ -170,7 +170,7 @@ export const useUser = defineStore("user", {
             });
             // Беру конретный id избранного и ищу такую запись
             let {data, error} = await useFetch(
-                `${useRuntimeConfig().public.strapi.url}/api/favorites/${this.user.user_Favorites.id}?${populate()}`,
+                `${useRuntimeConfig().public.strapi.url}/api/favorites/${this.user?.user_Favorites.id}?${populate()}`,
                 {
                     method: "GET",
                     headers: {
@@ -210,7 +210,7 @@ export const useUser = defineStore("user", {
                 items.push(id)
                 // Беру конретный id записи избранного и добавляю туда изменения
                 let {data, error} = await useFetch(
-                    `${useRuntimeConfig().public.strapi.url}/api/favorites/${this.user.user_Favorites.id}`,
+                    `${useRuntimeConfig().public.strapi.url}/api/favorites/${this.user?.user_Favorites?.id}`,
                     {
                         method: "PUT",
                         headers: {
@@ -235,7 +235,7 @@ export const useUser = defineStore("user", {
             } else {
                 // Беру конретный id записи избранного и добавляю туда изменения
                 let {data, error} = await useFetch(
-                    `${useRuntimeConfig().public.strapi.url}/api/favorites/${this.user.user_Favorites.id}`,
+                    `${useRuntimeConfig().public.strapi.url}/api/favorites/${this.user?.user_Favorites.id}`,
                     {
                         method: "PUT",
                         headers: {
@@ -244,7 +244,7 @@ export const useUser = defineStore("user", {
                         },
                         body: {
                             data: {
-                                catalog_items: this.Favorites.data.filter(p => p.id !== id),
+                                catalog_items: this.Favorites?.data.filter(p => p.id !== id),
                             }
 
                         },
@@ -269,23 +269,17 @@ export const useUser = defineStore("user", {
         async userStatus(key?: string) {
             setLoading(true)
 
-            let cookie = useCookie<string>("user", {
-                //secure:true,
 
-                ...(isProduction() && {
-                    sameSite: "strict"
-                }),
-                maxAge: 3600,
-            });
-            const jwt = cookie.value || key
-            if (jwt) {
+
+
+            if (userCookieChecker()||key) {
 
                 const {data, error} = await useFetch(
                     `${useRuntimeConfig().public.strapi.url}/api/users/me/?${populate()}`,
                     {
                         method: "GET",
                         headers: {
-                            Authorization: `Bearer ${jwt}`,
+                            Authorization: `Bearer ${userCookieChecker()}`,
                             "Content-Type": "application/json",
                         },
                     }
@@ -305,8 +299,8 @@ export const useUser = defineStore("user", {
                 }
             } else {
                 this.isAuth = false
-                this.user = {}
-                this.Favorites = {}
+                this.user = null
+                this.Favorites = null
             }
             setLoading(false)
         },
@@ -326,8 +320,8 @@ export const useUser = defineStore("user", {
             setLoading(true)
             // Зачистка данных и перенаправление пользователя
             this.isAuth = false
-            this.user = {}
-            this.Favorites = {}
+            this.user = null
+            this.Favorites = null
             await useRouter().push("/")
             setLoading(false)
         }

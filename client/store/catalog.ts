@@ -6,20 +6,21 @@ import {
     SelectFilterType,
     filterType,
     AdditionalType,
-    cookieOrderType,
+    cookieOrderType, filterPayloadType,
 } from "~/types/catalog.types";
 import {AddedToBasket, errorMessage} from "~/composables/useAlert";
 import {setLoading} from "~/composables/mixins";
 import {filterDeal, pagination, populate, filterCatalog, chooseFilter} from "~/composables/qsMixins";
+import {metaType} from "~/types/global.types";
 
 
 // интерфейс для катлога pinia
 interface stateType {
     SortOptions: SelectFilterType[],
     Detail: DetailItemType,
-    Deals: CatalogItemType,
-    categories: categoryType,
-    Filter: filterType,
+    Deals: CatalogItemType | null,
+    categories: categoryType | null,
+    Filter: filterType ,
     ServiceToOrder: AdditionalType[]
 }
 
@@ -31,17 +32,17 @@ export const useCatalog = defineStore("catalog", {
             {label: 'Сначала дороже', sort: 'Price:desc'},
             {label: 'По сумме скидки', sort: 'oldPrice:desc'}
         ],
-        Detail: {},
-        Deals: {},
-        Filter: {},
-        categories: {},
+        Detail: {} as DetailItemType,
+        Deals: null,
+        Filter: {} as filterType,
+        categories: null,
         ServiceToOrder: []
     }),
     getters: {
         // middleware существует ли slug путь
         routeExist: (state) => {
             return (query: string) =>
-                state.categories.data.some(p => p.attributes.Slug === query)
+                state.categories?.data.some(p => p.attributes.Slug === query)
         },
     },
     actions: {
@@ -57,10 +58,10 @@ export const useCatalog = defineStore("catalog", {
             }
         },
         //очистка делатки и каталога
-        async clearDeals() {
-            this.Detail = {}
-            this.Deals = {}
-        },
+       /* async clearDeals() {
+            this.Detail = null
+            this.Deals = null
+        },*/
         //Добавление заказа в куки
         async orderToCookie(OrderPrice: number, id: number) {
 
@@ -137,15 +138,18 @@ export const useCatalog = defineStore("catalog", {
 
             } else {
 
-                this.Filter = data.value.data[0] as filterType
+                this.Filter = (data.value as filterPayloadType).data[0] as filterType
             }
             setLoading(false)
         },
         // делальная страница товара
         async filteredDeal(id: string) {
+            interface detailResponse extends metaType{
+                data: DetailItemType
+            }
             setLoading(true)
             let {data, error} = await useFetch(
-                `${useRuntimeConfig().public.strapi.url}/api/catalog-items?${filterDeal(id)}`,
+                `${useRuntimeConfig().public.strapi.url}/api/catalog-items/${id}?${populate()}`,
                 {
                     method: "GET",
                     headers: {
@@ -156,7 +160,8 @@ export const useCatalog = defineStore("catalog", {
             if (error.value) {
 
             } else {
-                this.Detail = (data.value as CatalogItemType).data[0] as DetailItemType
+
+               this.Detail = (data.value as detailResponse).data
             }
 
             setLoading(false)
@@ -166,7 +171,7 @@ export const useCatalog = defineStore("catalog", {
             setLoading(true)
 
             const {data, error} = await useFetch(
-                `${useRuntimeConfig().public.strapi.url}/api/catalog-items?${pagination(page ?? "1")}&${filterCatalog(type, filters, sort)}`,
+                `${useRuntimeConfig().public.strapi.url}/api/catalog-items?${pagination(page)}&${filterCatalog(type, filters, sort)}`,
                 {
                     method: "GET",
                     headers: {

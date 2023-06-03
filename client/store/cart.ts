@@ -1,11 +1,11 @@
-import {AdditionalType, CatalogItemType, cookieOrderType, sessionType} from "~/types/catalog.types";
+import {AdditionalType, CatalogItemType, cookieOrderType, DetailItemType, sessionType} from "~/types/catalog.types";
 import {setLoading} from "~/composables/mixins";
 import {filterDeal} from "~/composables/qsMixins";
 
 
 // интерфейс для катлога pinia
 interface stateType {
-    Cart: CatalogItemType,
+    Cart: CatalogItemType | null,
     ServiceToOrder: AdditionalType[]
     sessionCart: sessionType[]
     sessionDiscount: sessionType[]
@@ -13,72 +13,58 @@ interface stateType {
 
 export const useCart = defineStore("cart", {
     state: (): stateType => ({
-        Cart: {},
+        Cart: null,
         ServiceToOrder: [],
         sessionCart: [],
         sessionDiscount: []
     }),
-    getters: {
-        calculatedCart: (state): number => {
-            return state.sessionCart.reduce(
-                (total, item) => item.Price + total,
-                0
-            )
-        },
-        calculatedDiscount: (state): number => {
-            return state.sessionDiscount.reduce(
-                (total, item) => item.Price + total,
-                0
-            )
-        },
-
-    },
+    getters: {},
     actions: {
         async prepareSession(id: number, count: number) {
 
-            this.Cart.data.map(p => {
-                const calculatedService =
-                    p.attributes.OrderService ? p.attributes.OrderService.reduce(
-                        (total, item) => item.Price + total,
-                        0
-                    ) : 0
-                if (this.sessionCart.some(p => p.id === id)) {
-                    this.sessionCart.map(item => {
+            let CartItem = this.Cart?.data.find(p => p.id === id) as DetailItemType
+            const calculatedService =
+                CartItem.attributes.OrderService ? CartItem.attributes.OrderService.reduce(
+                    (total, item) => item.Price + total,
+                    0
+                ) : 0
+
+            if (this.sessionCart.some(p => p.id === id)) {
+                this.sessionCart.map(item => {
+                        if (item.id === id) {
+                            item.id = id
+                            item.Price = CartItem.attributes.Price * count + calculatedService
+                        }
+
+                    }
+                )
+
+                if (CartItem.attributes.oldPrice) {
+                    this.sessionDiscount.map(item => {
                             if (item.id === id) {
                                 item.id = id
-                                item.Price = p.attributes.Price * count + calculatedService
+                                item.Price = CartItem.attributes.oldPrice - CartItem.attributes.Price
                             }
 
                         }
                     )
-
-                    if (p.attributes.oldPrice) {
-                        this.sessionDiscount.map(item => {
-                                if (item.id === id) {
-                                    item.id = id
-                                    item.Price = p.attributes.oldPrice - p.attributes.Price
-                                }
-
-                            }
-                        )
-                    }
-                } else {
-
-
-                    this.sessionCart.push({
-                        id: p.id,
-                        Price: p.attributes.Price * count + calculatedService
-                    })
-
-                    if (p.attributes.oldPrice) {
-                        this.sessionDiscount.push({
-                            id: p.id,
-                            Price: p.attributes.oldPrice - p.attributes.Price
-                        })
-                    }
                 }
+            } else {
 
-            })
+
+                this.sessionCart.push({
+                    id: CartItem.id,
+                    Price: CartItem.attributes.Price * count + calculatedService
+                })
+
+                if (CartItem.attributes.oldPrice) {
+                    this.sessionDiscount.push({
+                        id: CartItem.id,
+                        Price: CartItem.attributes.oldPrice - CartItem.attributes.Price
+                    })
+                }
+            }
+
         },
 
         async clearSessionCart(id: number) {
@@ -92,7 +78,7 @@ export const useCart = defineStore("cart", {
         async cartOrders() {
             const cookie = useCookie<cookieOrderType[]>("order");
             let order = [...(cookie.value ?? "")] as cookieOrderType[];
-            const searchedItems: [number] = []
+            const searchedItems: Array<number> = []
 
             order.map(p => searchedItems.push(p.id))
             if (searchedItems.length > 0) {
@@ -112,8 +98,8 @@ export const useCart = defineStore("cart", {
                     (data.value as CatalogItemType).data.map(i => {
                         order.map(p => {
                             if (p.id === i.id) {
-                                i.attributes.OrderPrice = p.OrderPrice
-                                i.attributes.OrderService = p.OrderService
+                                i.attributes.OrderPrice = p.OrderPrice;
+                                i.attributes.OrderService = p.OrderService as AdditionalType[]
                             }
                         })
                     })
@@ -122,7 +108,7 @@ export const useCart = defineStore("cart", {
                 setLoading(false)
 
             } else {
-                this.Cart = {}
+                this.Cart = null
             }
 
 
@@ -151,9 +137,9 @@ export const useCart = defineStore("cart", {
         async clearCart() {
             const cookie = useCookie<cookieOrderType[]>("order");
             cookie.value = []
-            this.Cart = {}
-            this.sessionCart = {}
-            this.sessionDiscount = {}
+            this.Cart = null
+            this.sessionCart = []
+            this.sessionDiscount = []
         },
     },
 

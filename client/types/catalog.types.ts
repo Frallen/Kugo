@@ -1,5 +1,5 @@
 
-import {datesType, metaType} from "~/types/global.types";
+import {datesType, metaType,imageType} from "~/types/global.types";
 
 
 // Элемент из каталога
@@ -69,7 +69,9 @@ export interface sessionType {
     id: number,
     Price: number,
 }
-
+export interface filterPayloadType extends metaType{
+    data:filterType[]
+}
 export interface filterType {
     id: number,
     attributes: {
@@ -127,32 +129,6 @@ export interface cookieOrderType {
     id: number
     OrderPrice?: number
     OrderService?: AdditionalType[]
-}
-
-// Тип для изображений
-interface imageType {
-    data: [{
-        attributes: {
-            alternativeText: null
-            caption: null
-            createdAt: string
-            ext: string
-            formats: {}
-            hash: string
-            height: number
-            mime: string
-            name: string
-            previewUrl: null
-            provider: string
-            provider_metadata: {}
-            size: number
-            updatedAt: string
-            url: string
-            width: number
-        }
-        id: number
-    }
-    ]
 }
 
 

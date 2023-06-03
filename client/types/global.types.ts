@@ -13,3 +13,28 @@ export interface metaType {
         }
     }
 }
+// Тип для изображений
+export interface imageType {
+    data: [{
+        attributes: {
+            alternativeText: null
+            caption: null
+            createdAt: string
+            ext: string
+            formats: {}
+            hash: string
+            height: number
+            mime: string
+            name: string
+            previewUrl: null
+            provider: string
+            provider_metadata: {}
+            size: number
+            updatedAt: string
+            url: string
+            width: number
+        }
+        id: number
+    }
+    ]
+}

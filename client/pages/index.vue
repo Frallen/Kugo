@@ -64,7 +64,7 @@
 
 <script setup lang="ts">
 
-const {getDeals, clearDeals, categories} = useCatalog()
+const {getDeals, categories} = useCatalog()
 const {Deals}=storeToRefs(useCatalog())
 await getDeals("scooters","1");
 

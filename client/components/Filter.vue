@@ -72,7 +72,7 @@ const {Filter} = storeToRefs(useCatalog())
 const {query} = useRoute()
 let minMax = useState<[min: number, max: number]>()
 
-minMax.value = query.price ? checkQueryPrice(query.price) : [Filter.value.attributes.minPrice, Filter.value.attributes.maxPrice]
+minMax.value = query.price ? checkQueryPrice(query.price as string) : [Filter.value.attributes.minPrice, Filter.value.attributes.maxPrice]
 
 const emit = defineEmits<{ (e: "filters", Filters: responseFilterType): void }>()
 

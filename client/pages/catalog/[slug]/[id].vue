@@ -253,7 +253,7 @@ import {Form} from "vee-validate"
 const {Favorites} = storeToRefs(useUser())
 
 const isFavorite = computed(() => {
-  return Favorites.value.data ? Favorites.value.data.some(p => p.id === Detail.value.id) : false
+  return Favorites.value ? Favorites.value.data.some(p => p.id === Detail.value.id) : false
 })
 
 const modules = [Navigation, Thumbs, EffectFade];

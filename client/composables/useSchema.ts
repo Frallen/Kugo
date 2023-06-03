@@ -7,7 +7,7 @@ export const RegSchema = () => {
             .required(() => required()),
         password: yup
             .string()
-            .min(6, () => min8())
+            .min(6, () => min6())
             .required(),
     });
 };
@@ -20,11 +20,11 @@ export const AuthSchema = () => {
             .required(() => required()),
         password: yup
             .string()
-            .min(6, () => min8())
+            .min(6, () => min6())
             .required(() => required()),
     });
 };
-let min8 = () => "Минимальная длина пароля 8 символов";
+let min6 = () => "Минимальная длина пароля 6 символов";
 let required = () => "Это обязательное поле";
 let email = () => "Не является почтой";
 

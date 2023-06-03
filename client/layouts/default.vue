@@ -93,7 +93,7 @@ const typeForm = useState<boolean>(() => true)
 
 await getFilters()
 await userStatus()
-if (user.value.jwt) {
+if (userCookieChecker()) {
   await getFavorites()
 }
 
