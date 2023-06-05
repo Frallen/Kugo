@@ -4,7 +4,7 @@
       <h5 class="page-wrapper-title">
         Избранное
       </h5>
-      <div class="favorites" v-if="Favorites.data&&Favorites.data.length>0">
+      <div class="favorites" v-if="Favorites&&Favorites.data.length>0">
         <div class="favorites-body">
 
           <Offers :offerType="Favorites"></Offers>
@@ -23,7 +23,9 @@
 <script setup lang="ts">
 const {Favorites} = storeToRefs(useUser())
 definePageMeta({
-  middleware: "auth"
+  middleware: "auth",
+  breadcrumb: "Избранное",
+  Title: "Избранное"
 })
 
 // начальная страница пагинации

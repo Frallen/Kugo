@@ -21,11 +21,15 @@
       "customField": "plugin::slug.slug"
     },
     "Image": {
-      "allowedTypes": [
-        "images"
-      ],
       "type": "media",
       "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "publicTitle": {
+      "type": "string",
       "required": true
     }
   }

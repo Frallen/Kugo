@@ -1,73 +1,60 @@
 <template>
-    <ClientOnly>
-        <SliderIndex></SliderIndex>
-    </ClientOnly>
-    <div class="container">
-        <div class="features">
-            <div class="features-item text">Гарантия 1 год <span>на весь ассортимент</span></div>
-            <div class="features-item text">рассрочка <span>от 6 месяцев</span></div>
-            <div class="features-item text">Подарки <span>и бонусам к покупкам </span></div>
-            <div class="features-item yandex">
-                <div class="yandex-icon">Я</div>
-                <div class="yandex-title">Яндекс отзывы
-                    <span><Icon name="ic:sharp-star-purple500" class="icon"
-                    />4,9</span></div>
-            </div>
-        </div>
+  <ClientOnly>
+    <SliderIndex></SliderIndex>
+  </ClientOnly>
+  <div class="container">
+    <div class="features">
+      <div class="features-item text">Гарантия 1 год <span>на весь ассортимент</span></div>
+      <div class="features-item text">рассрочка <span>от 6 месяцев</span></div>
+      <div class="features-item text">Подарки <span>и бонусам к покупкам </span></div>
+      <div class="features-item yandex">
+        <div class="yandex-icon">Я</div>
+        <div class="yandex-title">Яндекс отзывы
+          <span><Icon name="ic:sharp-star-purple500" class="icon"
+          />4,9</span></div>
+      </div>
     </div>
-    <div class="container">
-        <div class="offers-short">
-            <h3>Электросамокаты</h3>
-            <Offers :offerType="Deals"></Offers>
-            <NuxtLink class="button button-primary" to="/catalog">Смотреть все</NuxtLink>
-        </div>
+  </div>
+  <div class="container" v-if="Deals && Deals.data.length>0">
+    <div class="offers-short">
+      <h3>Электросамокаты</h3>
+      <Offers :offerType="Deals"></Offers>
+      <NuxtLink class="button button-primary" to="/catalog">Смотреть все</NuxtLink>
     </div>
-    <div class="container">
-        <div class="service">
-            <NuxtLink to="" class="service-item">
-                <div class="service-item-wrapper">
-                    <span class="service-item-title">Подбор модели электросамоката</span>
-                    <span class="service-item-text">Пройдите тест и выберите электросамокат по своим критериям</span>
-                    <span class="service-item-link">Подобрать модель<Icon
-                            name="material-symbols:arrow-forward-ios" class="icon"
-                    /> </span></div>
-                <NuxtImg src="serviceSamkokat.png" class="service-item-img"></NuxtImg>
-            </NuxtLink>
-            <NuxtLink to="" class="service-item">
-                <div class="service-item-wrapper">
-                    <span class="service-item-title">Сервисное обслуживание</span>
-                    <span class="service-item-text">Крупнейший сервисный центр в России для продуктов Kugoo</span>
-                    <span class="service-item-link">Обратиться к специалисту<Icon
-                            name="material-symbols:arrow-forward-ios" class="icon"
-                    /> </span></div>
-                <NuxtImg src="serviceWoman.png" class="service-item-img"></NuxtImg>
-            </NuxtLink>
-        </div>
+  </div>
+  <div class="container">
+    <div class="service">
+      <NuxtLink to="" class="service-item">
+        <div class="service-item-wrapper">
+          <span class="service-item-title">Подбор модели электросамоката</span>
+          <span class="service-item-text">Пройдите тест и выберите электросамокат по своим критериям</span>
+          <span class="service-item-link">Подобрать модель<Icon
+              name="material-symbols:arrow-forward-ios" class="icon"
+          /> </span></div>
+        <NuxtImg src="serviceSamkokat.png" class="service-item-img"></NuxtImg>
+      </NuxtLink>
+      <NuxtLink to="" class="service-item">
+        <div class="service-item-wrapper">
+          <span class="service-item-title">Сервисное обслуживание</span>
+          <span class="service-item-text">Крупнейший сервисный центр в России для продуктов Kugoo</span>
+          <span class="service-item-link">Обратиться к специалисту<Icon
+              name="material-symbols:arrow-forward-ios" class="icon"
+          /> </span></div>
+        <NuxtImg src="serviceWoman.png" class="service-item-img"></NuxtImg>
+      </NuxtLink>
     </div>
-    <StockBlock></StockBlock>
-    <div class="container">
-        <div class="categories">
-            <div class="categories-header">
-                <h3>Популярные категории</h3>
-                <SupportWidget></SupportWidget>
-            </div>
-            <div class="categories-wrapper">
-                <NuxtLink :to="`/catalog/${item.attributes.Slug}`" v-for="item in categories.data" :key="item.id"
-                          class="categories-item">
-                    <NuxtImg provider="cloudinary"
-                             :src="item.attributes.Image.data.attributes.url"></NuxtImg>
-                    <span>{{ item.attributes.Title }}</span></NuxtLink>
-            </div>
-        </div>
-    </div>
+  </div>
+  <StockBlock></StockBlock>
+  <div class="container">
+    <Categories></Categories>
+  </div>
 </template>
 
 <script setup lang="ts">
 
-const {getDeals, categories} = useCatalog()
-const {Deals}=storeToRefs(useCatalog())
-await getDeals("scooters","1");
-
+const {getDeals} = useCatalog()
+const {Deals} = storeToRefs(useCatalog())
+await getDeals("scooters", "1");
 
 </script>
 
@@ -273,96 +260,16 @@ await getDeals("scooters","1");
   }
 }
 
-.categories {
-  margin: 50px 0;
 
-  &-header {
-    display: flex;
-    justify-content: space-between;
-    margin: 0 0 68px 0;
-    @media @sm {
-      margin: 0 0 38px 0;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .support {
-      @media @sm {
-        margin: 20px 0 0;
-      }
-    }
-
-    h3 {
-      @media @sm {
-        text-align: center
-      }
-    }
-  }
-
-  &-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    margin: -30px 0 0 -20px;
-    @media @lg {
-      margin: -20px 0 0 -15px;
-    }
-    @media @sm {
-      justify-content: center;
-      margin: -10px 0 0 0;
-
-    }
-
-  }
-
-  &-item {
-    width: calc(100% / 4 - 20px);
-    height: 264px;
-    margin: 30px 0 0 20px;
-    position: relative;
-    .br(10px);
-    overflow: hidden;
-    display: block;
-    @media @lg {
-      width: calc(100% / 2 - 15px);
-      margin: 20px 0 0 15px;
-    }
-    @media @sm {
-      width: 80%;
-      margin: 10px 0 0 0;
-    }
-    @media @xs {
-      width: 100%;
-    }
-
-    span {
-      padding: 10px 16px;
-      display: block;
-      position: absolute;
-      bottom: 10%;
-      left: 10%;
-      background: rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(5px);
-      .br(10px);
-      font-weight: 500;
-      font-size: 18px;
-      line-height: 26px;
-      color: #fff;
-    }
-
-    img {
-      width: 100%;
-      height: 100%;
-    }
-  }
-}
 .stock-wrapper {
-    margin: 50px 1em;
-    .br(10px);
-    @media @md {
-        margin: 0;
-        .br(0);
-    }
+  margin: 50px 1em;
+  .br(10px);
+  @media @md {
+    margin: 0;
+    .br(0);
+  }
 }
+
 .offers-short {
   margin: 50px 0;
 

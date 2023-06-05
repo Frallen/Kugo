@@ -1,11 +1,6 @@
 <template>
   <div class="container">
-    <div class="page-wrapper">
-      <h5 class="page-wrapper-title">
-        Моя корзина
-      </h5>
       <Form @submit="" v-slot="{ setFieldValue, setValues }" :initial-values="formValues" class="cart">
-
         <div class="cart-wrapper">
           <template v-if="Cart">
             <div class="cart-table">
@@ -23,31 +18,32 @@
                 </transition-group>
               </div>
             </div>
-            <div class="cart-result">
-              <div class="cart-result-title">Итого:</div>
-              <div class="cart-result-price">{{ calcSession(sessionCart) }} ₽</div>
-              <div class="cart-result-total">
-                <!-- <div class="total-item">{{ calculatedDiscount }}₽</div>-->
-                <div class="total-item" v-if="calcSession(sessionDiscount)>0">Сумма скидки
-                  <span>{{ calcSession(sessionDiscount) }} ₽</span>
+            <ClientOnly>
+              <div class="cart-result">
+                <div class="cart-result-title">Итого:</div>
+                <div class="cart-result-price">{{ calcSession(sessionCart) }} ₽</div>
+                <div class="cart-result-total">
+                  <!-- <div class="total-item">{{ calculatedDiscount }}₽</div>-->
+                  <div class="total-item" v-if="calcSession(sessionDiscount)>0">Сумма скидки
+                    <span>{{ calcSession(sessionDiscount) }} ₽</span>
+                  </div>
+                  <div class="total-item">Итого без учета доставки <span>{{ calcSession(sessionCart) }} ₽</span></div>
                 </div>
-                <div class="total-item">Итого без учета доставки <span>{{ calcSession(sessionCart) }} ₽</span></div>
-              </div>
-              <button type="submit" class="button button-primary">Оформить заказ</button>
-              <label class="checkbox">
-                <Field name="policy"
-                       type="checkbox" checked :value="true">
-                </Field>
-                <span class="icon"></span>
-                <span class="text">Нажимая на кнопку, вы соглашаетесь на обработку персональных данных и
+                <button type="submit" class="button button-primary">Оформить заказ</button>
+                <label class="checkbox">
+                  <Field name="policy"
+                         type="checkbox" checked :value="true">
+                  </Field>
+                  <span class="icon"></span>
+                  <span class="text">Нажимая на кнопку, вы соглашаетесь на обработку персональных данных и
                                 <NuxtLink to="/" target="_blank">политикой конфиденциальности</NuxtLink> </span>
-              </label>
-            </div>
+                </label>
+              </div>
+            </ClientOnly>
           </template>
           <Empty v-else :title="'Ваша корзина пуста'" :text="'Добавьте в нее товары из каталог'"></Empty>
         </div>
       </Form>
-    </div>
   </div>
 </template>
 
@@ -73,7 +69,10 @@ const clearAll = () => {
     }
   });
 }
-
+definePageMeta({
+  breadcrumb: "Корзина",
+  Title: "Корзина"
+})
 </script>
 
 <style scoped lang="less">
@@ -93,7 +92,7 @@ const clearAll = () => {
 
 
   &-table {
-    width: 75%;
+    width: 70%;
     @media @lg {
       width: 100%;
       overflow: auto;
@@ -102,7 +101,7 @@ const clearAll = () => {
 
 
   &-result {
-    width: 20%;
+    width: 25%;
     background: #F4F7FB;
     .br(5px);
     padding: 20px;
@@ -165,11 +164,13 @@ const clearAll = () => {
         font-size: 12px;
         line-height: 17px;
         color: @black;
+        white-space: break-spaces;
 
         span {
           font-weight: 500;
           font-size: 16px;
           line-height: 23px;
+          white-space: nowrap;
         }
       }
 

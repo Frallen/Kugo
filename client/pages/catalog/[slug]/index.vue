@@ -18,10 +18,10 @@
             Фильтры
           </button>
           <div class="catalog-body-selects">
-            <Select :options="SortOptions" :placeholder="'Фильтр'" @selectValue="e=>Sort=e"></Select>
+            <Select :options="SortOptions" :placeholder="'Фильтр'" @selectValue="e=>Sort=e as string"></Select>
           </div>
         </div>
-        <template v-if="Deals.data">
+        <template v-if="Deals">
           <Offers :offerType="Deals" :isCatalog="true"></Offers>
           <Pagination :page-count="Deals.meta.pagination.pageCount" @currentPage="e=> currentPage=e"></Pagination>
         </template>
@@ -38,9 +38,12 @@ const {getDeals, getFilter} = useCatalog()
 const {params, path, query} = useRoute()
 const router = useRouter();
 const {Deals, SortOptions} = storeToRefs(useCatalog())
+
 definePageMeta({
-  middleware: "catalog"
+  middleware: "catalog",
+  breadcrumb: "Категория",
 })
+
 await getFilter(params.slug as string)
 
 const Filters = ref<responseFilterType>()

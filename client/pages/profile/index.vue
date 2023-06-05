@@ -3,7 +3,9 @@
 </template>
 <script setup lang="ts">
 definePageMeta({
-  middleware: "auth"
+  middleware: "auth",
+  breadcrumb:"Профиль",
+  Title: "Профиль"
 })
 
 </script>

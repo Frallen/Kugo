@@ -1,6 +1,9 @@
 <template>
   <Navbar></Navbar>
-  <div>
+  <div class="page-wrapper">
+    <div class="container">
+      <Breadcrumbs></Breadcrumbs>
+    </div>
     <slot></slot>
   </div>
   <Footer></Footer>
@@ -86,7 +89,7 @@ import {Form, Field, ErrorMessage} from "vee-validate"
 const {getFilters} = useCatalog();
 const {isLoading, authModalState} = storeToRefs(useMain())
 const {AuthModalChanger} = useMain()
-const {isAuth,user} = storeToRefs(useUser())
+const {user} = storeToRefs(useUser())
 const {createUser, authUser, userStatus, getFavorites} = useUser()
 
 const passwordState = useState<string>(() => "password")

@@ -143,6 +143,15 @@
 
                 >
                   <div class="menu-item">
+                    <NuxtLink to="/catalog" class="menu-item-link"
+                    >
+                      <Icon
+                          name="material-symbols:shopping-cart-outline-rounded"
+                          class="icon"
+                      />
+                      Каталог
+                    </NuxtLink
+                    >
                     <NuxtLink to="/catalog/elektrosamokaty" class="menu-item-link"
                     >
                       <Icon

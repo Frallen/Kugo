@@ -1,6 +1,24 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    app: {head: {}},
+    app: {
+        head: {
+            title: "Электросамокаты KUGOO KIRIN",
+            meta: [
+                {
+                    name: 'description',
+                    content: 'Купите электросамокат Kugoo ⚙ Только оригинальные электросамокаты ✅ Доставка по всей России. Магазины в Москве, Санкт-Петербурге. Гарантия 1️⃣ 2️⃣ месяцев. Собственный сервисный центр'
+                },
+                {
+                    property: "og:title",
+                    content: "Электросамокаты KUGOO KIRIN"
+                },
+                {
+                    name: 'keywords',
+                    content: 'kugoo, электросамокат kugoo, куго, электросамокат куго, kugo электросамокаты kugoo, купить kugoo, kugoo russia, самокат kugoo, kugoo официальный сайт, самокат куго, купить электросамокат kugoo, электросамокат, kugoo kirin'
+                }
+            ]
+        }
+    },
     imports: {
         dirs: ["store"],
     },
@@ -31,7 +49,7 @@ export default defineNuxtConfig({
         ],
     ],
     runtimeConfig: {
-        Production: process.env.STRAPI_URL??false,
+        Production: process.env.STRAPI_URL ?? false,
         public: {
             strapi: {
                 url: process.env.STRAPI_URL || "http://localhost:1337",

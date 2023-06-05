@@ -3,39 +3,39 @@
     <div class="product">
       <div class="product-body">
         <div class="product-body-wrapper">
-            <Swiper
-                class="slider"
-                @swiper="e=>slider=e"
-                :modules="modules"
-                :slides-per-view="1"
-                :space-between="20"
-                :thumbs="{ swiper: thumbsSwiper }"
+          <Swiper
+              class="slider"
+              @swiper="e=>slider=e"
+              :modules="modules"
+              :slides-per-view="1"
+              :space-between="20"
+              :thumbs="{ swiper: thumbsSwiper }"
+          >
+            <Swiper-slide class="slider-item" v-for="item in Detail.attributes.images.data"
             >
-              <Swiper-slide class="slider-item" v-for="item in Detail.attributes.images.data"
-              >
-                <NuxtImg
-                    provider="cloudinary"
-                    :src="item.attributes.url"
-                ></NuxtImg>
-              </Swiper-slide>
-            </Swiper>
+              <NuxtImg
+                  provider="cloudinary"
+                  :src="item.attributes.url"
+              ></NuxtImg>
+            </Swiper-slide>
+          </Swiper>
 
-            <Swiper
-                class="slider-thumbs"
-                @swiper="e=>thumbsSwiper=e"
-                :modules="modules"
-                :slides-per-view="5"
-                :watchSlidesProgress="true"
-                :space-between="10"
+          <Swiper
+              class="slider-thumbs"
+              @swiper="e=>thumbsSwiper=e"
+              :modules="modules"
+              :slides-per-view="5"
+              :watchSlidesProgress="true"
+              :space-between="10"
+          >
+            <Swiper-slide class="slider-thumbs-item" v-for="item in Detail.attributes.images.data"
             >
-              <Swiper-slide class="slider-thumbs-item" v-for="item in Detail.attributes.images.data"
-              >
-                <NuxtImg
-                    provider="cloudinary"
-                    :src="item.attributes.url"
-                ></NuxtImg>
-              </Swiper-slide>
-            </Swiper>
+              <NuxtImg
+                  provider="cloudinary"
+                  :src="item.attributes.url"
+              ></NuxtImg>
+            </Swiper-slide>
+          </Swiper>
         </div>
         <Form @submit="onSubmit" class="product-body-info">
           <h1 class="product-title">{{ Detail.attributes.Title }}</h1>
@@ -278,7 +278,7 @@ const Price = computed<number>(() => {
 
 const onSubmit = () => {
   const OrderPrice: number = Price.value
-  orderToCookie(OrderPrice,Detail.value.id)
+  orderToCookie(OrderPrice, Detail.value.id)
 }
 
 const slider = ref<null>();
@@ -286,6 +286,17 @@ let thumbsSwiper = ref<null>();
 const Property = ref<null>();
 let thumbsProperty = ref<null>();
 
+useHead({
+  title: `Купить ${Detail.value.attributes.Title}`,
+  meta: [
+    {name: 'description', content: `${Detail.value.attributes.About}`},
+    {name: 'keywords', content: `Купить ${Detail.value.attributes.Title} , kugoo`}
+  ],
+})
+
+definePageMeta({
+  breadcrumb:'Товар'
+})
 
 </script>
 

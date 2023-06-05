@@ -1,5 +1,4 @@
-
-import {datesType, metaType,imageType} from "~/types/global.types";
+import {datesType, metaType, imageType} from "~/types/global.types";
 
 
 // Элемент из каталога
@@ -61,6 +60,7 @@ type categoryItemType = {
         Title: string,
         Slug: string,
         Image: imageType,
+        publicTitle: string,
     } & datesType,
     id: number,
 }
@@ -69,9 +69,11 @@ export interface sessionType {
     id: number,
     Price: number,
 }
-export interface filterPayloadType extends metaType{
-    data:filterType[]
+
+export interface filterPayloadType extends metaType {
+    data: filterType[]
 }
+
 export interface filterType {
     id: number,
     attributes: {
