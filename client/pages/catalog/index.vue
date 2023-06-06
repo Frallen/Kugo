@@ -1,11 +1,12 @@
 <template>
-  <div class="catalog-head">
-    <NuxtImg src="catalog.png"></NuxtImg>
-    <div class="container">
-      <h4>Каталог товаров</h4>
-    </div>
-  </div>
   <div class="container">
+    <div class="catalog-head">
+      <NuxtImg src="catalog.png"></NuxtImg>
+      <div class="container">
+        <h4>Каталог товаров</h4>
+      </div>
+    </div>
+
     <Categories></Categories>
   </div>
 </template>
@@ -19,34 +20,41 @@ definePageMeta({
 
 <style scoped lang="less">
 .catalog-head {
-  background: linear-gradient(88.23deg, #6F73EE 24.95%, rgba(111, 115, 238, 0) 59.45%);
+  background: linear-gradient(88.23deg, #6F73EE 49%, rgba(111, 115, 238, 0) 59.45%);
   border-radius: 10px;
-  margin: 20px 1.875em 50px;
+  margin: 20px 0 50px;
   position: relative;
   height: 200px;
   .br(10px);
   overflow: hidden;
-  @media @lg {
-    margin: 20px 1.3em 50px;
-
+  @media (min-width: 1921px) {
+    background: linear-gradient(88.23deg, #6F73EE 50%, rgba(111, 115, 238, 0) 59.45%);
   }
-  @media @md {
-    margin: 20px 1em;
+  @media @xl{
+    background: linear-gradient(88.23deg, #6F73EE 24.95%, rgba(111, 115, 238, 0) 59.45%);
   }
-  @media @sm {
-    margin: 20px 0.5em;
+  @media @xs{
+    height: 160px;
   }
 
   img {
     position: absolute;
-    left: 0;
+    right: 0;
     top: 0;
-    width: 100%;
     height: 100%;
     z-index: -1;
     transform: translateX(13%);
-    @media @lg {
+
+    @media (min-width: 1921px) {
+      transform: translateX(0);
+    }
+    @media @xl {
+      transform: translateX(20%);
+      width: 100%;
       object-fit: cover;
+    }
+    @media @xs{
+      transform:initial;
     }
   }
 
@@ -59,6 +67,10 @@ definePageMeta({
     text-transform: uppercase;
     @media @lg {
       font-size: 1.5em;
+    }
+    @media @xs{
+      font-size: 1.2em;
+      padding: 55px 0;
     }
   }
 }
