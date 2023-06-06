@@ -295,7 +295,8 @@ useHead({
 })
 
 definePageMeta({
-  breadcrumb:'Товар'
+  breadcrumb: 'Товар',
+  middleware: "offer"
 })
 
 </script>

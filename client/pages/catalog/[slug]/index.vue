@@ -63,7 +63,7 @@ watch(Filters, async () => {
     query: {
       page: currentPage.value,
       ...(Filters.value && Filters.value),
-      sort: Sort.value,
+      ...({sort: Sort.value && Sort.value})
     }
   });
   await getDeals(sluggedCatalog(), currentPage.value.toString(), Filters.value, Sort.value && Sort.value)
@@ -76,7 +76,8 @@ watch(Sort, async () => {
     query: {
       page: currentPage.value,
       ...(Filters.value && Filters.value),
-      sort: Sort.value,
+      ...({sort: Sort.value && Sort.value})
+
     }
   });
   //add sort
@@ -96,7 +97,7 @@ const prepare = async (): Promise<void> => {
     query: {
       page: currentPage.value,
       ...(Filters.value && Filters.value),
-      sort: Sort.value,
+      ...({sort: Sort.value && Sort.value})
     }
   });
 
