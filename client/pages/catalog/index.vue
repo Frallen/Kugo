@@ -6,7 +6,6 @@
         <h4>Каталог товаров</h4>
       </div>
     </div>
-
     <Categories></Categories>
   </div>
 </template>

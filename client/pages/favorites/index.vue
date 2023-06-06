@@ -6,12 +6,9 @@
       </h5>
       <div class="favorites" v-if="Favorites&&Favorites.data.length>0">
         <div class="favorites-body">
-
           <Offers :offerType="Favorites"></Offers>
           <!--  <Pagination @currentPage="e=> currentPage=e"></Pagination>-->
-
         </div>
-
       </div>
       <Empty v-else :title="'В избранном пусто'"
              :text="'Добавьте товары в избранное, чтобы просмотреть или купить их позже'"></Empty>
