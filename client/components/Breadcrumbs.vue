@@ -24,13 +24,17 @@
 
 <style scoped lang="less">
 .breadcrumbs {
+  margin: -10px 10px -10px;
   &-list {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+    margin: 10px 0 0 10px;
 
     &-item {
       display: flex;
       align-items: center;
+
 
       a {
         font-weight: 400;

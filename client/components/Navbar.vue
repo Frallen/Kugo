@@ -205,7 +205,7 @@
                 </div>
               </transition>
             </div>
-            <Search></Search>
+            <Search @searchValue="e=>searchedValue=e"></Search>
           </div>
           <div class="nav-body-links">
             <NuxtLink to="" class="item"
@@ -302,6 +302,15 @@ watch(mobileModal, () => {
   } else {
     overFlow(false)
   }
+})
+const searchedValue = ref<string>()
+
+const {LiveSearch} = useCatalog()
+
+watch(searchedValue, async () => {
+  await LiveSearch(searchedValue.value)
+
+
 })
 </script>
 

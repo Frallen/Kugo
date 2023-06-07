@@ -48,9 +48,14 @@ export default defineNuxtConfig({
             },
         ],
     ],
+
     runtimeConfig: {
-        Production: process.env.STRAPI_URL ?? false,
         public: {
+            Production: process.env.STRAPI_URL ?? false,
+            meilisearch: {
+                hostUrl: process.env.SEARCH,
+                searchApiKey: process.env.APP_KEYS,
+            },
             strapi: {
                 url: process.env.STRAPI_URL || "http://localhost:1337",
                 key: process.env.API_KEY,

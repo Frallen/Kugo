@@ -50,6 +50,16 @@ export interface DealType {
     OrderService: AdditionalType[]
 }
 
+export interface meilisearchOfferType{
+    estimatedTotalHits:number,
+    hits:DealType[],
+    limit:number
+    offset:number
+    processingTimeMs:number
+    query:string
+
+}
+
 // Интерфейс категорий товаров
 export interface categoryType extends metaType {
     data: categoryItemType[]

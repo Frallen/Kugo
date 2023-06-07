@@ -6,11 +6,11 @@ import {
     SelectFilterType,
     filterType,
     AdditionalType,
-    cookieOrderType, filterPayloadType,
+    cookieOrderType, filterPayloadType, DealType, meilisearchOfferType,
 } from "~/types/catalog.types";
 import {AddedToBasket, errorMessage} from "~/composables/useAlert";
 import {setLoading} from "~/composables/mixins";
-import {filterDeal, pagination, populate, filterCatalog, chooseFilter} from "~/composables/qsMixins";
+import {pagination, populate, filterCatalog, chooseFilter} from "~/composables/qsMixins";
 import {metaType} from "~/types/global.types";
 
 
@@ -20,8 +20,9 @@ interface stateType {
     Detail: DetailItemType,
     Deals: CatalogItemType | null,
     categories: categoryType | null,
-    Filter: filterType ,
+    Filter: filterType,
     ServiceToOrder: AdditionalType[]
+    SearchedItems: DealType[] | null
 }
 
 export const useCatalog = defineStore("catalog", {
@@ -36,7 +37,8 @@ export const useCatalog = defineStore("catalog", {
         Deals: null,
         Filter: {} as filterType,
         categories: null,
-        ServiceToOrder: []
+        ServiceToOrder: [],
+        SearchedItems: null
     }),
     getters: {
         // middleware существует ли slug путь
@@ -58,10 +60,10 @@ export const useCatalog = defineStore("catalog", {
             }
         },
         //очистка делатки и каталога
-       /* async clearDeals() {
-            this.Detail = null
-            this.Deals = null
-        },*/
+        /* async clearDeals() {
+             this.Detail = null
+             this.Deals = null
+         },*/
         //Добавление заказа в куки
         async orderToCookie(OrderPrice: number, id: number) {
 
@@ -142,11 +144,35 @@ export const useCatalog = defineStore("catalog", {
             }
             setLoading(false)
         },
+        // meilisearch поиск по элементам каталога
+        async LiveSearch(query: string) {
+            if (query) {
+                let {data, error} = await useFetch(
+                    `${useRuntimeConfig().public.meilisearch.hostUrl}/indexes/catalog-item/search?q=${query}`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${useRuntimeConfig().public.meilisearch.searchApiKey}`,
+                        },
+                    }
+                )
+                if (error.value) {
+                    errorMessage("Повторите попытку позже")
+                } else {
+                    this.SearchedItems = (data.value as meilisearchOfferType).hits
+                }
+            } else {
+                this.SearchedItems = null
+            }
+
+        },
         // делальная страница товара
         async filteredDeal(id: string) {
-            interface detailResponse extends metaType{
+            interface detailResponse extends metaType {
                 data: DetailItemType
             }
+
             setLoading(true)
             let {data, error} = await useFetch(
                 `${useRuntimeConfig().public.strapi.url}/api/catalog-items/${id}?${populate()}`,
@@ -161,7 +187,7 @@ export const useCatalog = defineStore("catalog", {
 
             } else {
 
-               this.Detail = (data.value as detailResponse).data
+                this.Detail = (data.value as detailResponse).data
             }
 
             setLoading(false)

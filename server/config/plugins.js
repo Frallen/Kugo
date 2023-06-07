@@ -15,5 +15,13 @@ module.exports = ({ env }) => ({
       },
     },
   },
+  meilisearch: {
+    config: {
+      // Your meili host
+      host: env('SEARCH'),
+      // Your master key or private key
+      apiKey: env('APP_KEYS'),
+    }
+  }
   // ...
 });

@@ -20,6 +20,7 @@
     "@strapi/strapi": "4.9.0",
     "better-sqlite3": "8.0.1",
     "custom-slug": "^2.1.1",
+    "strapi-plugin-meilisearch": "^0.9.2",
     "strapi-plugin-multi-select": "^1.1.0",
     "strapi-plugin-populate-deep": "^2.0.0",
     "typescript": "^5.0.4"

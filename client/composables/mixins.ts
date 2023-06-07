@@ -14,7 +14,7 @@ export const setLoading = (loading: boolean): void => {
     overFlow(loading)
 }
 export const isProduction = (): boolean => {
-    return typeof useRuntimeConfig().Production === "string";
+    return typeof useRuntimeConfig().public.Production === "string";
 }
 
 
