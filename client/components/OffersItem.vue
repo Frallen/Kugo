@@ -6,7 +6,7 @@
          @mouseleave="mouseHovered=false"
     >
       <div class="product-badges" v-if="item.attributes.badges">
-        <div class="product-badges-item " v-for="(p,index) in item.attributes.badges" :key="index"
+        <div class="product-badges-item badge" v-for="(p,index) in item.attributes.badges" :key="index"
              :class="{'product-badges-hit':p==='Хит', 'product-badges-new':p==='Новинка'}">
           {{ p }}
         </div>
@@ -201,14 +201,7 @@ const mouseHovered = ref<boolean>()
     flex-direction: column;
 
     &-item {
-      font-weight: 500;
-      font-size: 12px;
-      line-height: 17px;
-      color: #fff;
-      .br(5px);
-      padding: 5px 9px;
-      margin: 5px 0 0 0;
-      text-align: center;
+
     }
 
     &-item:first-child {

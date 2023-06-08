@@ -1,6 +1,5 @@
 <template>
   <div class="modal" v-if="isShow" >
-
     <div class="modal-body">
       <div class="modal-body-head">
         <Icon

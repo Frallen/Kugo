@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "service_call_backs",
+  "info": {
+    "singularName": "service-call-back",
+    "pluralName": "service-call-backs",
+    "displayName": "ServiceCallBack",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Phone": {
+      "type": "string",
+      "required": true
+    },
+    "Description": {
+      "type": "text"
+    },
+    "Option": {
+      "type": "enumeration",
+      "enum": [
+        "Ремонт",
+        "Диагностика",
+        "Услуги"
+      ],
+      "required": true
+    }
+  }
+}

@@ -1,4 +1,5 @@
 import * as yup from "yup";
+
 export const RegSchema = () => {
     return yup.object({
         email: yup
@@ -24,6 +25,20 @@ export const AuthSchema = () => {
             .required(() => required()),
     });
 };
+
+export const ServiceSchema = () => {
+    return yup.object({
+        Option: yup.string().required(required()),
+        Phone: yup
+            .string()
+            .matches(
+                /^(^8|7|\+7)((\d{10})|(\s\(\d{3}\)\s\d{3}\s\d{2}\s\d{2}))$/,
+                "Не верный номер телефона"
+            )
+            .required(() => required()),
+    })
+}
+
 let min6 = () => "Минимальная длина пароля 6 символов";
 let required = () => "Это обязательное поле";
 let email = () => "Не является почтой";
