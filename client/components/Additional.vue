@@ -1,28 +1,26 @@
 <template>
-    <div class="product-deals-wrapper">
-        <template v-if="settings.attributes.PackageColor">
-            <InputRadio v-for="item in settings.attributes.PackageColor" :item="item" :key="item.id"></InputRadio>
-        </template>
-        <template v-if="settings.attributes.Warranty">
-            <InputRadio v-for="item in settings.attributes.Warranty" :item="item" :key="item.id"></InputRadio>
-        </template>
-        <template v-if="settings.attributes.AdditionalService">
-            <InputRadio v-for="item in settings.attributes.AdditionalService" :item="item" :key="item.id"></InputRadio>
-        </template>
+  <div class="product-deals-wrapper">
+    <template v-if="settings.attributes.PackageColor">
+      <AdditionalItem :settings="settings.attributes.PackageColor"></AdditionalItem>
+    </template>
+    <template v-if="settings.attributes.Warranty">
+      <AdditionalItem :settings="settings.attributes.Warranty"></AdditionalItem>
+    </template>
+    <template v-if="settings.attributes.AdditionalService">
+      <AdditionalItem :settings="settings.attributes.AdditionalService"></AdditionalItem>
+    </template>
 
-    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import {ServicesItemType} from "~/types/catalog.types";
 
 interface propsType {
-    settings: ServicesItemType
+  settings: ServicesItemType
 }
 
 let {settings} = defineProps<propsType>()
-
-const emit = defineEmits<{ (e: "addPrice", value: number): void }>()
 
 
 </script>
