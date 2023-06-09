@@ -101,6 +101,12 @@
       </div>
       <button @click.stop="ServiceModalChanger(true)" class="button button-primary">Заказать услугу</button>
     </div>
+    <div class="answers">
+      <h3>Отвечаем на вопросы покупателей</h3>
+      <div class="answers-list">
+        <AnswerItem :item="item" v-for="item in Answers.data" :key="item.id"></AnswerItem>
+      </div>
+    </div>
   </div>
   <Modal :isShow="serviceModalState" @closeModal="ServiceModalChanger(false)">
     <Form @click.stop
@@ -144,10 +150,11 @@
 import {SelectFilterType} from "~/types/catalog.types";
 import {Form, Field, ErrorMessage} from "vee-validate"
 
-const {ServiceModalChanger, ServiceRequest} = useMain()
-const {serviceModalState} = storeToRefs(useMain())
+const {ServiceModalChanger, ServiceRequest, getAnswers} = useMain()
+const {serviceModalState, Answers} = storeToRefs(useMain())
 const input = ref<HTMLInputElement>()
 
+await getAnswers()
 
 definePageMeta({
   breadcrumb: "Сервис",
@@ -401,6 +408,22 @@ h3 {
         font-size: 1.2em;
       }
     }
+  }
+}
+
+.answers {
+  margin: 50px 0;
+
+  &-list {
+    flex-direction: column;
+  }
+
+  h3 {
+    margin: 0 0 60px;
+  }
+
+  .answers-list-item:first-child {
+    margin: 0
   }
 }
 </style>

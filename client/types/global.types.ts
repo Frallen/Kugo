@@ -3,6 +3,7 @@ export type datesType = {
     updatedAt: string
     publishedAt: string
 }
+
 export interface metaType {
     meta: {
         pagination: {
@@ -13,6 +14,7 @@ export interface metaType {
         }
     }
 }
+
 // Тип для изображений
 export interface imageType {
     data: [{
@@ -37,4 +39,16 @@ export interface imageType {
         id: number
     }
     ]
+}
+
+export interface answersType extends metaType {
+    data: answerItemType[]
+}
+
+export type answerItemType = {
+    id: number,
+    attributes: {
+        Question: String,
+        Answer: String
+    } & datesType
 }

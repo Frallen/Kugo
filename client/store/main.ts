@@ -1,18 +1,21 @@
 import {overFlow, setLoading} from "~/composables/mixins";
 import {populate} from "~/composables/qsMixins";
 import {errorMessage, successMessage} from "~/composables/useAlert";
+import {answersType} from "~/types/global.types";
 
 interface stateType {
     isLoading: boolean
     authModalState: boolean
     serviceModalState: boolean
+    Answers: answersType | null
 }
 
 export const useMain = defineStore("main", {
     state: (): stateType => ({
         isLoading: false,
         authModalState: false,
-        serviceModalState: false
+        serviceModalState: false,
+        Answers: null
     }),
     getters: {},
     actions: {
@@ -54,6 +57,24 @@ export const useMain = defineStore("main", {
                 successMessage("Ожидайте звонка!", "Скоро Вам перезвонит наш специалист.")
             }
             this.hideAllModals()
+            setLoading(false)
+        },
+        async getAnswers() {
+            setLoading(true)
+            let {data, error} = await useFetch(
+                `${useRuntimeConfig().public.strapi.url}/api/answers?${populate()}}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            )
+            if (error.value) {
+
+            } else {
+                this.Answers = data.value as answersType
+            }
             setLoading(false)
         }
     },
