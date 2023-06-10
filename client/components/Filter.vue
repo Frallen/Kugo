@@ -5,8 +5,13 @@
         <h6>Цена</h6>
         <Field name="price" type="text" hidden>
         </Field>
-        <RangeSlider :min="minMax[0]" :max="minMax[1]"
-                     @submitEvent="e=> {setFieldValue('price',e),submitButton.click()}"></RangeSlider>
+        <RangeSlider :min="0"
+                      :max="Filter.attributes.maxPrice"
+                      v-model:min-value="sliderMin"
+                      v-model:max-value="sliderMax"
+                      :step="1"
+        ></RangeSlider>
+
       </div>
       <ClientOnly>
         <div class="filter-item">
@@ -71,9 +76,16 @@ import {responseFilterType} from "~/types/catalog.types";
 
 const {Filter} = storeToRefs(useCatalog())
 const {query} = useRoute()
-let minMax = useState<[min: number, max: number]>()
 
-minMax.value = query.price ? checkQueryPrice(query.price as string) : [Filter.value.attributes.minPrice, Filter.value.attributes.maxPrice]
+const sliderMin = ref(query.price ? checkQueryPrice(query.price as string)[0] : Filter.value.attributes.minPrice);
+const sliderMax = ref(query.price ? checkQueryPrice(query.price as string)[1] : Filter.value.attributes.maxPrice);
+
+watch(sliderMin,()=>{
+  submitButton.value.click()
+})
+watch(sliderMax,()=>{
+  submitButton.value.click()
+})
 
 const emit = defineEmits<{ (e: "filters", Filters: responseFilterType): void }>()
 
@@ -88,7 +100,10 @@ formValues.value = {
 const submitButton = useState<HTMLButtonElement>()
 
 
-const onSubmit = (values: responseFilterType) => {
+const onSubmit = (values: responseFilterType,actions) => {
+
+  actions.setFieldValue('price',`${sliderMin.value}-${sliderMax.value}`);
+
   emit("filters", values);
 }
 
