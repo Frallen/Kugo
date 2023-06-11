@@ -2,12 +2,14 @@ import {overFlow, setLoading} from "~/composables/mixins";
 import {populate} from "~/composables/qsMixins";
 import {errorMessage, successMessage} from "~/composables/useAlert";
 import {answersType} from "~/types/global.types";
+import {SelectFilterType} from "~/types/catalog.types";
 
 interface stateType {
     isLoading: boolean
     authModalState: boolean
     serviceModalState: boolean
     Answers: answersType | null
+    CallBackOptions: SelectFilterType[]
 }
 
 export const useMain = defineStore("main", {
@@ -15,7 +17,25 @@ export const useMain = defineStore("main", {
         isLoading: false,
         authModalState: false,
         serviceModalState: false,
-        Answers: null
+        Answers: null,
+        CallBackOptions: [
+            {
+                label: "Ремонт",
+                sort: "Ремонт"
+            },
+            {
+                label: "Диагностика",
+                sort: "Диагностика"
+            },
+            {
+                label: "Услуги",
+                sort: "Услуги"
+            },
+            {
+                label: "Вопрос",
+                sort: "Вопрос"
+            }
+        ]
     }),
     getters: {},
     actions: {

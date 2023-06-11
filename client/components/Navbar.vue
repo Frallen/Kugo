@@ -1,102 +1,104 @@
 <template>
   <div class="nav" :class="{'sticky':!useRoute().path.includes('catalog')}">
     <div class="container">
-      <div class="nav-mobile" :class="{'visible':mobileModal}">
-        <div class="nav-wrapper">
-          <NuxtLink class="nav-logo" to="/">Kugoo</NuxtLink>
-          <div class="nav-wrapper-actions">
-            <NuxtLink to="tel:+78005055461" class="item"
-            >
-              <Icon name="material-symbols:call" class="phone icon"
-              />
-            </NuxtLink>
-            <NuxtLink to="/favorites" class="item" v-if="isAuth"
-            >
-              <Icon name="ph:heart-straight" class="icon"
-              />
-            </NuxtLink>
-            <template v-if="isAuth">
-              <NuxtLink to="/profile" class="item"
+      <transition name="fade">
+        <div class="nav-mobile" :class="{'visible':mobileModal}">
+          <div class="nav-wrapper">
+            <NuxtLink class="nav-logo" to="/">Kugoo</NuxtLink>
+            <div class="nav-wrapper-actions">
+              <NuxtLink to="tel:+78005055461" class="item"
+              >
+                <Icon name="material-symbols:call" class="phone icon"
+                />
+              </NuxtLink>
+              <NuxtLink to="/favorites" class="item" v-if="isAuth"
+              >
+                <Icon name="ph:heart-straight" class="icon"
+                />
+              </NuxtLink>
+              <template v-if="isAuth">
+                <NuxtLink to="/profile" class="item"
+                >
+                  <Icon class="user"
+                        name="mdi:account-outline"
+
+                  />
+                </NuxtLink>
+                <div class="item" @click="logOut"
+                >
+                  <Icon class="user"
+                        name="system-uicons:exit-right"
+
+                  />
+                </div>
+
+              </template>
+              <div v-else class="item" @click="AuthModalChanger(true)"
               >
                 <Icon class="user"
                       name="mdi:account-outline"
 
                 />
-              </NuxtLink>
-              <div class="item" @click="logOut"
-              >
-                <Icon class="user"
-                      name="system-uicons:exit-right"
-
+              </div>
+              <transition name="fade" v-if="mobileModal">
+                <Icon
+                    name="ic:twotone-close"
+                    class="item icon hamburger nav-wrapper-modal"
+                    @click="mobileModal = false"
                 />
-              </div>
-
-            </template>
-            <div v-else class="item" @click="AuthModalChanger(true)"
-            >
-              <Icon class="user"
-                    name="mdi:account-outline"
-
-              />
+              </transition>
+              <transition name="fade" v-else>
+                <Icon
+                    name="cil:hamburger-menu"
+                    class="item icon hamburger nav-wrapper-modal"
+                    @click="mobileModal = true"
+                />
+              </transition>
             </div>
-            <transition name="fade" v-if="mobileModal">
-              <Icon
-                  name="ic:twotone-close"
-                  class="item icon hamburger nav-wrapper-modal"
-                  @click="mobileModal = false"
-              />
-            </transition>
-            <transition name="fade" v-else>
-              <Icon
-                  name="cil:hamburger-menu"
-                  class="item icon hamburger nav-wrapper-modal"
-                  @click="mobileModal = true"
-              />
-            </transition>
           </div>
+          <Search></Search>
+          <transition name="fade">
+            <div class="nav-modal" v-show="mobileModal">
+              <div class="container">
+                <div class="nav-modal-body">
+                  <NuxtLink class="nav-link" to="">О магазине</NuxtLink>
+                  <NuxtLink class="nav-link" to=""
+                  >Доставка и оплата
+                    <span class="badge">Доступна рассрочка</span></NuxtLink
+                  >
+                  <NuxtLink class="nav-link" to="">Тест-драйв</NuxtLink>
+                  <NuxtLink class="nav-link" to="">Блог</NuxtLink>
+                  <NuxtLink class="nav-link" to="">Контакты</NuxtLink>
+                  <NuxtLink class="nav-link" to=""
+                  >Акции <span class="badge">%</span></NuxtLink
+                  >
+                </div>
+                <div class="nav-modal-footer">
+                  <div class="footer-item">
+                    <NuxtLink to="/service">Сервис</NuxtLink>
+                    <NuxtLink to="/service">Сотрудничество</NuxtLink>
+                    <NuxtLink to="/service" @click.prevent.stop="ServiceModalChanger(true)"> Заказать звонок</NuxtLink>
+                  </div>
+                  <div class="footer-item">
+                    <NuxtLink to="/service">
+                      <Icon name="basil:viber-solid"
+                      />
+                    </NuxtLink>
+                    <NuxtLink to="/service">
+                      <Icon name="ri:whatsapp-fill"
+                      />
+                    </NuxtLink>
+                    <NuxtLink to="/service">
+                      <Icon name="mdi:telegram"
+                      />
+                    </NuxtLink>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </transition>
         </div>
-        <Search></Search>
-        <transition name="fade">
-          <div class="nav-modal" v-show="mobileModal">
-            <div class="container">
-              <div class="nav-modal-body">
-                <NuxtLink class="nav-link" to="">О магазине</NuxtLink>
-                <NuxtLink class="nav-link" to=""
-                >Доставка и оплата
-                  <span class="badge">Доступна рассрочка</span></NuxtLink
-                >
-                <NuxtLink class="nav-link" to="">Тест-драйв</NuxtLink>
-                <NuxtLink class="nav-link" to="">Блог</NuxtLink>
-                <NuxtLink class="nav-link" to="">Контакты</NuxtLink>
-                <NuxtLink class="nav-link" to=""
-                >Акции <span class="badge">%</span></NuxtLink
-                >
-              </div>
-              <div class="nav-modal-footer">
-                <div class="footer-item">
-                  <NuxtLink to="/service">Сервис</NuxtLink>
-                  <NuxtLink to="/service">Сотрудничество</NuxtLink>
-                  <NuxtLink to="/service"> Заказать звонок</NuxtLink>
-                </div>
-                <div class="footer-item">
-                  <NuxtLink to="/service">
-                    <Icon name="basil:viber-solid"
-                    />
-                  </NuxtLink>
-                  <NuxtLink to="/service">
-                    <Icon name="ri:whatsapp-fill"
-                    />
-                  </NuxtLink>
-                  <NuxtLink to="/service">
-                    <Icon name="mdi:telegram"
-                    />
-                  </NuxtLink>
-                </div>
-              </div>
-            </div>
-          </div>
-        </transition>
-      </div>
+      </transition>
     </div>
     <div class="nav-default">
       <transition name="fade">
@@ -105,7 +107,7 @@
             <div class="nav-header-list">
               <NuxtLink to="/service">Сервис</NuxtLink>
               <NuxtLink to="/service">Сотрудничество</NuxtLink>
-              <NuxtLink to="/service"> Заказать звонок</NuxtLink>
+              <NuxtLink to="/service" @click.stop.prevent="ServiceModalChanger(true)"> Заказать звонок</NuxtLink>
               <NuxtLink to="/service">
                 <Icon name="basil:viber-solid"
                 />
@@ -276,7 +278,7 @@
 <script lang="ts" setup>
 const {isAuth} = storeToRefs(useUser())
 const {logOut} = useUser()
-const {AuthModalChanger} = useMain()
+const {AuthModalChanger, ServiceModalChanger} = useMain()
 //кнопка каталога
 const menuButton = useState<null>();
 //вложенное меню навигацию по каталогу
@@ -323,11 +325,12 @@ watch(searchedValue, async () => {
 
   &-mobile {
     padding: 0 0 1em 0;
-
+    .trs(0.2s);
   }
 
   &-mobile {
     display: none;
+    .trs(0.2s);
     @media @md {
       display: block;
     }
@@ -340,6 +343,7 @@ watch(searchedValue, async () => {
 
       &-actions {
         display: flex;
+        align-items: center;
 
         .item {
           text-decoration: none;
@@ -671,5 +675,6 @@ watch(searchedValue, async () => {
   height: 100%;
   background: #fff;
   z-index: 99;
+  .trs(0.2s);
 }
 </style>

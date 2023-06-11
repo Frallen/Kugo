@@ -108,74 +108,20 @@
       </div>
     </div>
   </div>
-  <Modal :isShow="serviceModalState" @closeModal="ServiceModalChanger(false)">
-    <Form @click.stop
-          :validation-schema="ServiceSchema()"
-          @submit="onSubmit"
-          v-slot="{ setFieldValue, setValues }"
-          class="form">
-      <div class="form-body">
-        <label for="Option" class="form-body-item">
-          <span class="title">Почта</span>
-          <Field name="Option" id="Option" hidden="hidden">
-          </Field>
-          <Select :options="options" placeholder="" @selectValue="e=> {setFieldValue('Option',e)}"></Select>
-          <ErrorMessage name="Option" class="error"/>
-        </label>
-        <label for="Phone" class="form-body-item">
-          <span class="title">Почта</span>
-          <Field
-              name="Phone"
-              id="Phone"
-              v-slot="{ valid, meta, field }"
-              ref="input"
-          >
-
-            <input
-                placeholder="7900000000"
-                v-bind="field"
-                class="input" type="text"
-                :class="{ 'input-error': meta.touched && !meta.valid }"
-            />
-          </Field>
-          <ErrorMessage name="Phone" class="error"/>
-        </label>
-        <button type="submit" class="button button-primary">Записаться на диагностику</button>
-      </div>
-    </Form>
-  </Modal>
 </template>
 
 <script setup lang="ts">
-import {SelectFilterType} from "~/types/catalog.types";
-import {Form, Field, ErrorMessage} from "vee-validate"
 
-const {ServiceModalChanger, ServiceRequest, getAnswers} = useMain()
-const {serviceModalState, Answers} = storeToRefs(useMain())
-const input = ref<HTMLInputElement>()
+const {ServiceModalChanger, getAnswers} = useMain()
+const {Answers} = storeToRefs(useMain())
+
 
 await getAnswers()
 
 definePageMeta({
   breadcrumb: "Сервис",
 })
-const options: SelectFilterType[] = [
-  {
-    label: "Ремонт",
-    sort: "Ремонт"
-  },
-  {
-    label: "Диагностика",
-    sort: "Диагностика"
-  },
-  {
-    label: "Услуги",
-    sort: "Услуги"
-  }
-]
-const onSubmit = (values) => {
-  ServiceRequest(values)
-}
+
 
 const player = ref<HTMLVideoElement>()
 const playButton = ref<HTMLImageElement>()

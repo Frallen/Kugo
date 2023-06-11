@@ -81,26 +81,67 @@
       </Form>
     </Modal>
   </transition>
+  <transition name="fade">
+    <Modal :isShow="serviceModalState" @closeModal="ServiceModalChanger(false)">
+      <Form @click.stop
+            :validation-schema="ServiceSchema()"
+            @submit="onSubmit"
+            v-slot="{ setFieldValue, setValues }"
+            class="form">
+        <div class="form-title">Обратная связь
+        </div>
+        <div class="form-body">
+          <label for="Option" class="form-body-item">
+            <span class="title">Причина обращения</span>
+            <Field name="Option" id="Option" hidden="hidden">
+            </Field>
+            <Select :options="CallBackOptions" placeholder="" @selectValue="e=> {setFieldValue('Option',e)}"></Select>
+            <ErrorMessage name="Option" class="error"/>
+          </label>
+          <label for="Phone" class="form-body-item">
+            <span class="title">Номер телефона</span>
+            <Field
+                name="Phone"
+                id="Phone"
+                v-slot="{ valid, meta, field }"
+            >
+
+              <input
+                  placeholder="7900000000"
+                  v-bind="field"
+                  class="input" type="text"
+                  :class="{ 'input-error': meta.touched && !meta.valid }"
+              />
+            </Field>
+            <ErrorMessage name="Phone" class="error"/>
+          </label>
+          <button type="submit" class="button button-primary">Записаться на диагностику</button>
+        </div>
+      </Form>
+    </Modal>
+  </transition>
 </template>
 
 <script setup lang="ts">
 import {Form, Field, ErrorMessage} from "vee-validate"
 
-const {getFilters} = useCatalog();
-const {isLoading, authModalState} = storeToRefs(useMain())
-const {AuthModalChanger} = useMain()
+
+const {isLoading, authModalState, serviceModalState, CallBackOptions} = storeToRefs(useMain())
+const {AuthModalChanger, ServiceModalChanger, ServiceRequest} = useMain()
 const {user} = storeToRefs(useUser())
 const {createUser, authUser, userStatus, getFavorites} = useUser()
 
 const passwordState = useState<string>(() => "password")
 const typeForm = useState<boolean>(() => true)
 
-await getFilters()
-await userStatus()
+
 if (userCookieChecker()) {
+  await userStatus()
   await getFavorites()
 }
-
+const onSubmit = (values) => {
+  ServiceRequest(values)
+}
 
 const auth = (data: { email: string, password: string }) => {
   if (typeForm.value) {

@@ -110,7 +110,7 @@ onUnmounted(() => {
 
   &-list {
     position: absolute;
-    bottom: -1250%;
+    top: 123%;
     left: 0;
     width: 100%;
     display: flex;

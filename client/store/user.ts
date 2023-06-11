@@ -1,5 +1,5 @@
 import {isProduction, setLoading, userCookieChecker} from "~/composables/mixins";
-import { successUserType} from "~/types/user.types";
+import {successUserType} from "~/types/user.types";
 import {errorMessage} from "~/composables/useAlert";
 import {useMain} from "~/store/main";
 import {CatalogItemType, DetailItemType} from "~/types/catalog.types";
@@ -18,7 +18,11 @@ export const useUser = defineStore("user", {
         user: null,
         Favorites: {} as CatalogItemType
     }),
-    getters: {},
+    getters: {
+        isFavorite: (state) => {
+            return (id: number) => state.Favorites ? state.Favorites.data.some(p => p.id === id) : false;
+        }
+    },
     actions: {
         // Создаю пользователя
         async createUser(email: string, password: string) {
@@ -270,14 +274,13 @@ export const useUser = defineStore("user", {
             setLoading(true)
 
 
-            if (userCookieChecker()||key) {
-
+            if (userCookieChecker() || key) {
                 const {data, error} = await useFetch(
                     `${useRuntimeConfig().public.strapi.url}/api/users/me/?${populate()}`,
                     {
                         method: "GET",
                         headers: {
-                            Authorization: `Bearer ${userCookieChecker()??key}`,
+                            Authorization: `Bearer ${userCookieChecker() ? userCookieChecker() : key}`,
                             "Content-Type": "application/json",
                         },
                     }
@@ -293,6 +296,7 @@ export const useUser = defineStore("user", {
                     this.isAuth = true
                     this.user = data.value as successUserType
                     await useMain().hideAllModals()
+                    this.getFavorites()
 
                 }
             } else {

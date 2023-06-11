@@ -1,18 +1,13 @@
 <template>
   <div class="container">
-    <div class="page-wrapper">
-      <h5 class="page-wrapper-title">
-        Избранное
-      </h5>
-      <div class="favorites" v-if="Favorites&&Favorites.data.length>0">
-        <div class="favorites-body">
+      <div class="favorites" >
+        <div class="favorites-body" v-if="Favorites&&Favorites.data.length>0">
           <Offers :offerType="Favorites"></Offers>
           <!--  <Pagination @currentPage="e=> currentPage=e"></Pagination>-->
         </div>
+        <Empty v-else :title="'В избранном пусто'"
+                       :text="'Добавьте товары в избранное, чтобы просмотреть или купить их позже'"></Empty>
       </div>
-      <Empty v-else :title="'В избранном пусто'"
-             :text="'Добавьте товары в избранное, чтобы просмотреть или купить их позже'"></Empty>
-    </div>
   </div>
 </template>
 
@@ -38,5 +33,7 @@ useHead({
 
 
 <style scoped lang="less">
-
+.favorites{
+  margin: 50px 0 100px;
+}
 </style>

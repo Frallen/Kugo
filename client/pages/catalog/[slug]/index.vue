@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
 import {responseFilterType} from "~/types/catalog.types";
-
+const {getFilters} = useCatalog();
 const {getDeals, getFilter} = useCatalog()
 const {params, path, query} = useRoute()
 const router = useRouter();
@@ -43,7 +43,7 @@ definePageMeta({
   middleware: "catalog",
   breadcrumb: "Категория",
 })
-
+await getFilters()
 await getFilter(params.slug as string)
 
 const Filters = ref<responseFilterType>()

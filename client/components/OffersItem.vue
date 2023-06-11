@@ -85,7 +85,7 @@
             </h5>
             <div class="product-actions">
               <div class="product-actions-item">
-                <Favorite :isFavorite="isFavorite" :id="item.id"></Favorite>
+                <Favorite :isFavorite="isFavorite(item.id)" :id="item.id"></Favorite>
               </div>
               <div class="product-actions-item">
                 <BasketButton
@@ -106,11 +106,7 @@ import {Swiper, SwiperSlide} from "swiper/vue";
 
 const modules = [Navigation];
 const {orderToCookie} = useCatalog()
-const {Favorites} = storeToRefs(useUser())
-
-const isFavorite = computed(() => {
-  return Favorites.value ? Favorites.value.data.some(p => p.id === item.id) : false
-})
+const {isFavorite} = storeToRefs(useUser())
 
 const slider = ref<null>();
 

@@ -194,7 +194,7 @@ export const useCatalog = defineStore("catalog", {
         },
         // каталог с пагинацией
         async getDeals(type: string, page: string, filters?: responseFilterType, sort?: string) {
-            setLoading(true)
+          //  setLoading(true)
 
             const {data, error} = await useFetch(
                 `${useRuntimeConfig().public.strapi.url}/api/catalog-items?${pagination(page)}&${filterCatalog(type, filters, sort)}`,
@@ -207,7 +207,7 @@ export const useCatalog = defineStore("catalog", {
             )
 
             this.Deals = data.value as CatalogItemType;
-            setLoading(false)
+         //   setLoading(false)
         },
     },
 });
