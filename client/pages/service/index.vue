@@ -1,110 +1,112 @@
 <template>
-  <SliderIndex></SliderIndex>
-  <div class="container">
-    <div class="features">
-      <h3>Проведем диагностику
-        и отремонтируем любую неисправность</h3>
-      <div class="features-box">
-        <div class="features-list">
-          <div class="features-list-item text-right">
-            <h6>Ремонт от 1 дня</h6>
-            <p>Устраним любую неисправность. Обычно делаем это за 1-3 дня, если ремонт сложный — предупредим
-              заранее.</p>
-          </div>
-          <div class="features-list-item text-right">
-            <h6>Ремонтируем только то, что сломалось</h6>
-            <p>Не навязываем услуги, диагностируем
-              и заранее обговариваем стоимость ремонта.</p>
-          </div>
-          <div class="features-list-item text-right">
-            <h6>Оригинальные запчасти</h6>
-            <p>Благодаря прямой связи с производителем имеем в наличии все необходимые новые комплектующие для
-              ремонта.</p>
-          </div>
-        </div>
-        <div class="features-video">
-          <video playsinline preload="metadata" ref="player" class="" @click.stop="playerState(false)">
-            <source src="services.mp4" type="video/mp4">
-          </video>
-          <NuxtImg class="icon" src="play.svg" ref="playButton" @click.stop="playerState(true)"
-                   v-show="isVisiblePlayButton"></NuxtImg>
-        </div>
-        <div class="features-list">
-          <div class="features-list-item text-left">
-            <h6>гарантия</h6>
-            <p>14 дней на ремонт</p>
-          </div>
-          <div class="features-list-item text-left">
-            <h6>беслаптный ремонт</h6>
-            <p>в течение 1 года после покупки</p>
-          </div>
-          <div class="features-list-item text-left">
-            <h6>расширенная гарантия</h6>
-            <p>до 36 месяцев</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="price">
-      <div class="price-head">
-        <h3>Стоимость ремонта</h3>
-        <p>Точную стоимость работ вам озвучит специалист сервисного центра после диагностики. Примерные цены на ремонт
-          без учета запчастей смотрите ниже.</p>
-      </div>
-      <div class="price-list">
-        <div class="price-list-item button button-outlined">Электросамокаты
-          <span>от 1500 руб.</span>
-        </div>
-        <div class="price-list-item button button-outlined">Электровелосипеды
-          <span>от 1800 руб.</span>
-        </div>
-        <div class="price-list-item button button-outlined">Робот-пылесосы
-          <span>от 1800 руб.</span>
-        </div>
-        <div class="price-list-item button button-outlined">Весы
-          <span>от 800 руб.</span>
-        </div>
-      </div>
-      <button @click.stop="ServiceModalChanger(true)" class="button button-primary">Заказать ремонт</button>
-    </div>
-  </div>
-  <div class="online-wrapper">
+  <div>
+    <SliderIndex></SliderIndex>
     <div class="container">
-      <div class="online">
-        <div class="online-image">
-          <NuxtImg src="zoom.png"></NuxtImg>
+      <div class="features">
+        <h3>Проведем диагностику
+          и отремонтируем любую неисправность</h3>
+        <div class="features-box">
+          <div class="features-list">
+            <div class="features-list-item text-right">
+              <h6>Ремонт от 1 дня</h6>
+              <p>Устраним любую неисправность. Обычно делаем это за 1-3 дня, если ремонт сложный — предупредим
+                заранее.</p>
+            </div>
+            <div class="features-list-item text-right">
+              <h6>Ремонтируем только то, что сломалось</h6>
+              <p>Не навязываем услуги, диагностируем
+                и заранее обговариваем стоимость ремонта.</p>
+            </div>
+            <div class="features-list-item text-right">
+              <h6>Оригинальные запчасти</h6>
+              <p>Благодаря прямой связи с производителем имеем в наличии все необходимые новые комплектующие для
+                ремонта.</p>
+            </div>
+          </div>
+          <div class="features-video">
+            <video playsinline preload="metadata" ref="player" class="" @click.stop="playerState(false)">
+              <source src="services.mp4" type="video/mp4">
+            </video>
+            <NuxtImg class="icon" src="play.svg" ref="playButton" @click.stop="playerState(true)"
+                     v-show="isVisiblePlayButton"></NuxtImg>
+          </div>
+          <div class="features-list">
+            <div class="features-list-item text-left">
+              <h6>гарантия</h6>
+              <p>14 дней на ремонт</p>
+            </div>
+            <div class="features-list-item text-left">
+              <h6>беслаптный ремонт</h6>
+              <p>в течение 1 года после покупки</p>
+            </div>
+            <div class="features-list-item text-left">
+              <h6>расширенная гарантия</h6>
+              <p>до 36 месяцев</p>
+            </div>
+          </div>
         </div>
-        <div class="online-text">
-          <div class="badge">Услуга</div>
-          <div class="online-title">Определим причину неисправности удаленно или на диагностике!</div>
-          <button class="button" @click.stop="ServiceModalChanger(true)">Записаться на диагностику</button>
+      </div>
+      <div class="price">
+        <div class="price-head">
+          <h3>Стоимость ремонта</h3>
+          <p>Точную стоимость работ вам озвучит специалист сервисного центра после диагностики. Примерные цены на ремонт
+            без учета запчастей смотрите ниже.</p>
+        </div>
+        <div class="price-list">
+          <div class="price-list-item button button-outlined">Электросамокаты
+            <span>от 1500 руб.</span>
+          </div>
+          <div class="price-list-item button button-outlined">Электровелосипеды
+            <span>от 1800 руб.</span>
+          </div>
+          <div class="price-list-item button button-outlined">Робот-пылесосы
+            <span>от 1800 руб.</span>
+          </div>
+          <div class="price-list-item button button-outlined">Весы
+            <span>от 800 руб.</span>
+          </div>
+        </div>
+        <button @click.stop="ServiceModalChanger(true)" class="button button-primary">Заказать ремонт</button>
+      </div>
+    </div>
+    <div class="online-wrapper">
+      <div class="container">
+        <div class="online">
+          <div class="online-image">
+            <NuxtImg src="zoom.png"></NuxtImg>
+          </div>
+          <div class="online-text">
+            <div class="badge">Услуга</div>
+            <div class="online-title">Определим причину неисправности удаленно или на диагностике!</div>
+            <button class="button" @click.stop="ServiceModalChanger(true)">Записаться на диагностику</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="container">
-    <div class="price">
-      <div class="price-head">
-        <h3>Стоимость гидроизоляции и настройки</h3>
-        <p>Для версии MAX и VIP гидроизоляция и настройка — бесплатно</p>
+    <div class="container">
+      <div class="price">
+        <div class="price-head">
+          <h3>Стоимость гидроизоляции и настройки</h3>
+          <p>Для версии MAX и VIP гидроизоляция и настройка — бесплатно</p>
+        </div>
+        <div class="price-list">
+          <div class="price-list-item button button-outlined">Гидроизоляция
+            <span>3850 руб.</span>
+          </div>
+          <div class="price-list-item button button-outlined">Настройка
+            <span> 1520 руб.</span>
+          </div>
+          <div class="price-list-item button button-outlined">Гидроизоляция и настройка
+            <span> 4500 руб.</span>
+          </div>
+        </div>
+        <button @click.stop="ServiceModalChanger(true)" class="button button-primary">Заказать услугу</button>
       </div>
-      <div class="price-list">
-        <div class="price-list-item button button-outlined">Гидроизоляция
-          <span>3850 руб.</span>
+      <div class="answers">
+        <h3>Отвечаем на вопросы покупателей</h3>
+        <div class="answers-list">
+          <AnswerItem :item="item" v-for="item in Answers.data" :key="item.id"></AnswerItem>
         </div>
-        <div class="price-list-item button button-outlined">Настройка
-          <span> 1520 руб.</span>
-        </div>
-        <div class="price-list-item button button-outlined">Гидроизоляция и настройка
-          <span> 4500 руб.</span>
-        </div>
-      </div>
-      <button @click.stop="ServiceModalChanger(true)" class="button button-primary">Заказать услугу</button>
-    </div>
-    <div class="answers">
-      <h3>Отвечаем на вопросы покупателей</h3>
-      <div class="answers-list">
-        <AnswerItem :item="item" v-for="item in Answers.data" :key="item.id"></AnswerItem>
       </div>
     </div>
   </div>

@@ -1,31 +1,33 @@
 <template>
-  <StockBlock></StockBlock>
-  <div class="container-catalog">
-    <div class="catalog">
-      <div class="catalog-filter" :class="{'visible':filterStatus}">
-        <div class="catalog-filter-close">
-          <Icon
-              name="ic:twotone-close"
-              class="icon nav-wrapper-modal"
-              @click="filterStatus = false , overFlow(false)"
-          />
-        </div>
-        <Filter @filters="e=>Filters=e"></Filter>
-      </div>
-      <div class="catalog-body">
-        <div class="catalog-body-filters">
-          <button class="button button-outlined call-filter" @click="filterStatus=true , overFlow(true)">
-            Фильтры
-          </button>
-          <div class="catalog-body-selects">
-            <Select :options="SortOptions" :placeholder="'Фильтр'" @selectValue="e=>Sort=e as string"></Select>
+  <div>
+    <StockBlock></StockBlock>
+    <div class="container-catalog">
+      <div class="catalog">
+        <div class="catalog-filter" :class="{'visible':filterStatus}">
+          <div class="catalog-filter-close">
+            <Icon
+                name="ic:twotone-close"
+                class="icon nav-wrapper-modal"
+                @click="filterStatus = false , overFlow(false)"
+            />
           </div>
+          <Filter @filters="e=>Filters=e"></Filter>
         </div>
-        <template v-if="Deals">
-          <Offers :offerType="Deals" :isCatalog="true"></Offers>
-          <Pagination :page-count="Deals.meta.pagination.pageCount" @currentPage="e=> currentPage=e"></Pagination>
-        </template>
-        <div v-else class="catalog-body-empty"><h4>Элементов не найдено</h4></div>
+        <div class="catalog-body">
+          <div class="catalog-body-filters">
+            <button class="button button-outlined call-filter" @click="filterStatus=true , overFlow(true)">
+              Фильтры
+            </button>
+            <div class="catalog-body-selects">
+              <Select :options="SortOptions" :placeholder="'Фильтр'" @selectValue="e=>Sort=e as string"></Select>
+            </div>
+          </div>
+          <template v-if="Deals">
+            <Offers :offerType="Deals" :isCatalog="true"></Offers>
+            <Pagination :page-count="Deals.meta.pagination.pageCount" @currentPage="e=> currentPage=e"></Pagination>
+          </template>
+          <div v-else class="catalog-body-empty"><h4>Элементов не найдено</h4></div>
+        </div>
       </div>
     </div>
   </div>
@@ -33,6 +35,7 @@
 
 <script setup lang="ts">
 import {responseFilterType} from "~/types/catalog.types";
+
 const {getFilters} = useCatalog();
 const {getDeals, getFilter} = useCatalog()
 const {params, path, query} = useRoute()

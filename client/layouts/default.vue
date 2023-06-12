@@ -1,4 +1,5 @@
 <template>
+  <div>
   <Navbar></Navbar>
   <div class="page-wrapper">
     <div class="container">
@@ -120,6 +121,7 @@
       </Form>
     </Modal>
   </transition>
+  </div>
 </template>
 
 <script setup lang="ts">

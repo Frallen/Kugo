@@ -1,52 +1,54 @@
 <template>
-  <ClientOnly>
-    <SliderIndex></SliderIndex>
-  </ClientOnly>
-  <div class="container">
-    <div class="features">
-      <div class="features-item text">Гарантия 1 год <span>на весь ассортимент</span></div>
-      <div class="features-item text">рассрочка <span>от 6 месяцев</span></div>
-      <div class="features-item text">Подарки <span>и бонусам к покупкам </span></div>
-      <div class="features-item yandex">
-        <div class="yandex-icon">Я</div>
-        <div class="yandex-title">Яндекс отзывы
-          <span><Icon name="ic:sharp-star-purple500" class="icon"
-          />4,9</span></div>
+  <div>
+    <ClientOnly>
+      <SliderIndex></SliderIndex>
+    </ClientOnly>
+    <div class="container">
+      <div class="features">
+        <div class="features-item text">Гарантия 1 год <span>на весь ассортимент</span></div>
+        <div class="features-item text">рассрочка <span>от 6 месяцев</span></div>
+        <div class="features-item text">Подарки <span>и бонусам к покупкам </span></div>
+        <div class="features-item yandex">
+          <div class="yandex-icon">Я</div>
+          <div class="yandex-title">Яндекс отзывы
+            <span><Icon name="ic:sharp-star-purple500" class="icon"
+            />4,9</span></div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="container" v-if="Deals && Deals.data.length>0">
-    <div class="offers-short">
-      <h3>Электросамокаты</h3>
-      <Offers :offerType="Deals"></Offers>
-      <NuxtLink class="button button-primary" to="/catalog">Смотреть все</NuxtLink>
+    <div class="container" v-if="Deals && Deals.data.length>0">
+      <div class="offers-short">
+        <h3>Электросамокаты</h3>
+        <Offers :offerType="Deals"></Offers>
+        <NuxtLink class="button button-primary" to="/catalog">Смотреть все</NuxtLink>
+      </div>
     </div>
-  </div>
-  <div class="container">
-    <div class="service">
-      <NuxtLink to="" class="service-item">
-        <div class="service-item-wrapper">
-          <span class="service-item-title">Подбор модели электросамоката</span>
-          <span class="service-item-text">Пройдите тест и выберите электросамокат по своим критериям</span>
-          <span class="service-item-link">Подобрать модель<Icon
-              name="material-symbols:arrow-forward-ios" class="icon"
-          /> </span></div>
-        <NuxtImg src="serviceSamkokat.png" class="service-item-img"></NuxtImg>
-      </NuxtLink>
-      <NuxtLink to="" class="service-item">
-        <div class="service-item-wrapper">
-          <span class="service-item-title">Сервисное обслуживание</span>
-          <span class="service-item-text">Крупнейший сервисный центр в России для продуктов Kugoo</span>
-          <span class="service-item-link">Обратиться к специалисту<Icon
-              name="material-symbols:arrow-forward-ios" class="icon"
-          /> </span></div>
-        <NuxtImg src="serviceWoman.png" class="service-item-img"></NuxtImg>
-      </NuxtLink>
+    <div class="container">
+      <div class="service">
+        <NuxtLink to="" class="service-item">
+          <div class="service-item-wrapper">
+            <span class="service-item-title">Подбор модели электросамоката</span>
+            <span class="service-item-text">Пройдите тест и выберите электросамокат по своим критериям</span>
+            <span class="service-item-link">Подобрать модель<Icon
+                name="material-symbols:arrow-forward-ios" class="icon"
+            /> </span></div>
+          <NuxtImg src="serviceSamkokat.png" class="service-item-img"></NuxtImg>
+        </NuxtLink>
+        <NuxtLink to="" class="service-item">
+          <div class="service-item-wrapper">
+            <span class="service-item-title">Сервисное обслуживание</span>
+            <span class="service-item-text">Крупнейший сервисный центр в России для продуктов Kugoo</span>
+            <span class="service-item-link">Обратиться к специалисту<Icon
+                name="material-symbols:arrow-forward-ios" class="icon"
+            /> </span></div>
+          <NuxtImg src="serviceWoman.png" class="service-item-img"></NuxtImg>
+        </NuxtLink>
+      </div>
     </div>
-  </div>
-  <StockBlock></StockBlock>
-  <div class="container">
-    <Categories></Categories>
+    <StockBlock></StockBlock>
+    <div class="container">
+      <Categories></Categories>
+    </div>
   </div>
 </template>
 
