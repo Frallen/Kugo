@@ -20,7 +20,7 @@ export const useUser = defineStore("user", {
     }),
     getters: {
         isFavorite: (state) => {
-            return (id: number) => Object.keys(state.Favorites).length>0  ? state.Favorites.data.some(p => p.id === id) : false;
+            return (id: number) => Object.keys(state.Favorites).length > 0 ? state.Favorites.data.some(p => p.id === id) : false;
         }
     },
     actions: {

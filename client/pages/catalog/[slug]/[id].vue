@@ -10,6 +10,7 @@
               :slides-per-view="1"
               :space-between="20"
               :thumbs="{ swiper: thumbsSwiper }"
+              effect="fade"
           >
             <Swiper-slide class="slider-item" v-for="item in Detail.attributes.images.data"
             >
@@ -62,7 +63,7 @@
             <div class="product-result-price">
               <h6>{{ Price }} руб.</h6>
               <div class="product-actions-item">
-                <Favorite :isFavorite="isFavorite" :id="Detail.id"></Favorite>
+                <Favorite :isFavorite="isFavorite(Detail.id)" :id="Detail.id"></Favorite>
               </div>
             </div>
             <div class="product-result-delivery">
@@ -247,14 +248,12 @@
 import {Navigation, Thumbs, EffectFade} from "swiper";
 import {Swiper, SwiperSlide} from "swiper/vue";
 import {Form} from "vee-validate"
+import 'swiper/css/effect-fade';
 // Нужно типизировать
 //import {Swiper as SwiperType} from "swiper/vue/swiper-vue"
 //import {ThumbsOptions} from "swiper/types/modules/thumbs"
-const {Favorites} = storeToRefs(useUser())
+const {isFavorite} = storeToRefs(useUser())
 
-const isFavorite = computed(() => {
-  return Favorites.value ? Favorites.value.data.some(p => p.id === Detail.value.id) : false
-})
 
 const modules = [Navigation, Thumbs, EffectFade];
 const {
@@ -538,17 +537,7 @@ definePageMeta({
   }
 
   &-title {
-    font-weight: 600;
-    font-size: 2.188em;
-    line-height: 51px;
-    color: @black;
-    text-transform: uppercase;
-    @media @lg {
-      font-size: 1.750em;
-    }
-    @media @md {
-      font-size: 1.250em;
-    }
+    color: #fff;
   }
 
   &-short {

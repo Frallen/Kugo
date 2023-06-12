@@ -1,13 +1,13 @@
 <template>
-    <NuxtLink class="support" to="">
+    <div class="support" @click.prevent.stop="ServiceModalChanger(true)">
         <NuxtImg src="support.png" class="img"></NuxtImg>
         <p>Менеджер ответит на любой ваш вопрос о продуктах Kugoo
             <span>Задать вопрос</span></p>
-    </NuxtLink>
+    </div>
 </template>
 
 <script setup lang="ts">
-
+const {ServiceModalChanger}=useMain()
 </script>
 
 <style scoped lang="less">

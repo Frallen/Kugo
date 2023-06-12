@@ -16,7 +16,8 @@
 
 <script setup lang="ts">
 const {categories} = storeToRefs(useCatalog())
-
+const {getFilters} = useCatalog()
+await getFilters()
 </script>
 
 <style scoped lang="less">

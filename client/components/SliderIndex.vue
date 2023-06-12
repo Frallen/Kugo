@@ -1,95 +1,96 @@
 <template>
-    <div>
-        <Swiper
-                :modules="modules"
-                :slides-per-view="1"
-                :space-between="20"
-                :autoplay="{
+  <div>
+    <Swiper
+        :modules="modules"
+        :slides-per-view="1"
+        :space-between="20"
+        :autoplay="{
           delay: 3000,
         }"
-                class="slider" @swiper="onSwiper"
-        >
-            <Swiper-slide class="slider-item purple">
-                <div class="container">
-                    <nuxt-img src="kirin.png" class="img slider-item-logo"></nuxt-img
-                    >
-                    <nuxt-img
-                            src="sliderSamokat.png"
-                            class="img slider-item-image"
-                    ></nuxt-img>
+        effect="fade"
+        class="slider" @swiper="onSwiper"
+    >
+      <Swiper-slide class="slider-item purple">
+        <div class="container">
+          <nuxt-img src="kirin.png" class="img slider-item-logo"></nuxt-img
+          >
+          <nuxt-img
+              src="sliderSamokat.png"
+              class="img slider-item-image"
+          ></nuxt-img>
 
-                    <div class="slider-content">
-                        <div class="slider-content-wrapper">
-                            <h2>Электросамокаты Kugoo Kirin от официального дилера</h2>
-                            <p>с бесплатной доставкой по РФ от 1 дня</p>
-                            <NuxtLink to="/catalog" class="button button-white"
-                            >Перейти в католог
-                            </NuxtLink
-                            >
-                        </div>
-                    </div>
+          <div class="slider-content">
+            <div class="slider-content-wrapper">
+              <h2>Электросамокаты Kugoo Kirin от официального дилера</h2>
+              <p>с бесплатной доставкой по РФ от 1 дня</p>
+              <NuxtLink to="/catalog" class="button button-white"
+              >Перейти в католог
+              </NuxtLink
+              >
+            </div>
+          </div>
+        </div>
+      </Swiper-slide>
+      <Swiper-slide class="slider-item orange">
+        <div class="container">
+          <nuxt-img src="woman.png" class="img slider-item-image"></nuxt-img>
+
+          <div class="slider-content">
+            <div class="slider-content-wrapper">
+              <h2>Ремонт и обслуживание товаров Kugoo Kirin</h2>
+              <p>в фирменных сервисых центрах</p>
+              <div class="features">
+                <div class="features-item">
+                  <span><Icon name="bi:geo-alt-fill" class="icon"/></span>
+                  <h4>
+                    Сервисные центры в Москве, Санкт-Петербурге и Краснодаре
+                  </h4>
                 </div>
-            </Swiper-slide>
-            <Swiper-slide class="slider-item orange">
-                <div class="container">
-                    <nuxt-img src="woman.png" class="img slider-item-image"></nuxt-img>
-
-                    <div class="slider-content">
-                        <div class="slider-content-wrapper">
-                            <h2>Ремонт и обслуживание товаров Kugoo Kirin</h2>
-                            <p>в фирменных сервисых центрах</p>
-                            <div class="features">
-                                <div class="features-item">
-                                    <span><Icon name="bi:geo-alt-fill" class="icon"/></span>
-                                    <h4>
-                                        Сервисные центры в Москве, Санкт-Петербурге и Краснодаре
-                                    </h4>
-                                </div>
-                                <div class="features-item">
+                <div class="features-item">
                     <span
                     ><Icon
-                            name="mingcute:safety-certificate-fill"
-                            class="icon"
+                        name="mingcute:safety-certificate-fill"
+                        class="icon"
                     /></span>
-                                    <h4>Гарантия 14 дней на ремонт</h4>
-                                </div>
-                                <div class="features-item">
-                                    <span><Icon name="ic:round-settings" class="icon"/></span>
-                                    <h4>
-                                        Всегда в наличии оригинальные запчасти от производителя
-                                    </h4>
-                                </div>
-                            </div>
-                            <NuxtLink to="/catalog" class="button button-secondary"
-                            >Записаться
-                            </NuxtLink
-                            >
-                        </div>
-                    </div>
+                  <h4>Гарантия 14 дней на ремонт</h4>
                 </div>
-            </Swiper-slide>
-            <div class="slider-nav container">
-                <div class="btn" @click.stop="slider.slidePrev()">
-                    <Icon name="ph:caret-left" class="icon"
-                    />
+                <div class="features-item">
+                  <span><Icon name="ic:round-settings" class="icon"/></span>
+                  <h4>
+                    Всегда в наличии оригинальные запчасти от производителя
+                  </h4>
                 </div>
-                <div class="btn" @click.stop="slider.slideNext()">
-                    <Icon name="ph:caret-right" class="icon"
-                    />
-                </div>
+              </div>
+              <NuxtLink to="/catalog" class="button button-secondary" @click.stop.prevent="ServiceModalChanger(true)"
+              >Записаться
+              </NuxtLink
+              >
             </div>
-        </Swiper>
-    </div>
+          </div>
+        </div>
+      </Swiper-slide>
+      <div class="slider-nav container">
+        <div class="btn" @click.stop="slider.slidePrev()">
+          <Icon name="ph:caret-left" class="icon"
+          />
+        </div>
+        <div class="btn" @click.stop="slider.slideNext()">
+          <Icon name="ph:caret-right" class="icon"
+          />
+        </div>
+      </div>
+    </Swiper>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import {Navigation} from "swiper";
+import {Navigation,EffectFade} from "swiper";
 import {Swiper, SwiperSlide} from "swiper/vue";
-
-const modules = [Navigation];
+const {ServiceModalChanger}=useMain()
+const modules = [Navigation,EffectFade];
 const slider = useState<null>();
 const onSwiper = (swiper: any) => {
-    slider.value = swiper;
+  slider.value = swiper;
 };
 </script>
 
@@ -172,13 +173,13 @@ const onSwiper = (swiper: any) => {
       }
 
       &-wrapper {
-        width: 70%;
+        width: 80%;
         @media @md {
           width: 100%;
         }
 
         .button {
-          margin: 0;
+          margin: 20px 0 0;
         }
 
         .button-secondary {
@@ -188,21 +189,19 @@ const onSwiper = (swiper: any) => {
 
         .features {
           display: flex;
-          justify-content: space-between;
+          flex-wrap: wrap;
           align-items: center;
-          margin: 0 0 40px;
+          margin: -20px 0 0 -20px;
           @media @md {
-            flex-wrap: wrap;
-            margin: 0 0 15px;
+            margin: -15px 0 0 -15px;
           }
 
           &-item {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin: 0 15px 0 0;
+            margin: 20px 0 0 20px;
             @media @md {
-              margin: 10px 0 0 0;
+              margin: 15px 0 0 15px;
             }
 
             span {

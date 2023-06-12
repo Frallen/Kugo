@@ -61,7 +61,7 @@
             <div class="nav-modal" v-show="mobileModal">
               <div class="container">
                 <div class="nav-modal-body">
-                  <NuxtLink class="nav-link" to="">О магазине</NuxtLink>
+                  <NuxtLink class="nav-link" to="/about">О магазине</NuxtLink>
                   <NuxtLink class="nav-link" to=""
                   >Доставка и оплата
                     <span class="badge">Доступна рассрочка</span></NuxtLink
@@ -257,7 +257,7 @@
       <div class="nav-footer">
         <div class="container">
           <div class="nav-footer-list">
-            <NuxtLink class="link" to="">О магазине</NuxtLink>
+            <NuxtLink class="link" to="/about">О магазине</NuxtLink>
             <NuxtLink class="link" to=""
             >Доставка и оплата
               <span class="badge">Доступна рассрочка</span></NuxtLink
@@ -628,6 +628,7 @@ watch(searchedValue, async () => {
           color: @black;
           margin: 0 0 0 40px;
           cursor: pointer;
+          text-decoration: none;
           @media @lg {
             margin: 0 0 0 20px;
           }
